@@ -1,0 +1,34 @@
+{
+  "id": "roll-overlay-and-effects",
+  "title": "Roll Overlay and Effects",
+  "description": "Immersive multi-phase roll prompts, visual vignettes, token particles, and atmospheric audio cues.",
+  "version": "#{VERSION}#",
+  "compatibility": {
+    "minimum": "14",
+    "verified": "14"
+  },
+  "authors": [
+    {
+      "name": "Acd-Jake",
+      "discord": "Acd-Jake",
+      "flags": {
+        "github": "acd-jake"
+      }
+    }
+  ],
+  "esmodules": [
+    "module/main.mjs"
+  ],
+  "styles": [
+    "styles/roll-overlay.css"
+  ],
+  "languages": [
+    { "lang": "en", "name": "English", "path": "lang/en.json" },
+    { "lang": "de", "name": "Deutsch", "path": "lang/de.json" }
+  ],
+  "socket": true,
+  "url": "#{URL}#",
+  "download": "#{DOWNLOAD}#",
+  "manifest": "#{MANIFEST}#",
+  "bugs": "https://github.com/acd-jake/roll-overlay-and-effects/issues"
+}

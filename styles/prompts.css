@@ -1,0 +1,745 @@
+.roe-overlay.roll-prompt-window {
+    position: fixed !important;
+    margin: 0 !important;
+    z-index: 100 !important;
+    min-width: 340px;
+    background: transparent;
+    border: none;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.85);
+}
+
+.roe-overlay .roe-roll-prompt-frame {
+    position: relative;
+    min-width: 340px;
+    box-sizing: border-box;
+    background: linear-gradient(180deg, #13161b 0%, var(--roe-bg-deep) 100%);
+    border: 2px solid var(--roe-gold);
+    outline: 1px solid var(--roe-gold-dim);
+    outline-offset: -5px;
+    padding: 0.65rem 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+}
+
+.roe-overlay .prompt-close-btn {
+    position: absolute;
+    top: 5px;
+    right: 6px;
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    background: transparent;
+    border: none;
+    color: var(--roe-text-muted);
+    cursor: pointer;
+    font-size: 0.78rem;
+}
+
+.roe-overlay .prompt-close-btn:hover {
+    color: var(--roe-gold-bright);
+}
+
+.roe-overlay .prompt-header {
+    text-align: center;
+    border-bottom: 1px solid var(--roe-gold-dim);
+    padding-bottom: 0.35rem;
+    cursor: grab;
+}
+
+.roe-overlay .prompt-header:active {
+    cursor: grabbing;
+}
+
+.roe-overlay .combat-header-avatars {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.roe-overlay .combat-header-titles {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.roe-overlay .prompt-actor-name {
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    color: var(--roe-gold);
+    text-transform: uppercase;
+}
+
+.roe-overlay .prompt-skill-name {
+    font-family: var(--roe-font-display);
+    font-size: 0.95rem;
+    font-weight: bold;
+    color: var(--roe-text-main);
+}
+
+.roe-overlay .prompt-roll-display,
+.roe-overlay .prompt-versus-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.25rem 0;
+}
+
+.roe-overlay .dice-result.rolled,
+.roe-overlay .rolled-number {
+    font-family: var(--roe-font-display);
+    font-size: 1.55rem;
+    font-weight: bold;
+    color: var(--roe-gold-bright);
+}
+
+.roe-overlay .dice-result.critical {
+    color: var(--roe-critical);
+}
+
+.roe-overlay .dice-result.extreme {
+    color: var(--roe-extreme);
+}
+
+.roe-overlay .dice-result.hard,
+.roe-overlay .dice-result.regular {
+    color: #7ee2a8;
+}
+
+.roe-overlay .dice-result.failure,
+.roe-overlay .dice-result.fumble {
+    color: #f29b9b;
+}
+
+.roe-overlay .vs-label,
+.roe-overlay .versus-label {
+    font-size: 0.78rem;
+    color: var(--roe-text-muted);
+}
+
+.roe-overlay .target-number {
+    font-family: var(--roe-font-display);
+    font-size: 1.25rem;
+    color: var(--roe-text-main);
+}
+
+.roe-overlay .prompt-outcome-badge {
+    text-align: center;
+    font-family: var(--roe-font-display);
+    font-size: 0.82rem;
+    font-weight: bold;
+    letter-spacing: 0.05em;
+    padding: 0.2rem 0.4rem;
+    border: 1px solid var(--roe-border-dark);
+    background: var(--roe-bg-panel);
+}
+
+.roe-overlay .prompt-sub-box {
+    background: var(--roe-bg-panel);
+    border: 1px solid var(--roe-border-dark);
+    padding: 0.4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.roe-overlay .combined-check-row,
+.roe-overlay .opposed-contestant-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.4rem;
+    font-size: 0.78rem;
+}
+
+.roe-overlay .opposed-contestant-block {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    padding-bottom: 0.35rem;
+    border-bottom: 1px solid var(--roe-border-dark);
+}
+
+.roe-overlay .opposed-contestant-block:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.roe-overlay .contestant-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.roe-overlay .contestant-info small {
+    color: var(--roe-text-muted);
+    font-size: 0.7rem;
+}
+
+/* Action Buttons & Delegated GM States */
+.roe-overlay .prompt-footer,
+.roe-overlay .luck-decision-row,
+.roe-overlay .prompt-player-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.roe-overlay .prompt-action-btn {
+    width: 100%;
+    padding: 0.35rem 0.5rem;
+    background: linear-gradient(180deg, #252015 0%, #17140d 100%);
+    border: 1px solid var(--roe-gold);
+    color: var(--roe-gold-bright);
+    font-family: var(--roe-font-display);
+    font-size: 0.78rem;
+    font-weight: bold;
+    cursor: pointer;
+    text-align: center;
+}
+
+.roe-overlay .prompt-action-btn:hover {
+    background: rgba(197, 160, 89, 0.22);
+    color: #ffffff;
+}
+
+.roe-overlay .prompt-action-btn.compact {
+    padding: 0.22rem 0.4rem;
+    font-size: 0.72rem;
+}
+
+.roe-overlay .prompt-action-btn.secondary {
+    background: var(--roe-bg-inset);
+    border-color: var(--roe-border-dark);
+    color: var(--roe-text-muted);
+}
+
+.roe-overlay .prompt-action-btn.luck {
+    border-color: var(--roe-success);
+    color: #7ee2a8;
+}
+
+.roe-overlay .prompt-action-btn.push {
+    border-color: var(--roe-failure);
+    color: #f29b9b;
+}
+
+.roe-overlay .gm-delegated-region {
+    padding-left: 0.4rem;
+    border-left: 2px dashed rgba(197, 160, 89, 0.45);
+    opacity: 0.7;
+    transition: opacity 0.15s ease;
+}
+
+.roe-overlay .gm-delegated-region:hover,
+.roe-overlay .gm-delegated-region:focus-within {
+    opacity: 1;
+}
+
+.roe-overlay .prompt-action-btn.gm-delegated {
+    opacity: 0.7;
+    background: transparent;
+    border-style: dashed;
+    border-color: rgba(197, 160, 89, 0.45);
+    color: var(--roe-text-muted);
+}
+
+.roe-overlay .prompt-action-btn.gm-delegated:hover {
+    opacity: 0.95;
+    background: rgba(197, 160, 89, 0.15);
+    border-style: solid;
+    color: var(--roe-text-main);
+}
+
+.roe-overlay .gm-exclusive-zone {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.roe-overlay .gm-eye-badge {
+    color: var(--roe-gold);
+    font-size: 0.75rem;
+    opacity: 0.8;
+}
+
+.roe-overlay .prompt-outcome-banner {
+    margin-top: 0.2rem;
+    padding: 0.35rem 0.45rem;
+    background: linear-gradient(90deg, rgba(197, 160, 89, 0.12) 0%, rgba(197, 160, 89, 0.24) 50%, rgba(197, 160, 89, 0.12) 100%);
+    border: 1px solid var(--roe-gold);
+    color: var(--roe-text-main);
+    font-weight: bold;
+    font-size: 0.8rem;
+    text-align: center;
+}
+
+/* Sanity Panel & Result Chips */
+.roe-overlay .sanity-immersion-panel {
+    background: radial-gradient(circle at center, #181126 0%, #0b0910 100%);
+    border: 1px solid rgba(157, 78, 221, 0.45);
+    padding: 0.45rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.roe-overlay .sanity-narrative-quote {
+    font-style: italic;
+    font-size: 0.76rem;
+    color: #cbbbe0;
+    text-align: center;
+    border-bottom: 1px solid rgba(157, 78, 221, 0.25);
+    padding-bottom: 0.3rem;
+}
+
+.roe-overlay .sanity-stakes-grid,
+.roe-overlay .sanity-result-chips {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.35rem;
+}
+
+.roe-overlay .stake-pill {
+    background: rgba(10, 11, 14, 0.8);
+    border: 1px solid var(--roe-border-dark);
+    padding: 0.25rem 0.4rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.roe-overlay .stake-label {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    color: var(--roe-text-muted);
+}
+
+.roe-overlay .stake-formula {
+    font-family: var(--roe-font-display);
+    font-size: 0.88rem;
+    font-weight: bold;
+    color: var(--roe-text-main);
+}
+
+.roe-overlay .sanity-flavor-line {
+    font-style: italic;
+    font-size: 0.76rem;
+    color: #dcd0eb;
+    text-align: center;
+    padding: 0.2rem 0.3rem;
+}
+
+.roe-overlay .sanity-result-showcase {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    margin-top: 0.15rem;
+}
+
+.roe-overlay .result-chip {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    padding: 0.3rem 0.45rem;
+    font-family: var(--roe-font-display);
+    font-size: 0.78rem;
+    font-weight: bold;
+    border: 1px solid var(--roe-border-dark);
+    background: var(--roe-bg-panel);
+}
+
+.roe-overlay .result-chip.outcome.is-success {
+    border-color: #2ec4b6;
+    color: #80ffea;
+    background: rgba(46, 196, 182, 0.14);
+}
+
+.roe-overlay .result-chip.outcome.is-failure {
+    border-color: var(--roe-failure);
+    color: #f29b9b;
+    background: rgba(168, 50, 50, 0.18);
+}
+
+.roe-overlay .result-chip.loss.is-safe {
+    border-color: #2ec4b6;
+    color: #80ffea;
+    background: rgba(46, 196, 182, 0.08);
+}
+
+.roe-overlay .result-chip.loss.is-severe {
+    border-color: #c77dff;
+    color: #f8edff;
+    background: rgba(157, 78, 221, 0.25);
+}
+
+.roe-overlay .prompt-action-btn.sanity-int-btn {
+    border-color: #c77dff;
+    color: #f3d5ff;
+    background: linear-gradient(180deg, #28143b 0%, #160b24 100%);
+}
+
+.roe-overlay .sanity-madness-stamp {
+    padding: 0.32rem 0.45rem;
+    background: linear-gradient(90deg, rgba(114, 9, 183, 0.25) 0%, rgba(181, 23, 158, 0.35) 50%, rgba(114, 9, 183, 0.25) 100%);
+    border: 1px solid #c77dff;
+    color: #f8edff;
+    font-family: var(--roe-font-display);
+    font-size: 0.76rem;
+    font-weight: bold;
+    text-align: center;
+    animation: roeSanityPulse 2.4s infinite ease-in-out;
+}
+
+@keyframes roeSanityPulse {
+
+    0%,
+    100% {
+        box-shadow: 0 0 4px rgba(199, 125, 255, 0.25);
+    }
+
+    50% {
+        box-shadow: 0 0 12px rgba(199, 125, 255, 0.6);
+    }
+}
+
+/* 3-Phase Combat Sections, Tabs & Sliders */
+.roe-overlay .combat-phase-section {
+    background: var(--roe-bg-panel);
+    border: 1px solid var(--roe-border-dark);
+    padding: 0.45rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.roe-overlay .combat-phase-section.is-active {
+    border-color: var(--roe-gold-dim);
+    box-shadow: inset 0 0 10px rgba(197, 160, 89, 0.08);
+}
+
+.roe-overlay .combat-phase-section.is-completed {
+    background: rgba(10, 11, 14, 0.65);
+    border-color: rgba(197, 160, 89, 0.2);
+}
+
+.roe-overlay .combat-phase-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.4rem;
+    padding-bottom: 0.25rem;
+    border-bottom: 1px solid rgba(197, 160, 89, 0.25);
+    font-family: var(--roe-font-display);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    color: var(--roe-gold);
+}
+
+.roe-overlay .combat-phase-section.is-completed .combat-phase-header {
+    color: var(--roe-text-muted);
+}
+
+.roe-overlay .combat-phase-header .phase-title {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-weight: bold;
+}
+
+.roe-overlay .combat-phase-header .phase-actor-tag {
+    font-family: var(--roe-font-body);
+    font-size: 0.72rem;
+    text-transform: none;
+    color: var(--roe-text-main);
+}
+
+.roe-overlay .combat-phase-header .phase-reset-btn {
+    margin-left: auto;
+    width: 18px;
+    height: 18px;
+    padding: 0;
+    background: transparent;
+    border: none;
+    color: var(--roe-text-muted);
+    cursor: pointer;
+}
+
+.roe-overlay .combat-phase-header .phase-reset-btn:hover {
+    color: var(--roe-gold-bright);
+}
+
+.roe-overlay .roe-roll-prompt-frame.no-phase-headers .combat-phase-header,
+.roe-overlay .roe-roll-prompt-frame.is-compact .combat-phase-section.is-completed,
+.roe-overlay .roe-roll-prompt-frame.is-compact .is-compact-hidden {
+    display: none;
+}
+
+.roe-overlay .prompt-phase-summary {
+    padding: 0.35rem 0.5rem;
+    border-left: 2px solid var(--roe-gold);
+    background: var(--roe-bg-panel);
+    font-size: 0.74rem;
+    color: var(--roe-text-muted);
+}
+
+.roe-overlay .tactical-flags-grid,
+.roe-overlay .reaction-grid-2x2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.3rem;
+}
+
+.roe-overlay .tab-btn {
+    padding: 0.25rem 0.35rem;
+    background: var(--roe-bg-panel);
+    border: 1px solid var(--roe-border-dark);
+    color: var(--roe-text-muted);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.roe-overlay .tab-btn.active {
+    background: rgba(197, 160, 89, 0.16);
+    border-color: var(--roe-gold);
+    color: var(--roe-gold-bright);
+}
+
+.roe-overlay .roe-select-full {
+    width: 100%;
+    background: var(--roe-bg-inset);
+    border: 1px solid var(--roe-border-dark);
+    color: var(--roe-text-main);
+    padding: 0.25rem 0.35rem;
+    font-size: 0.76rem;
+}
+
+.roe-overlay .slider-control-block {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+}
+
+.roe-overlay .slider-labels,
+.roe-overlay .slider-ticks {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.68rem;
+    color: var(--roe-text-muted);
+}
+
+.roe-overlay .slider-control-block input[type="range"] {
+    width: 100%;
+    accent-color: var(--roe-gold);
+    cursor: pointer;
+}
+
+/* Dice Visuals & Roll Breakdown Inspection */
+.roe-overlay .is-inspectable {
+    cursor: pointer;
+    text-decoration: underline dotted rgba(197, 160, 89, 0.55);
+    text-underline-offset: 2px;
+}
+
+.roe-overlay .roll-inspect-box {
+    margin-top: 0.3rem;
+    padding: 0.35rem 0.45rem;
+    background: rgba(8, 9, 12, 0.92);
+    border: 1px solid var(--roe-gold-dim);
+    border-left: 3px solid var(--roe-gold);
+    font-size: 0.72rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.roe-overlay .inspect-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--roe-text-main);
+}
+
+.roe-overlay .inspect-dice {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    align-items: center;
+}
+
+.roe-overlay .die-face {
+    display: inline-block;
+    padding: 0.05rem 0.3rem;
+    border: 1px solid var(--roe-border-dark);
+    background: var(--roe-bg-panel);
+    font-family: var(--roe-font-display);
+    font-weight: bold;
+}
+
+.roe-overlay .die-face.is-kept {
+    border-color: var(--roe-gold);
+    color: var(--roe-gold);
+}
+
+.roe-overlay .die-face.is-dropped {
+    opacity: 0.45;
+    text-decoration: line-through;
+}
+
+.roe-overlay .inspect-thresholds {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 0.2rem;
+    border-top: 1px solid rgba(197, 160, 89, 0.2);
+    color: var(--roe-text-muted);
+    font-size: 0.68rem;
+}
+
+.roe-overlay .inspect-modifiers {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    color: var(--roe-text-muted);
+}
+
+.roe-overlay .prompt-dice-visuals {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.roe-overlay .prompt-die {
+    position: relative;
+    display: inline-flex;
+    flex: 0 0 40px;
+    width: 40px;
+    height: 40px;
+}
+
+.roe-overlay .prompt-die img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    border: 0;
+    box-shadow: none;
+}
+
+.roe-overlay .prompt-die-count {
+    position: absolute;
+    right: -0.15rem;
+    bottom: -0.1rem;
+    padding: 0 0.2rem;
+    background: var(--roe-bg-deep);
+    color: var(--roe-gold-bright);
+    border: 1px solid var(--roe-gold-dim);
+    font-size: 0.62rem;
+    line-height: 1.1;
+}
+
+/* Collapsible Description Drawer */
+.roe-overlay .prompt-title-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.roe-overlay .prompt-desc-icon {
+    font-size: 0.72rem;
+    color: var(--roe-gold);
+    opacity: 0.75;
+}
+
+.roe-overlay .prompt-description-drawer {
+    display: grid;
+    grid-template-rows: 0fr;
+    opacity: 0;
+    transition: grid-template-rows var(--roe-desc-transition-ms, 280ms) ease, opacity var(--roe-desc-transition-ms, 280ms) ease;
+}
+
+.roe-overlay .prompt-description-drawer.is-expanded {
+    grid-template-rows: 1fr;
+    opacity: 1;
+}
+
+.roe-overlay .prompt-description-inner {
+    overflow: hidden;
+}
+
+.roe-overlay .prompt-description-content {
+    padding: 0.4rem 0.5rem;
+    background: var(--roe-bg-panel);
+    border: 1px solid var(--roe-gold-dim);
+    border-left: 3px solid var(--roe-gold);
+    font-size: 0.74rem;
+    color: var(--roe-text-muted);
+    max-height: 160px;
+    overflow-y: auto;
+}
+
+/* GM Roll Request Composer Dialog */
+.roe-overlay.gm-request-dialog .window-content {
+    background: var(--roe-bg-deep);
+    padding: 0.75rem;
+}
+
+.roe-overlay .roe-gm-request-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.roe-overlay .launcher-mode-tabs {
+    display: flex;
+    gap: 0.35rem;
+    border-bottom: 1px solid var(--roe-gold-dim);
+    padding-bottom: 0.45rem;
+}
+
+.roe-overlay .launcher-mode-tabs .tab-btn {
+    flex: 1;
+    padding: 0.35rem 0.5rem;
+    font-family: var(--roe-font-display);
+    font-size: 0.76rem;
+}
+
+.roe-overlay .roe-gm-request-form .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.roe-overlay .roe-gm-request-form .form-group-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+}
+
+.roe-overlay .roe-gm-request-form label {
+    font-size: 0.74rem;
+    color: var(--roe-gold);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.roe-overlay .roe-gm-request-form select,
+.roe-overlay .roe-gm-request-form input[type="text"] {
+    width: 100%;
+    background: var(--roe-bg-inset);
+    border: 1px solid var(--roe-border-dark);
+    color: var(--roe-text-main);
+    padding: 0.3rem 0.4rem;
+    font-size: 0.8rem;
+}

@@ -1,0 +1,37 @@
+@import "./prompts.css";
+@import "./chat-cards.css";
+@import "./effects.css";
+
+:root {
+  --roe-bg-deep: #070809;
+  --roe-bg-panel: #0e1013;
+  --roe-bg-inset: #13161a;
+  --roe-gold: #c5a059;
+  --roe-gold-bright: #e0be78;
+  --roe-gold-dim: rgba(197, 160, 89, 0.35);
+  --roe-text-main: #f4f1ea;
+  --roe-text-muted: #b8b0a0;
+  --roe-border-dark: #252930;
+  --roe-success: #2e8b57;
+  --roe-hard: #2b7a78;
+  --roe-extreme: #d4af37;
+  --roe-critical: #f0c419;
+  --roe-failure: #a83232;
+  --roe-fumble: #6e1414;
+  --roe-font-display: "Cinzel", "Times New Roman", serif;
+  --roe-font-body: "Signika", "Segoe UI", sans-serif;
+}
+
+.roe-overlay {
+  font-family: var(--roe-font-body);
+  color: var(--roe-text-main);
+  box-sizing: border-box;
+}
+
+.roe-overlay *,
+.roe-overlay *::before,
+.roe-overlay *::after {
+  box-sizing: inherit;
+}
+
+

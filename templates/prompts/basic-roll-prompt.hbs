@@ -1,0 +1,114 @@
+{{#if isResolved}}
+{{> roeRollResolvedResult}}
+{{else if isPreparingModifiers}}
+{{> roeRollModifierPreparation}}
+{{else}}
+<div class="roe-roll-prompt-frame">
+    <button type="button" class="prompt-close-btn" data-action="closePrompt" title="Close">
+        <i class="fa-solid fa-xmark"></i>
+    </button>
+
+    <header class="prompt-header prompt-drag-handle">
+        <div class="prompt-actor-name">{{actorName}}</div>
+        {{#if hasPromptDescription}}
+        <button type="button" class="prompt-skill-name prompt-title-toggle" data-action="toggleDescription"
+            aria-expanded="{{#if isDescriptionExpanded}}true{{else}}false{{/if}}"
+            title="{{localize 'ROE.Roll.ToggleDescription'}}">
+            <span>{{title}}</span>
+            <i class="fa-solid fa-circle-info prompt-desc-icon"></i>
+        </button>
+        {{else}}
+        <div class="prompt-skill-name">{{title}}</div>
+        {{/if}}
+    </header>
+
+    {{> roePromptDescription}}
+
+    <div class="prompt-roll-display">
+        <span class="dice-result {{#if hasRolled}}rolled {{successLevel}}{{/if}}" {{#if
+            hasRolled}}data-inspect-key="{{participantKey}}" {{/if}}>
+            {{displayTotal}}
+        </span>
+        {{#if hasTarget}}
+        <span class="vs-label">vs.</span>
+        <span class="target-number">{{displayTarget}}</span>
+        {{/if}}
+    </div>
+
+    {{#if showLevel}}
+    <div class="prompt-outcome-badge {{successLevel}}">{{formattedLevel}}</div>
+    {{/if}}
+
+    {{> roeSanityLossControls}}
+
+    {{#if isCombined}}
+    <div class="prompt-sub-box">
+        {{#each combinedChecks}}
+        <div class="combined-check-row">
+            <span>{{label}}</span>
+            <strong {{#if ../hasRolled}}data-inspect-key="{{key}}" {{/if}}>
+                {{#if ../hasRolled}}{{outcome}}{{else}}? vs. {{targetValue}}{{/if}}
+            </strong>
+        </div>
+        {{/each}}
+    </div>
+    {{/if}}
+
+    {{#if canRoll}}
+    <div class="prompt-player-controls {{#if isDelegatedToPlayer}}gm-delegated-region{{/if}}">
+    {{> roeSkillDifficultyControls}}
+    {{#unless isOther}}
+    {{> roeModifierSlider manualModifierDice=modifierDice effectiveModifierLabel=modifierDisplay flagModifierDice=0 participantKey=participantKey}}
+    {{/unless}}
+    {{> roeDiceVisuals dice=rollDice}}
+
+    <button type="button" class="prompt-action-btn roll-now"
+        data-action="executeRoll">
+        <i class="fa-solid fa-dice-d20"></i>
+        {{#if isOther}}{{localize "ROE.Roll.Execute"}}{{else}}{{rollLabel}} ({{displayTarget}}%){{/if}}
+    </button>
+    </div>
+    {{/if}}
+
+    {{#if canSpendLuck}}
+    <div class="luck-decision-row {{#if isDelegatedToPlayer}}gm-delegated-region{{/if}}">
+        <button type="button" class="prompt-action-btn luck"
+            data-action="spendLuck" data-key="{{participantKey}}" data-cost="{{luckCost}}" data-level="{{luckTargetLevel}}">
+            <i class="fa-solid fa-clover"></i> {{localize "ROE.Chat.SpendLuckImprove" level=luckTargetLabel
+            cost=luckCost}}
+        </button>
+        <button type="button" class="prompt-action-btn secondary"
+            data-action="declineLuck" data-key="{{participantKey}}">
+            {{localize "ROE.RollSession.DeclineLuckBtn"}}
+        </button>
+    </div>
+    {{/if}}
+
+    {{#if canPush}}
+    {{> roeDiceVisuals dice=rollDice}}
+    <button type="button" class="prompt-action-btn push {{#if isDelegatedToPlayer}}gm-delegated{{/if}}"
+        data-action="pushRoll" data-key="{{participantKey}}">
+        <i class="fa-solid fa-rotate-right"></i> {{localize "ROE.Chat.PushRoll"}}
+    </button>
+    {{/if}}
+
+    {{> (lookup . "resultPartial")}}
+    {{> roePushFailurePhase}}
+
+    {{#if canApplyConsequences}}
+    <footer class="prompt-footer">
+        <button type="button" class="prompt-action-btn luck" data-action="applyConsequences">
+            <i class="fa-solid fa-wand-magic-sparkles"></i> {{localize "ROE.RollSession.ApplyConsequencesBtn"}}
+        </button>
+    </footer>
+    {{/if}}
+
+    {{#if canResolve}}
+    <footer class="prompt-footer gm-resolve-footer">
+        <button type="button" class="prompt-action-btn primary" data-action="resolveSession">
+            <i class="fa-solid fa-gavel"></i> {{localize "ROE.RollSession.ResolveBtn"}}
+        </button>
+    </footer>
+    {{/if}}
+</div>
+{{/if}}

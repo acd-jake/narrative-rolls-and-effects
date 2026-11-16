@@ -1,0 +1,39 @@
+<div class="roe-gm-request-form">
+    {{#if checkTitle}}
+    <div class="prompt-outcome-banner">{{checkTitle}}</div>
+    {{/if}}
+
+    <div class="launcher-mode-tabs">
+        <button type="button" class="tab-btn {{#if allPCsSelected}}active{{/if}}" data-action="toggleAllPCs" {{#unless
+            hasPCs}}disabled{{/unless}}>
+            <i class="fa-solid fa-users"></i> {{localize "ROE.ActorSelector.ToggleAllPCs"}}
+        </button>
+        <button type="button" class="tab-btn {{#if allNPCsSelected}}active{{/if}}" data-action="toggleAllNPCs" {{#unless
+            hasNPCs}}disabled{{/unless}}>
+            <i class="fa-solid fa-skull"></i> {{localize "ROE.ActorSelector.ToggleAllNPCs"}}
+        </button>
+    </div>
+
+    <div class="prompt-sub-box" style="max-height: 280px; overflow-y: auto;">
+        {{#each actors}}
+        <div class="combined-check-row actor-select-row {{#if selected}}is-selected{{/if}}" data-action="toggleActor"
+            data-actor-id="{{id}}"
+            style="cursor: pointer; padding: 0.25rem 0.35rem; border: 1px solid {{#if selected}}var(--roe-gold){{else}}var(--roe-border-dark){{/if}}; background: {{#if selected}}rgba(197, 160, 89, 0.14){{else}}var(--roe-bg-panel){{/if}};">
+            <div style="display: flex; align-items: center; gap: 0.45rem;">
+                <img class="combatant-avatar" src="{{img}}" alt="{{name}}" />
+                <span>{{name}}</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.4rem;">
+                <span class="combat-mode-tag">{{#if isPC}}SC{{else}}NSC{{/if}}</span>
+                <i class="fa-solid {{#if selected}}fa-square-check{{else}}fa-square{{/if}}"
+                    style="color: {{#if selected}}var(--roe-gold-bright){{else}}var(--roe-text-muted){{/if}};"></i>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+
+    <button type="button" class="prompt-action-btn primary" data-action="confirmSelection" {{#unless
+        hasSelection}}disabled{{/unless}}>
+        <i class="fa-solid fa-paper-plane"></i> {{localize "ROE.RollSession.StartSession"}}
+    </button>
+</div>

@@ -1,0 +1,15 @@
+{{#if hasPromptDescription}}
+<div class="prompt-description-drawer {{#if isDescriptionExpanded}}is-expanded{{/if}}"
+    style="--roe-desc-transition-ms: {{descriptionTransitionMs}}ms;">
+    <div class="prompt-description-inner">
+        <div class="prompt-description-content">
+            {{#each promptDescriptions as |entry|}}
+            <div class="prompt-description-entry">
+                {{#if entry.heading}}<div class="prompt-description-heading">{{entry.heading}}</div>{{/if}}
+                <div class="prompt-description-text">{{{entry.html}}}</div>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+</div>
+{{/if}}
