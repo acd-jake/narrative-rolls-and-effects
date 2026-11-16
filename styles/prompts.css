@@ -13,17 +13,36 @@
     min-width: 340px;
     box-sizing: border-box;
     background-color: inherit;
-    background-size: 100% 100%;
-    background-repeat: no-repeat;
-    background-attachment: local;
-    background-origin: border-box;
-    background-clip: border-box;
+    isolation: isolate;
     border: none;
     outline: none;
     padding: 0.65rem 0.75rem;
     display: flex;
     flex-direction: column;
     gap: 0.45rem;
+}
+
+.roe-overlay .roe-roll-prompt-frame::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    box-sizing: border-box;
+    border: 50px solid transparent;
+    border-image-source: var(--roe-frame-image);
+    border-image-slice: 50 fill;
+    border-image-width: 50px;
+    border-image-repeat: stretch;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.roe-overlay .roe-roll-prompt-frame > :not(.prompt-close-btn) {
+    position: relative;
+    z-index: 1;
+}
+
+.roe-overlay .roe-roll-prompt-frame > .prompt-close-btn {
+    z-index: 1;
 }
 
 .roe-overlay .prompt-detail-area,
