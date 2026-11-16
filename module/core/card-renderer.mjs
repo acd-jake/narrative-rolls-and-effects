@@ -151,10 +151,15 @@ export class SessionCardRenderer {
         for (const die of dice) {
             const wrapper = document.createElement("span");
             wrapper.className = "prompt-die";
-            wrapper.title = game.i18n.localize(die.label);
+            const adapter = AdapterRegistry.active;
+            if (adapter && adapter.formatDiceVisualTooltip) {
+                wrapper.dataset.tooltip = adapter.formatDiceVisualTooltip(die);
+            } else {
+                wrapper.dataset.tooltip = game.i18n.localize(die.label);
+            }
             const image = document.createElement("img");
             image.src = die.src;
-            image.alt = wrapper.title;
+            image.alt = game.i18n.localize(die.label);
             wrapper.appendChild(image);
             visuals.appendChild(wrapper);
         }

@@ -39,6 +39,7 @@ export class CombinedRollPromptApp extends BasePromptApp {
         );
 
         const modDice = sys?.participants?.[0]?.modifierDice ?? 0;
+        const rollDiceArray = context.rollDice ?? [];
 
         return {
             ...context,
@@ -51,6 +52,7 @@ export class CombinedRollPromptApp extends BasePromptApp {
             canPushCombined,
             modifierDice: modDice,
             modifierDisplay: this._formatModifierLabel(modDice),
+            rollDiceLabel: this._formatDiceFormulaLabel(rollDiceArray),
             canRoll: Boolean(first && !first.hasRolled && (game.user.isGM || SessionStore.resolveActor(first)?.isOwner)),
             isDelegatedToPlayer: this._isDelegatedToActivePlayer(first)
         };

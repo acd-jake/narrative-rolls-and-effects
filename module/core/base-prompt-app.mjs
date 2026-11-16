@@ -261,6 +261,82 @@ export class BasePromptApp extends HandlebarsApplicationMixin(ApplicationV2) {
         }
         return game.i18n.localize("ROE.Roll.BonusPenaltyLabel");
     }
+
+    _formatDiceFormulaLabel(diceArray) {
+        if (!Array.isArray(diceArray) || diceArray.length === 0) return "";
+        
+        // Gruppiere die Würfel nach Typ
+        let d10Units = 0;
+        let d10Tens = 0;
+        let bonusCount = 0;
+        let penaltyCount = 0;
+        let otherDice = [];
+
+        for (const die of diceArray) {
+            const label = die.label;
+            if (label === "ROE.Dice.D10Units") {
+                d10Units += die.count || 1;
+            } else if (label === "ROE.Dice.D10Tens") {
+                d10Tens += die.count || 1;
+            } else if (label === "ROE.Roll.BonusDie") {
+                bonusCount += die.count || 1;
+            } else if (label === "ROE.Roll.PenaltyDie") {
+                penaltyCount += die.count || 1;
+            } else {
+                otherDice.push(die);
+            }
+        }
+
+        const parts = [];
+        
+        // Format: "1d10, 2d10 Zehner (1 Bonuswürfel)"
+        if (d10Units > 0) {
+            parts.push(`${d10Units}d10`);
+        }
+
+        if (d10Tens > 0 || bonusCount > 0 || penaltyCount > 0) {
+            // Addiere Bonus/Penalty Würfel zu den Zehner-Würfeln
+            const totalTens = d10Tens + bonusCount + penaltyCount;
+            let tensPart = `${totalTens}d10 Zehner`;
+            
+            // Zeige Bonus/Penalty in Klammern an, falls vorhanden
+            if (bonusCount > 0 || penaltyCount > 0) {
+                const modifiers = [];
+                if (bonusCount > 0) {
+                    const bonusLabel = game.i18n.localize(bonusCount === 1 ? "ROE.Roll.BonusDie" : "ROE.Roll.BonusDice");
+                    modifiers.push(`${bonusCount} ${bonusLabel}`);
+                }
+                if (penaltyCount > 0) {
+                    const penaltyLabel = game.i18n.localize(penaltyCount === 1 ? "ROE.Roll.PenaltyDie" : "ROE.Roll.PenaltyDice");
+                    modifiers.push(`${penaltyCount} ${penaltyLabel}`);
+                }
+                
+                if (modifiers.length > 0) {
+                    tensPart += ` (${modifiers.join(", ")})`;
+                }
+            }
+            
+            parts.push(tensPart);
+        }
+
+        // Andere Würfel wie "3d6, 1d8"
+        for (const die of otherDice) {
+            const count = die.count || 1;
+            
+            if (count > 1) {
+                parts.push(`${count}d${this.#extractDiceSides(die.label)}`);
+            } else {
+                parts.push(`1d${this.#extractDiceSides(die.label)}`);
+            }
+        }
+
+        return parts.join(", ");
+    }
+
+    #extractDiceSides(label) {
+        const matches = label.match(/D(\d+)/i);
+        return matches ? matches[1] : "?";
+    }
     _isDelegatedToActivePlayer(participant) {
         if (!game.user.isGM || !participant) return false;
         const actor = SessionStore.resolveActor(participant);

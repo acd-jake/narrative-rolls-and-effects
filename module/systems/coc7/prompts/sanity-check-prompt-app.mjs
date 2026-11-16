@@ -62,6 +62,8 @@ export class SanityCheckPromptApp extends BasicRollPromptApp {
             : "";
         const isPhaseInsight = !isPhaseCheck && Boolean(intRoll) && !intRoll.hasRolled;
         const manualMod = Number(sanRoll?.modifierDice ?? 0);
+        const rollDiceArray = CoC7DiceVisualizer.percentile(manualMod);
+        const intDiceArray = CoC7DiceVisualizer.percentile(intRoll?.modifierDice ?? 0);
 
         return {
             ...context,
@@ -69,6 +71,7 @@ export class SanityCheckPromptApp extends BasicRollPromptApp {
             manualModifierDice: manualMod,
             flagModifierDice: 0,
             effectiveModifierLabel: this._formatModifierLabel(manualMod),
+            rollDiceLabel: this._formatDiceFormulaLabel(rollDiceArray),
             isPhaseCheck,
             sanityCheckOutcome,
             isPhaseInsight,
@@ -90,7 +93,8 @@ export class SanityCheckPromptApp extends BasicRollPromptApp {
             intTargetValue: intRoll?.targetValue ?? 0,
             intModifierDice: intRoll?.modifierDice ?? 0,
             intModifierLabel: this._formatModifierLabel(intRoll?.modifierDice ?? 0),
-            intDice: CoC7DiceVisualizer.percentile(intRoll?.modifierDice ?? 0),
+            intDice: intDiceArray,
+            intDiceLabel: this._formatDiceFormulaLabel(intDiceArray),
             intHasRolled: Boolean(intRoll?.hasRolled),
             intOutcome,
             canRollIntCheck: Boolean(intRoll && !intRoll.hasRolled && isOwner && !sys.isResolved),

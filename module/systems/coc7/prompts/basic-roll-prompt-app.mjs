@@ -31,6 +31,7 @@ export class BasicRollPromptApp extends BasePromptApp {
         const showLevel = !isOther && Boolean(p?.hasRolled) && displayMode !== "numbers";
         const formattedLevel = p?.successLevel ? CoC7ResultFormatter.formatSuccessLevel(p.successLevel) : "";
         const modDice = p?.modifierDice ?? 0;
+        const rollDiceArray = context.rollDice ?? [];
 
         return {
             ...context,
@@ -53,6 +54,7 @@ export class BasicRollPromptApp extends BasePromptApp {
             targetValue: Number(p?.targetValue ?? 0),
             canChangeDifficulty: false,
             modifierDisplay: this._formatModifierLabel(modDice),
+            rollDiceLabel: this._formatDiceFormulaLabel(rollDiceArray),
             ...opts
         };
     }

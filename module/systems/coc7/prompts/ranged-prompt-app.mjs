@@ -77,7 +77,9 @@ export class RangedPromptApp extends BasicRollPromptApp {
             flagModifierDice: coverPenalty,
             effectiveModifierLabel: this._formatModifierLabel(effectiveMod),
             attackerDice: CoC7DiceVisualizer.percentile(effectiveMod),
+            attackerDiceLabel: this._formatDiceFormulaLabel(CoC7DiceVisualizer.percentile(effectiveMod)),
             damageDice: canViewDamage ? CoC7DiceVisualizer.fromFormula(damageEntry?.diceFormula ?? sys.damageFormula) : [],
+            damageDiceLabel: canViewDamage ? this._formatDiceFormulaLabel(CoC7DiceVisualizer.fromFormula(damageEntry?.diceFormula ?? sys.damageFormula)) : "",
             attackerRollBtnLabel: `${attacker?.label ?? ""} (${attacker?.targetValue ?? 0}%)`,
             attackerResultText: attacker?.hasRolled
                 ? canViewAttackerRoll

@@ -44,6 +44,7 @@ export class OpposedRollPromptApp extends BasePromptApp {
             const isOwner = Boolean(actor?.isOwner);
             const opts = this._evaluateParticipantOptions(p, sys);
             const modDice = p.modifierDice ?? 0;
+            const diceArray = CoC7DiceVisualizer.percentile(modDice);
 
             return {
                 ...p,
@@ -52,7 +53,8 @@ export class OpposedRollPromptApp extends BasePromptApp {
                 isDelegatedToPlayer: this._isDelegatedToActivePlayer(p),
                 modifierDice: modDice,
                 modifierDisplay: this._formatModifierLabel(modDice),
-                dice: CoC7DiceVisualizer.percentile(modDice)
+                dice: diceArray,
+                diceLabel: this._formatDiceFormulaLabel(diceArray)
             };
         });
 

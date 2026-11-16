@@ -112,8 +112,11 @@ export class CombatPromptApp extends OpposedRollPromptApp {
             flagModifierDice: flagBonus,
             effectiveModifierLabel: this._formatModifierLabel(effectiveMod),
             attackerDice: CoC7DiceVisualizer.percentile(effectiveMod),
+            attackerDiceLabel: this._formatDiceFormulaLabel(CoC7DiceVisualizer.percentile(effectiveMod)),
             defenderDice: CoC7DiceVisualizer.percentile(defenderModifier),
+            defenderDiceLabel: this._formatDiceFormulaLabel(CoC7DiceVisualizer.percentile(defenderModifier)),
             damageDice: canViewDamage ? CoC7DiceVisualizer.fromFormula(damageEntry?.diceFormula ?? sys.damageFormula) : [],
+            damageDiceLabel: canViewDamage ? this._formatDiceFormulaLabel(CoC7DiceVisualizer.fromFormula(damageEntry?.diceFormula ?? sys.damageFormula)) : "",
             attackerRollBtnLabel: `${attacker?.label ?? ""} (${attacker?.targetValue ?? 0}%)`,
 
             attackerResultText: attacker?.hasRolled
