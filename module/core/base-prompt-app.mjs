@@ -161,6 +161,18 @@ export class BasePromptApp extends HandlebarsApplicationMixin(ApplicationV2) {
         const hasMultiplePhases = phases.length > 1;
         const resolvedParticipants = sys?.isResolved ? this._buildResolvedParticipants(sys) : [];
         const pushedParticipants = (sys?.participants ?? []).filter((p) => p.isPushed);
+        const theme = game.settings.get(MODULE_ID, "rollPromptTheme");
+        const themeColors = {
+            "western": "rgba(48, 30, 16, 0.9)",
+            "fantasy": "rgba(40, 28, 14, 0.86)",
+            "dark-fantasy": "rgba(14, 6, 6, 0.9)",
+            "noir": "rgba(0, 0, 0, 0.88)",
+            "science-fiction": "rgba(4, 16, 24, 0.82)",
+            "cyberpunk": "rgba(14, 6, 30, 0.88)",
+            "cosmic-horror": "rgba(10, 16, 12, 0.9)",
+            "art-deco": "rgba(10, 10, 12, 0.9)"
+        };
+        const bgColor = themeColors[theme] || themeColors["western"];
 
         return {
             ...context,
@@ -190,7 +202,9 @@ export class BasePromptApp extends HandlebarsApplicationMixin(ApplicationV2) {
             resultPartial: "roeResultDefault",
             modifierDice: primaryMod,
             modifierDisplay: this._formatModifierLabel(primaryMod),
-            rollDice: adapter?.getDiceVisuals(sys, primaryMod) ?? []
+            rollDice: adapter?.getDiceVisuals(sys, primaryMod) ?? [],
+            theme,
+            themeBackgroundColor: bgColor
         };
     }
 

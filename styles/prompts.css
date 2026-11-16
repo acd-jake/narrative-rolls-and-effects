@@ -12,10 +12,12 @@
     position: relative;
     min-width: 340px;
     box-sizing: border-box;
-    background: linear-gradient(180deg, #13161b 0%, var(--roe-bg-deep) 100%);
-    border: 2px solid var(--roe-gold);
-    outline: 1px solid var(--roe-gold-dim);
-    outline-offset: -5px;
+    background-color: inherit;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    border: none;
+    outline: none;
     padding: 0.65rem 0.75rem;
     display: flex;
     flex-direction: column;

@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 340" width="420" height="340" fill="none">
+  <defs>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffd24a" />
+      <stop offset="50%" stop-color="#c9a84a" />
+      <stop offset="100%" stop-color="#8b6f47" />
+    </linearGradient>
+  </defs>
+
+  <rect x="4" y="4" width="412" height="332" stroke="url(#goldGrad)" stroke-width="2" />
+  <rect x="11" y="11" width="398" height="318" stroke="url(#goldGrad)" stroke-width="1" stroke-opacity="0.75" />
+
+  <!-- Top-Left Fantasy Corner (Celtic knotwork style) -->
+  <g stroke="url(#goldGrad)" stroke-width="1.2">
+    <path d="M 8 48 Q 24 48 36 36 L 36 8" stroke-linecap="round" stroke-linejoin="round" />
+    <circle cx="22" cy="22" r="6" fill="none" stroke-width="1" />
+    <path d="M 14 14 L 30 30" stroke-width="0.8" stroke-opacity="0.6" />
+    <path d="M 30 14 L 14 30" stroke-width="0.8" stroke-opacity="0.6" />
+  </g>
+
+  <!-- Top-Right Fantasy Corner -->
+  <g stroke="url(#goldGrad)" stroke-width="1.2">
+    <path d="M 412 48 Q 396 48 384 36 L 384 8" stroke-linecap="round" stroke-linejoin="round" />
+    <circle cx="398" cy="22" r="6" fill="none" stroke-width="1" />
+    <path d="M 406 14 L 390 30" stroke-width="0.8" stroke-opacity="0.6" />
+    <path d="M 390 14 L 406 30" stroke-width="0.8" stroke-opacity="0.6" />
+  </g>
+
+  <!-- Bottom-Left Fantasy Corner -->
+  <g stroke="url(#goldGrad)" stroke-width="1.2">
+    <path d="M 8 292 Q 24 292 36 304 L 36 332" stroke-linecap="round" stroke-linejoin="round" />
+    <circle cx="22" cy="318" r="6" fill="none" stroke-width="1" />
+    <path d="M 14 326 L 30 310" stroke-width="0.8" stroke-opacity="0.6" />
+    <path d="M 30 326 L 14 310" stroke-width="0.8" stroke-opacity="0.6" />
+  </g>
+
+  <!-- Bottom-Right Fantasy Corner -->
+  <g stroke="url(#goldGrad)" stroke-width="1.2">
+    <path d="M 412 292 Q 396 292 384 304 L 384 332" stroke-linecap="round" stroke-linejoin="round" />
+    <circle cx="398" cy="318" r="6" fill="none" stroke-width="1" />
+    <path d="M 406 326 L 390 310" stroke-width="0.8" stroke-opacity="0.6" />
+    <path d="M 390 326 L 406 310" stroke-width="0.8" stroke-opacity="0.6" />
+  </g>
+</svg>

@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 340" width="420" height="340" fill="none">
+  <defs>
+    <linearGradient id="cyanGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#35d0ff" />
+      <stop offset="50%" stop-color="#1fa8cc" />
+      <stop offset="100%" stop-color="#0d7a99" />
+    </linearGradient>
+  </defs>
+
+  <rect x="4" y="4" width="412" height="332" stroke="url(#cyanGrad)" stroke-width="2" />
+  <rect x="11" y="11" width="398" height="318" stroke="url(#cyanGrad)" stroke-width="1" stroke-opacity="0.75" />
+
+  <!-- Top-Left Sci-Fi Corner (Geometric, Futuristic Lines) -->
+  <g stroke="url(#cyanGrad)" stroke-width="1.2" stroke-linecap="round">
+    <line x1="4" y1="4" x2="4" y2="45" />
+    <line x1="4" y1="4" x2="45" y2="4" />
+    <line x1="8" y1="8" x2="8" y2="40" />
+    <line x1="8" y1="8" x2="40" y2="8" />
+    <path d="M 12 12 L 36 12 M 12 24 L 36 24 M 12 36 L 36 36" stroke-width="0.8" stroke-opacity="0.6" />
+    <circle cx="20" cy="20" r="2" stroke="url(#cyanGrad)" stroke-width="0.8" />
+    <circle cx="36" cy="36" r="2" stroke="url(#cyanGrad)" stroke-width="0.8" />
+  </g>
+
+  <!-- Top-Right Sci-Fi Corner -->
+  <g stroke="url(#cyanGrad)" stroke-width="1.2" stroke-linecap="round">
+    <line x1="416" y1="4" x2="416" y2="45" />
+    <line x1="416" y1="4" x2="375" y2="4" />
+    <line x1="412" y1="8" x2="412" y2="40" />
+    <line x1="412" y1="8" x2="380" y2="8" />
+    <path d="M 408 12 L 384 12 M 408 24 L 384 24 M 408 36 L 384 36" stroke-width="0.8" stroke-opacity="0.6" />
+    <circle cx="400" cy="20" r="2" stroke="url(#cyanGrad)" stroke-width="0.8" />
+    <circle cx="384" cy="36" r="2" stroke="url(#cyanGrad)" stroke-width="0.8" />
+  </g>
+
+  <!-- Bottom-Left Sci-Fi Corner -->
+  <g stroke="url(#cyanGrad)" stroke-width="1.2" stroke-linecap="round">
+    <line x1="4" y1="336" x2="4" y2="295" />
+    <line x1="4" y1="336" x2="45" y2="336" />
+    <line x1="8" y1="332" x2="8" y2="300" />
+    <line x1="8" y1="332" x2="40" y2="332" />
+    <path d="M 12 328 L 36 328 M 12 316 L 36 316 M 12 304 L 36 304" stroke-width="0.8" stroke-opacity="0.6" />
+    <circle cx="20" cy="320" r="2" stroke="url(#cyanGrad)" stroke-width="0.8" />
+    <circle cx="36" cy="304" r="2" stroke="url(#cyanGrad)" stroke-width="0.8" />
+  </g>
+
+  <!-- Bottom-Right Sci-Fi Corner -->
+  <g stroke="url(#cyanGrad)" stroke-width="1.2" stroke-linecap="round">
+    <line x1="416" y1="336" x2="416" y2="295" />
+    <line x1="416" y1="336" x2="375" y2="336" />
+    <line x1="412" y1="332" x2="412" y2="300" />
+    <line x1="412" y1="332" x2="380" y2="332" />
+    <path d="M 408 328 L 384 328 M 408 316 L 384 316 M 408 304 L 384 304" stroke-width="0.8" stroke-opacity="0.6" />
+    <circle cx="400" cy="320" r="2" stroke="url(#cyanGrad)" stroke-width="0.8" />
+    <circle cx="384" cy="304" r="2" stroke="url(#cyanGrad)" stroke-width="0.8" />
+  </g>
+</svg>

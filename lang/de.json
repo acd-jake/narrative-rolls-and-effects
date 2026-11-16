@@ -66,6 +66,18 @@
       "AutoApplyConsequences": {
         "Name": "Probenkonsequenzen automatisch anwenden",
         "Hint": "Zieht Stabilitäts- und Trefferpunktverluste sofort nach dem Wurf automatisch ab. Ist die Option deaktiviert, erscheint für den Spielleiter eine Schaltfläche im Prompt."
+      },
+      "RollPromptTheme": {
+        "Name": "Thema für Wurf-Prompts",
+        "Hint": "Wählt das visuelle Thema für die Wurf-Prompt-Fenster.",
+        "Western": "Western",
+        "Fantasy": "Fantasy",
+        "DarkFantasy": "Dark Fantasy",
+        "Noir": "Noir",
+        "SciFi": "Science Fiction",
+        "Cyberpunk": "Cyberpunk",
+        "CosmicHorror": "Cosmic Horror",
+        "ArtDeco": "Art Deco"
       }
     },
     "Roll": {

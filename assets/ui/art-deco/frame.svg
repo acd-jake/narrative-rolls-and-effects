@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 340" width="420" height="340" fill="none">
+  <defs>
+    <!-- Metallic Gold Gradient -->
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f2d68a" />
+      <stop offset="35%" stop-color="#c5a059" />
+      <stop offset="70%" stop-color="#8c6b2d" />
+      <stop offset="100%" stop-color="#e5c470" />
+    </linearGradient>
+
+    <!-- Subtle Dark Radial Background -->
+    <!-- <radialGradient id="bgGrad" cx="50%" cy="50%" r="70%">
+      <stop offset="0%" stop-color="#121417" />
+      <stop offset="100%" stop-color="#060708" />
+    </radialGradient> -->
+  </defs>
+
+  <!-- Deep Obsidian Base -->
+  <!-- <rect x="2" y="2" width="416" height="336" fill="url(#bgGrad)" /> -->
+
+  <!-- Outer & Inner Double Gold Border -->
+  <rect x="4" y="4" width="412" height="332" stroke="url(#goldGrad)" stroke-width="2" />
+  <rect x="11" y="11" width="398" height="318" stroke="url(#goldGrad)" stroke-width="1" stroke-opacity="0.85" />
+
+  <!-- Top-Left Art Deco Corner -->
+  <g stroke="url(#goldGrad)" stroke-width="1.2">
+    <path d="M 4 38 L 24 38 L 38 24 L 38 4" />
+    <path d="M 11 28 L 28 11" />
+    <polygon points="18,18 23,18 23,23 18,23" fill="#c5a059" />
+  </g>
+
+  <!-- Top-Right Art Deco Corner -->
+  <g stroke="url(#goldGrad)" stroke-width="1.2">
+    <path d="M 416 38 L 396 38 L 382 24 L 382 4" />
+    <path d="M 409 28 L 392 11" />
+    <polygon points="402,18 397,18 397,23 402,23" fill="#c5a059" />
+  </g>
+
+  <!-- Bottom-Left Art Deco Corner -->
+  <g stroke="url(#goldGrad)" stroke-width="1.2">
+    <path d="M 4 302 L 24 302 L 38 316 L 38 336" />
+    <path d="M 11 312 L 28 329" />
+    <polygon points="18,322 23,322 23,317 18,317" fill="#c5a059" />
+  </g>
+
+  <!-- Bottom-Right Art Deco Corner -->
+  <g stroke="url(#goldGrad)" stroke-width="1.2">
+    <path d="M 416 302 L 396 302 L 382 316 L 382 336" />
+    <path d="M 409 312 L 392 329" />
+    <polygon points="402,322 397,322 397,317 402,317" fill="#c5a059" />
+  </g>
+</svg>

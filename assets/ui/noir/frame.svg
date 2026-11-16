@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 340" width="420" height="340" fill="none">
+  <defs>
+    <linearGradient id="creamGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#e8e2d0" />
+      <stop offset="50%" stop-color="#b8b2a0" />
+      <stop offset="100%" stop-color="#8a847a" />
+    </linearGradient>
+  </defs>
+
+  <rect x="4" y="4" width="412" height="332" stroke="url(#creamGrad)" stroke-width="2" />
+  <rect x="11" y="11" width="398" height="318" stroke="url(#creamGrad)" stroke-width="1" stroke-opacity="0.75" />
+
+  <!-- Top-Left Noir Corner (Minimalist, Geometric) -->
+  <g stroke="url(#creamGrad)" stroke-width="1.2">
+    <line x1="4" y1="20" x2="20" y2="20" />
+    <line x1="20" y1="20" x2="20" y2="4" />
+    <line x1="4" y1="40" x2="4" y2="4" />
+    <line x1="40" y1="4" x2="4" y2="4" />
+    <line x1="12" y1="12" x2="12" y2="28" />
+    <line x1="28" y1="12" x2="12" y2="12" />
+  </g>
+
+  <!-- Top-Right Noir Corner -->
+  <g stroke="url(#creamGrad)" stroke-width="1.2">
+    <line x1="416" y1="20" x2="400" y2="20" />
+    <line x1="400" y1="20" x2="400" y2="4" />
+    <line x1="416" y1="40" x2="416" y2="4" />
+    <line x1="380" y1="4" x2="416" y2="4" />
+    <line x1="408" y1="12" x2="408" y2="28" />
+    <line x1="392" y1="12" x2="408" y2="12" />
+  </g>
+
+  <!-- Bottom-Left Noir Corner -->
+  <g stroke="url(#creamGrad)" stroke-width="1.2">
+    <line x1="4" y1="320" x2="20" y2="320" />
+    <line x1="20" y1="320" x2="20" y2="336" />
+    <line x1="4" y1="300" x2="4" y2="336" />
+    <line x1="40" y1="336" x2="4" y2="336" />
+    <line x1="12" y1="328" x2="12" y2="312" />
+    <line x1="28" y1="328" x2="12" y2="328" />
+  </g>
+
+  <!-- Bottom-Right Noir Corner -->
+  <g stroke="url(#creamGrad)" stroke-width="1.2">
+    <line x1="416" y1="320" x2="400" y2="320" />
+    <line x1="400" y1="320" x2="400" y2="336" />
+    <line x1="416" y1="300" x2="416" y2="336" />
+    <line x1="380" y1="336" x2="416" y2="336" />
+    <line x1="408" y1="328" x2="408" y2="312" />
+    <line x1="392" y1="328" x2="408" y2="328" />
+  </g>
+</svg>

@@ -66,6 +66,18 @@
       "AutoApplyConsequences": {
         "Name": "Auto-Apply Roll Consequences",
         "Hint": "Automatically deducts Sanity and Hit Point losses immediately after rolling. When disabled, the GM receives a button in the prompt to apply them manually."
+      },
+      "RollPromptTheme": {
+        "Name": "Roll Prompt Theme",
+        "Hint": "Selects the visual theme for roll prompt windows.",
+        "Western": "Western",
+        "Fantasy": "Fantasy",
+        "DarkFantasy": "Dark Fantasy",
+        "Noir": "Noir",
+        "SciFi": "Science Fiction",
+        "Cyberpunk": "Cyberpunk",
+        "CosmicHorror": "Cosmic Horror",
+        "ArtDeco": "Art Deco"
       }
     },
     "Roll": {

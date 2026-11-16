@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 340" width="420" height="340" fill="none">
+  <defs>
+    <linearGradient id="greenGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7fae7a" />
+      <stop offset="50%" stop-color="#5a8555" />
+      <stop offset="100%" stop-color="#3d5c38" />
+    </linearGradient>
+  </defs>
+
+  <rect x="4" y="4" width="412" height="332" stroke="url(#greenGrad)" stroke-width="2" />
+  <rect x="11" y="11" width="398" height="318" stroke="url(#greenGrad)" stroke-width="1" stroke-opacity="0.75" />
+
+  <!-- Top-Left Cosmic Horror Corner (Organic, Corrupted) -->
+  <g stroke="url(#greenGrad)" stroke-width="1.2" stroke-linecap="round" fill="none">
+    <line x1="4" y1="4" x2="4" y2="45" />
+    <line x1="4" y1="4" x2="45" y2="4" />
+    <!-- Organic, corrupted curves -->
+    <path d="M 8 8 Q 12 15 15 20 Q 18 25 20 32" stroke-width="1" stroke-opacity="0.8" />
+    <path d="M 8 8 Q 15 12 22 15 Q 28 18 35 22" stroke-width="1" stroke-opacity="0.8" />
+    <path d="M 10 10 Q 20 18 30 24" stroke-width="0.8" stroke-opacity="0.6" />
+    <!-- Irregular branching lines -->
+    <path d="M 15 12 L 18 8 M 15 12 L 22 10" stroke-width="0.8" />
+    <path d="M 22 15 L 25 12 M 22 15 L 28 18" stroke-width="0.8" />
+    <circle cx="12" cy="12" r="1.5" stroke="url(#greenGrad)" stroke-width="0.8" stroke-opacity="0.7" />
+    <circle cx="28" cy="20" r="1" stroke="url(#greenGrad)" stroke-width="0.8" stroke-opacity="0.5" />
+  </g>
+
+  <!-- Top-Right Cosmic Horror Corner -->
+  <g stroke="url(#greenGrad)" stroke-width="1.2" stroke-linecap="round" fill="none">
+    <line x1="416" y1="4" x2="416" y2="45" />
+    <line x1="416" y1="4" x2="375" y2="4" />
+    <path d="M 412 8 Q 408 15 405 20 Q 402 25 400 32" stroke-width="1" stroke-opacity="0.8" />
+    <path d="M 412 8 Q 405 12 398 15 Q 392 18 385 22" stroke-width="1" stroke-opacity="0.8" />
+    <path d="M 410 10 Q 400 18 390 24" stroke-width="0.8" stroke-opacity="0.6" />
+    <path d="M 405 12 L 402 8 M 405 12 L 398 10" stroke-width="0.8" />
+    <path d="M 398 15 L 395 12 M 398 15 L 392 18" stroke-width="0.8" />
+    <circle cx="408" cy="12" r="1.5" stroke="url(#greenGrad)" stroke-width="0.8" stroke-opacity="0.7" />
+    <circle cx="392" cy="20" r="1" stroke="url(#greenGrad)" stroke-width="0.8" stroke-opacity="0.5" />
+  </g>
+
+  <!-- Bottom-Left Cosmic Horror Corner -->
+  <g stroke="url(#greenGrad)" stroke-width="1.2" stroke-linecap="round" fill="none">
+    <line x1="4" y1="336" x2="4" y2="295" />
+    <line x1="4" y1="336" x2="45" y2="336" />
+    <path d="M 8 332 Q 12 325 15 320 Q 18 315 20 308" stroke-width="1" stroke-opacity="0.8" />
+    <path d="M 8 332 Q 15 328 22 325 Q 28 322 35 318" stroke-width="1" stroke-opacity="0.8" />
+    <path d="M 10 330 Q 20 322 30 316" stroke-width="0.8" stroke-opacity="0.6" />
+    <path d="M 15 328 L 18 332 M 15 328 L 22 330" stroke-width="0.8" />
+    <path d="M 22 325 L 25 328 M 22 325 L 28 322" stroke-width="0.8" />
+    <circle cx="12" cy="328" r="1.5" stroke="url(#greenGrad)" stroke-width="0.8" stroke-opacity="0.7" />
+    <circle cx="28" cy="320" r="1" stroke="url(#greenGrad)" stroke-width="0.8" stroke-opacity="0.5" />
+  </g>
+
+  <!-- Bottom-Right Cosmic Horror Corner -->
+  <g stroke="url(#greenGrad)" stroke-width="1.2" stroke-linecap="round" fill="none">
+    <line x1="416" y1="336" x2="416" y2="295" />
+    <line x1="416" y1="336" x2="375" y2="336" />
+    <path d="M 412 332 Q 408 325 405 320 Q 402 315 400 308" stroke-width="1" stroke-opacity="0.8" />
+    <path d="M 412 332 Q 405 328 398 325 Q 392 322 385 318" stroke-width="1" stroke-opacity="0.8" />
+    <path d="M 410 330 Q 400 322 390 316" stroke-width="0.8" stroke-opacity="0.6" />
+    <path d="M 405 328 L 402 332 M 405 328 L 398 330" stroke-width="0.8" />
+    <path d="M 398 325 L 395 328 M 398 325 L 392 322" stroke-width="0.8" />
+    <circle cx="408" cy="328" r="1.5" stroke="url(#greenGrad)" stroke-width="0.8" stroke-opacity="0.7" />
+    <circle cx="392" cy="320" r="1" stroke="url(#greenGrad)" stroke-width="0.8" stroke-opacity="0.5" />
+  </g>
+</svg>

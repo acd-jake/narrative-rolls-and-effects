@@ -112,5 +112,24 @@ export class CoreSettings {
             type: Boolean,
             default: true
         });
+
+        game.settings.register(MODULE_ID, "rollPromptTheme", {
+            name: "ROE.Settings.RollPromptTheme.Name",
+            hint: "ROE.Settings.RollPromptTheme.Hint",
+            scope: "world",
+            config: true,
+            type: String,
+            choices: {
+                "western": "ROE.Settings.RollPromptTheme.Western",
+                "fantasy": "ROE.Settings.RollPromptTheme.Fantasy",
+                "dark-fantasy": "ROE.Settings.RollPromptTheme.DarkFantasy",
+                "noir": "ROE.Settings.RollPromptTheme.Noir",
+                "science-fiction": "ROE.Settings.RollPromptTheme.SciFi",
+                "cyberpunk": "ROE.Settings.RollPromptTheme.Cyberpunk",
+                "cosmic-horror": "ROE.Settings.RollPromptTheme.CosmicHorror",
+                "art-deco": "ROE.Settings.RollPromptTheme.ArtDeco"
+            },
+            default: "western"
+        });
     }
 }

@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 340" width="420" height="340" fill="none">
+  <defs>
+    <linearGradient id="redGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#b02a2a" />
+      <stop offset="50%" stop-color="#8a2020" />
+      <stop offset="100%" stop-color="#5c1414" />
+    </linearGradient>
+  </defs>
+
+  <rect x="4" y="4" width="412" height="332" stroke="url(#redGrad)" stroke-width="2" />
+  <rect x="11" y="11" width="398" height="318" stroke="url(#redGrad)" stroke-width="1" stroke-opacity="0.75" />
+
+  <!-- Top-Left Dark Fantasy Corner (Spiky, Aggressive) -->
+  <g stroke="url(#redGrad)" stroke-width="1.2" stroke-linecap="round">
+    <line x1="4" y1="4" x2="4" y2="40" />
+    <line x1="4" y1="4" x2="40" y2="4" />
+    <path d="M 10 10 L 16 16 M 20 10 L 26 16 M 30 10 L 36 16" stroke-width="0.8" />
+    <path d="M 10 20 L 20 30" stroke-width="0.8" stroke-opacity="0.5" />
+    <path d="M 20 20 L 30 30" stroke-width="0.8" stroke-opacity="0.5" />
+  </g>
+
+  <!-- Top-Right Dark Fantasy Corner -->
+  <g stroke="url(#redGrad)" stroke-width="1.2" stroke-linecap="round">
+    <line x1="416" y1="4" x2="416" y2="40" />
+    <line x1="416" y1="4" x2="380" y2="4" />
+    <path d="M 410 10 L 404 16 M 400 10 L 394 16 M 390 10 L 384 16" stroke-width="0.8" />
+    <path d="M 410 20 L 400 30" stroke-width="0.8" stroke-opacity="0.5" />
+    <path d="M 400 20 L 390 30" stroke-width="0.8" stroke-opacity="0.5" />
+  </g>
+
+  <!-- Bottom-Left Dark Fantasy Corner -->
+  <g stroke="url(#redGrad)" stroke-width="1.2" stroke-linecap="round">
+    <line x1="4" y1="336" x2="4" y2="300" />
+    <line x1="4" y1="336" x2="40" y2="336" />
+    <path d="M 10 330 L 16 324 M 20 330 L 26 324 M 30 330 L 36 324" stroke-width="0.8" />
+    <path d="M 10 320 L 20 310" stroke-width="0.8" stroke-opacity="0.5" />
+    <path d="M 20 320 L 30 310" stroke-width="0.8" stroke-opacity="0.5" />
+  </g>
+
+  <!-- Bottom-Right Dark Fantasy Corner -->
+  <g stroke="url(#redGrad)" stroke-width="1.2" stroke-linecap="round">
+    <line x1="416" y1="336" x2="416" y2="300" />
+    <line x1="416" y1="336" x2="380" y2="336" />
+    <path d="M 410 330 L 404 324 M 400 330 L 394 324 M 390 330 L 384 324" stroke-width="0.8" />
+    <path d="M 410 320 L 400 310" stroke-width="0.8" stroke-opacity="0.5" />
+    <path d="M 400 320 L 390 310" stroke-width="0.8" stroke-opacity="0.5" />
+  </g>
+</svg>

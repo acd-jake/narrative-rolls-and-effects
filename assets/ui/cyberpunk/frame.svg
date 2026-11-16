@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 340" width="420" height="340" fill="none">
+  <defs>
+    <linearGradient id="neonGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00e5ff" />
+      <stop offset="50%" stop-color="#00b8ff" />
+      <stop offset="100%" stop-color="#0088cc" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="1.5" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <rect x="4" y="4" width="412" height="332" stroke="url(#neonGrad)" stroke-width="2.5" filter="url(#glow)" />
+  <rect x="11" y="11" width="398" height="318" stroke="url(#neonGrad)" stroke-width="1" stroke-opacity="0.5" filter="url(#glow)" />
+
+  <!-- Top-Left Cyberpunk Corner (Aggressive Angles) -->
+  <g stroke="url(#neonGrad)" stroke-width="1.5" stroke-linecap="round" filter="url(#glow)">
+    <line x1="4" y1="8" x2="20" y2="4" />
+    <line x1="20" y1="4" x2="4" y2="4" />
+    <line x1="8" y1="40" x2="4" y2="4" />
+    <line x1="40" y1="4" x2="4" y2="4" />
+    <path d="M 10 15 L 25 25 M 15 10 L 30 20" stroke-width="1" stroke-opacity="0.8" />
+    <path d="M 8 8 L 32 32" stroke-width="0.8" stroke-opacity="0.5" />
+  </g>
+
+  <!-- Top-Right Cyberpunk Corner -->
+  <g stroke="url(#neonGrad)" stroke-width="1.5" stroke-linecap="round" filter="url(#glow)">
+    <line x1="416" y1="8" x2="400" y2="4" />
+    <line x1="400" y1="4" x2="416" y2="4" />
+    <line x1="412" y1="40" x2="416" y2="4" />
+    <line x1="380" y1="4" x2="416" y2="4" />
+    <path d="M 410 15 L 395 25 M 405 10 L 390 20" stroke-width="1" stroke-opacity="0.8" />
+    <path d="M 412 8 L 388 32" stroke-width="0.8" stroke-opacity="0.5" />
+  </g>
+
+  <!-- Bottom-Left Cyberpunk Corner -->
+  <g stroke="url(#neonGrad)" stroke-width="1.5" stroke-linecap="round" filter="url(#glow)">
+    <line x1="4" y1="332" x2="20" y2="336" />
+    <line x1="20" y1="336" x2="4" y2="336" />
+    <line x1="8" y1="300" x2="4" y2="336" />
+    <line x1="40" y1="336" x2="4" y2="336" />
+    <path d="M 10 325 L 25 315 M 15 330 L 30 320" stroke-width="1" stroke-opacity="0.8" />
+    <path d="M 8 332 L 32 308" stroke-width="0.8" stroke-opacity="0.5" />
+  </g>
+
+  <!-- Bottom-Right Cyberpunk Corner -->
+  <g stroke="url(#neonGrad)" stroke-width="1.5" stroke-linecap="round" filter="url(#glow)">
+    <line x1="416" y1="332" x2="400" y2="336" />
+    <line x1="400" y1="336" x2="416" y2="336" />
+    <line x1="412" y1="300" x2="416" y2="336" />
+    <line x1="380" y1="336" x2="416" y2="336" />
+    <path d="M 410 325 L 395 315 M 405 330 L 390 320" stroke-width="1" stroke-opacity="0.8" />
+    <path d="M 412 332 L 388 308" stroke-width="0.8" stroke-opacity="0.5" />
+  </g>
+</svg>
