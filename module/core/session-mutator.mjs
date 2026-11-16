@@ -75,17 +75,6 @@ export class SessionMutator {
         await SessionStore.save(message, { ...session, participants });
     }
 
-    async setDifficulty(messageId, difficulty) {
-        if (!game.user.isGM) {
-            return SessionTransport.emitToGM("setUniversalDifficulty", { messageId, difficulty });
-        }
-        const message = this.#getActiveSessionMessage(messageId);
-        const session = SessionStore.getSession(message);
-        if (!session) return;
-
-        await SessionStore.save(message, { ...session, difficulty });
-    }
-
     async updateSessionPatch(messageId, patch) {
         if (!game.user.isGM) {
             return SessionTransport.emitToGM("updateSessionPatch", { messageId, patch });

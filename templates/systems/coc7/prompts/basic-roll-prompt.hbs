@@ -16,17 +16,6 @@
 {{#*inline "promptDetails"}}
 {{> roePromptDescription}}
 
-<div class="prompt-roll-display">
-    <span class="dice-result {{#if hasRolled}}rolled {{successLevel}}{{/if}}" {{#if
-        hasRolled}}data-inspect-key="{{participantKey}}" {{/if}}>
-        {{displayTotal}}
-    </span>
-    {{#if hasTarget}}
-    <span class="vs-label">vs.</span>
-    <span class="target-number">{{displayTarget}}</span>
-    {{/if}}
-</div>
-
 {{#if showLevel}}
 <div class="prompt-outcome-badge {{successLevel}}">{{formattedLevel}}</div>
 {{/if}}

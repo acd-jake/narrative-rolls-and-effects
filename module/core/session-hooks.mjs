@@ -19,7 +19,6 @@ export class SessionHooks {
             submitUniversalRoll: (p) => mutate(p, "submitRoll", p.participantKey, p.rollData),
             executePostRollAction: (p) => mutate(p, "executePostRollAction", p.participantKey, p.actionId, p.payload),
             setParticipantModifier: (p) => mutate(p, "setModifier", p.participantKey, p.modifierDice),
-            setUniversalDifficulty: (p) => mutate(p, "setDifficulty", p.difficulty),
             updateSessionPatch: (p) => mutate(p, "updateSessionPatch", p.patch)
         });
 
