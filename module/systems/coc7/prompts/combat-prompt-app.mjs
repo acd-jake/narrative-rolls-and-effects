@@ -23,7 +23,7 @@ export class CombatPromptApp extends OpposedRollPromptApp {
 
     static PARTS = {
         prompt: {
-            template: "modules/roll-overlay-and-effects/templates/prompts/combat-prompt.hbs"
+            template: "modules/narrative-rolls-and-effects/templates/prompts/combat-prompt.hbs"
         }
     };
 

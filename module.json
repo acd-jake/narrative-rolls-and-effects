@@ -1,6 +1,6 @@
 {
-  "id": "roll-overlay-and-effects",
-  "title": "Roll Overlay and Effects",
+  "id": "narrative-rolls-and-effects",
+  "title": "Narrative Rolls and Effects",
   "description": "Immersive multi-phase roll prompts, visual vignettes, token particles, and atmospheric audio cues.",
   "version": "#{VERSION}#",
   "compatibility": {
@@ -20,7 +20,7 @@
     "module/main.mjs"
   ],
   "styles": [
-    "styles/roll-overlay.css"
+    "styles/narrative-rolls.css"
   ],
   "languages": [
     { "lang": "en", "name": "English", "path": "lang/en.json" },
@@ -30,5 +30,5 @@
   "url": "#{URL}#",
   "download": "#{DOWNLOAD}#",
   "manifest": "#{MANIFEST}#",
-  "bugs": "https://github.com/acd-jake/roll-overlay-and-effects/issues"
+  "bugs": "https://github.com"
 }

@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org).
 ## [Unreleased]
 
 ### Changed
+- Renamed module to Narrative Rolls and Effects (`narrative-rolls-and-effects`).
 - Removed duplicate optional Luck improvement setting and wired Luck improvement directly to the `CoC7` system setting.
 
 ### Added

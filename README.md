@@ -1,4 +1,4 @@
-# Roll Overlay and Effects
+# Narrative Rolls and Effects
 
 An extensible Foundry VTT module that replaces standard roll dialogs with multi-phase, docked roll prompt overlays, interactive chat cards, screen vignettes, token particle bursts, and atmospheric audio cues.
 
@@ -28,11 +28,11 @@ An extensible Foundry VTT module that replaces standard roll dialogs with multi-
 
 1. Open Foundry VTT (v14+) and navigate to the **Add-on Modules** tab.
 2. Click **Install Module** and paste the manifest URL into the **Manifest URL** field.
-3. Activate **Roll Overlay and Effects** inside your world's **Module Management** settings.
+3. Activate **Narrative Rolls and Effects** inside your world's **Module Management** settings.
 
 ## Configuration
 
-All options can be customized under **Configure Settings -> Roll Overlay and Effects**:
+All options can be customized under **Configure Settings -> Narrative Rolls and Effects**:
 
 - **Audio Cues**: Configure custom audio files for Fumbles, Critical Successes, and Low Sanity alerts.
 - **Visual Effects**: Toggle screen vignettes, critical/fumble pulses, and screen shake per client.

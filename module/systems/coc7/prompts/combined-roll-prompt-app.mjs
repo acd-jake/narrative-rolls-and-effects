@@ -13,7 +13,7 @@ export class CombinedRollPromptApp extends BasePromptApp {
 
     static PARTS = {
         prompt: {
-            template: "modules/roll-overlay-and-effects/templates/prompts/combined-roll-prompt.hbs"
+            template: "modules/narrative-rolls-and-effects/templates/prompts/combined-roll-prompt.hbs"
         }
     };
 

@@ -15,7 +15,7 @@ export class BasicRollPromptApp extends BasePromptApp {
 
     static PARTS = {
         prompt: {
-            template: "modules/roll-overlay-and-effects/templates/prompts/basic-roll-prompt.hbs"
+            template: "modules/narrative-rolls-and-effects/templates/prompts/basic-roll-prompt.hbs"
         }
     };
 

@@ -17,7 +17,7 @@ export class SanityCheckPromptApp extends BasicRollPromptApp {
 
     static PARTS = {
         prompt: {
-            template: "modules/roll-overlay-and-effects/templates/prompts/sanity-check-prompt.hbs"
+            template: "modules/narrative-rolls-and-effects/templates/prompts/sanity-check-prompt.hbs"
         }
     };
 

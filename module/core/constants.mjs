@@ -1,4 +1,4 @@
-export const MODULE_ID = "roll-overlay-and-effects";
+export const MODULE_ID = "narrative-rolls-and-effects";
 export const SOCKET_NAME = `module.${MODULE_ID}`;
 export const FLAG_SESSION = "session";
 export const FLAG_CHECK_STATE = "checkState";
