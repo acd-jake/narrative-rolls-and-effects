@@ -16,17 +16,19 @@ Hooks.once("init", () => {
     EffectsEngine.registerHooks();
 
     foundry.applications.handlebars.loadTemplates({
-        roeSkillDifficultyControls: `modules/${MODULE_ID}/templates/prompts/partials/skill-difficulty-controls.hbs`,
-        roeSanityLossControls: `modules/${MODULE_ID}/templates/prompts/partials/sanity-loss-controls.hbs`,
-        roeModifierSlider: `modules/${MODULE_ID}/templates/prompts/partials/modifier-slider.hbs`,
-        roeResultDefault: `modules/${MODULE_ID}/templates/prompts/partials/result-default.hbs`,
-        roeResultSanity: `modules/${MODULE_ID}/templates/prompts/partials/result-sanity.hbs`,
-        roeResultCombat: `modules/${MODULE_ID}/templates/prompts/partials/result-combat.hbs`,
-        roeRollResolvedResult: `modules/${MODULE_ID}/templates/prompts/partials/resolved-roll-result.hbs`,
-        roeRollModifierPreparation: `modules/${MODULE_ID}/templates/prompts/partials/modifier-preparation.hbs`,
-        roeDiceVisuals: `modules/${MODULE_ID}/templates/prompts/partials/dice-visuals.hbs`,
-        roePushFailurePhase: `modules/${MODULE_ID}/templates/prompts/partials/push-failure-phase.hbs`,
-        roePromptDescription: `modules/${MODULE_ID}/templates/prompts/partials/prompt-description.hbs`
+        roeSkillDifficultyControls: `modules/${MODULE_ID}/templates/core/prompts/partials/skill-difficulty-controls.hbs`,
+        roeSanityLossControls: `modules/${MODULE_ID}/templates/core/prompts/partials/sanity-loss-controls.hbs`,
+        roeModifierSlider: `modules/${MODULE_ID}/templates/core/prompts/partials/modifier-slider.hbs`,
+        roeResultDefault: `modules/${MODULE_ID}/templates/core/prompts/partials/result-default.hbs`,
+        roeResultSanity: `modules/${MODULE_ID}/templates/core/prompts/partials/result-sanity.hbs`,
+        roeResultCombat: `modules/${MODULE_ID}/templates/core/prompts/partials/result-combat.hbs`,
+        roeRollResolvedResult: `modules/${MODULE_ID}/templates/core/prompts/partials/resolved-roll-result.hbs`,
+        roeRollModifierPreparation: `modules/${MODULE_ID}/templates/core/prompts/partials/modifier-preparation.hbs`,
+        roeDiceVisuals: `modules/${MODULE_ID}/templates/core/prompts/partials/dice-visuals.hbs`,
+        roeDiceDisplay: `modules/${MODULE_ID}/templates/core/prompts/partials/dice-display.hbs`,
+        roePushFailurePhase: `modules/${MODULE_ID}/templates/core/prompts/partials/push-failure-phase.hbs`,
+        roePromptDescription: `modules/${MODULE_ID}/templates/core/prompts/partials/prompt-description.hbs`,
+        roePromptLayout: `modules/${MODULE_ID}/templates/core/prompts/partials/prompt-layout.hbs`
     });
 });
 

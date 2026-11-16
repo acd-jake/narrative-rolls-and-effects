@@ -1,4 +1,4 @@
-import { SessionStore } from "../../../core/session-store.mjs";
+﻿import { SessionStore } from "../../../core/session-store.mjs";
 import { OpposedRollPromptApp } from "./opposed-roll-prompt-app.mjs";
 import { DamageRollSubmitter } from "./damage-roll-submitter.mjs";
 import { UniversalRollOrchestrator } from "../../../core/orchestrator.mjs";
@@ -23,7 +23,7 @@ export class CombatPromptApp extends OpposedRollPromptApp {
 
     static PARTS = {
         prompt: {
-            template: "modules/narrative-rolls-and-effects/templates/prompts/combat-prompt.hbs"
+            template: "modules/narrative-rolls-and-effects/templates/systems/coc7/prompts/combat-prompt.hbs"
         }
     };
 

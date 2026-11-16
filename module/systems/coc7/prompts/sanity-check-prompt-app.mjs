@@ -1,4 +1,4 @@
-import { BasicRollPromptApp } from "./basic-roll-prompt-app.mjs";
+﻿import { BasicRollPromptApp } from "./basic-roll-prompt-app.mjs";
 import { SessionStore } from "../../../core/session-store.mjs";
 import { UniversalRollOrchestrator } from "../../../core/orchestrator.mjs";
 import { CoC7ResultFormatter } from "../coc7-result-formatter.mjs";
@@ -17,7 +17,7 @@ export class SanityCheckPromptApp extends BasicRollPromptApp {
 
     static PARTS = {
         prompt: {
-            template: "modules/narrative-rolls-and-effects/templates/prompts/sanity-check-prompt.hbs"
+            template: "modules/narrative-rolls-and-effects/templates/systems/coc7/prompts/sanity-check-prompt.hbs"
         }
     };
 
@@ -161,3 +161,4 @@ export class SanityCheckPromptApp extends BasicRollPromptApp {
         });
     }
 }
+

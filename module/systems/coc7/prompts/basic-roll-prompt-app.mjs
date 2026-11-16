@@ -15,7 +15,7 @@ export class BasicRollPromptApp extends BasePromptApp {
 
     static PARTS = {
         prompt: {
-            template: "modules/narrative-rolls-and-effects/templates/prompts/basic-roll-prompt.hbs"
+            template: "modules/narrative-rolls-and-effects/templates/systems/coc7/prompts/basic-roll-prompt.hbs"
         }
     };
 
@@ -30,6 +30,7 @@ export class BasicRollPromptApp extends BasePromptApp {
         const showNumbers = isOther || !p?.hasRolled || displayMode !== "level";
         const showLevel = !isOther && Boolean(p?.hasRolled) && displayMode !== "numbers";
         const formattedLevel = p?.successLevel ? CoC7ResultFormatter.formatSuccessLevel(p.successLevel) : "";
+        const modDice = p?.modifierDice ?? 0;
 
         return {
             ...context,
@@ -51,6 +52,7 @@ export class BasicRollPromptApp extends BasePromptApp {
             displayTarget: Number(p?.targetValue ?? 0),
             targetValue: Number(p?.targetValue ?? 0),
             canChangeDifficulty: false,
+            modifierDisplay: this._formatModifierLabel(modDice),
             ...opts
         };
     }

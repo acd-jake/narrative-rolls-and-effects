@@ -22,6 +22,13 @@
     gap: 0.45rem;
 }
 
+.roe-overlay .prompt-detail-area,
+.roe-overlay .prompt-result-area {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+}
+
 .roe-overlay .prompt-close-btn {
     position: absolute;
     top: 5px;
@@ -609,7 +616,8 @@
     color: var(--roe-text-muted);
 }
 
-.roe-overlay .prompt-dice-visuals {
+.roe-overlay .prompt-dice-visuals,
+.roe-overlay .prompt-dice-display {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -643,6 +651,35 @@
     border: 1px solid var(--roe-gold-dim);
     font-size: 0.62rem;
     line-height: 1.1;
+}
+
+/* Dice Display Tooltip */
+.roe-overlay .prompt-die[title] {
+    cursor: help;
+    position: relative;
+}
+
+.roe-overlay .prompt-die[title]::after {
+    content: attr(title);
+    position: absolute;
+    bottom: 110%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 0.4rem 0.5rem;
+    background: rgba(10, 11, 14, 0.95);
+    border: 1px solid var(--roe-gold);
+    border-radius: 3px;
+    color: var(--roe-text-muted);
+    font-size: 0.7rem;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    z-index: 1000;
+}
+
+.roe-overlay .prompt-die[title]:hover::after {
+    opacity: 1;
 }
 
 /* Collapsible Description Drawer */

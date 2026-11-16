@@ -1,4 +1,4 @@
-import { SessionStore } from "../../../core/session-store.mjs";
+﻿import { SessionStore } from "../../../core/session-store.mjs";
 import { BasePromptApp } from "../../../core/base-prompt-app.mjs";
 import { UniversalRollOrchestrator } from "../../../core/orchestrator.mjs";
 import { CoC7CheckResolver } from "../coc7-check-resolver.mjs";
@@ -13,7 +13,7 @@ export class CombinedRollPromptApp extends BasePromptApp {
 
     static PARTS = {
         prompt: {
-            template: "modules/narrative-rolls-and-effects/templates/prompts/combined-roll-prompt.hbs"
+            template: "modules/narrative-rolls-and-effects/templates/systems/coc7/prompts/combined-roll-prompt.hbs"
         }
     };
 
@@ -50,6 +50,7 @@ export class CombinedRollPromptApp extends BasePromptApp {
             second: second ? { ...second, ...secondOpts } : null,
             canPushCombined,
             modifierDice: modDice,
+            modifierDisplay: this._formatModifierLabel(modDice),
             canRoll: Boolean(first && !first.hasRolled && (game.user.isGM || SessionStore.resolveActor(first)?.isOwner)),
             isDelegatedToPlayer: this._isDelegatedToActivePlayer(first)
         };
@@ -84,3 +85,4 @@ export class CombinedRollPromptApp extends BasePromptApp {
         }
     }
 }
+

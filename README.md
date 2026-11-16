@@ -18,6 +18,7 @@ An extensible Foundry VTT module that replaces standard roll dialogs with multi-
   - Full-screen vignettes reacting to low Sanity thresholds, brief screen pulses on criticals and fumbles, screen shake on fumbles, and PIXI particle bursts on affected tokens.
   - Configurable sound effects for critical successes, fumbles, and low resource warnings.
 - **System-Agnostic Core Architecture**: Built around a decoupled core engine (`module/core/`) and pluggable system adapters (`module/systems/`), ready for upcoming Pathfinder 2e (`pf2e`) support.
+- **Shared Prompt Layout**: System-specific prompt templates define the `promptHeader`, `promptDetails`, and `promptResults` inline partials inside `{{#> roePromptLayout}}`. The shared layout in `templates/prompts/partials/prompt-layout.hbs` renders these areas consistently and handles resolved and modifier-preparation views.
 
 ## Supported Systems
 

@@ -1,4 +1,4 @@
-import { SessionStore } from "../../../core/session-store.mjs";
+﻿import { SessionStore } from "../../../core/session-store.mjs";
 import { BasicRollPromptApp } from "./basic-roll-prompt-app.mjs";
 import { DamageRollSubmitter } from "./damage-roll-submitter.mjs";
 import { UniversalRollOrchestrator } from "../../../core/orchestrator.mjs";
@@ -25,7 +25,7 @@ export class RangedPromptApp extends BasicRollPromptApp {
 
     static PARTS = {
         prompt: {
-            template: "modules/narrative-rolls-and-effects/templates/prompts/ranged-prompt.hbs"
+            template: "modules/narrative-rolls-and-effects/templates/systems/coc7/prompts/ranged-prompt.hbs"
         }
     };
 
@@ -199,3 +199,4 @@ export class RangedPromptApp extends BasicRollPromptApp {
         await DamageRollSubmitter.submit(this._messageId);
     }
 }
+

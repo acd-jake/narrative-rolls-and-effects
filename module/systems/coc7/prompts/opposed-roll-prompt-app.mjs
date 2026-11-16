@@ -1,4 +1,4 @@
-import { SessionStore } from "../../../core/session-store.mjs";
+﻿import { SessionStore } from "../../../core/session-store.mjs";
 import { BasePromptApp } from "../../../core/base-prompt-app.mjs";
 import { UniversalRollOrchestrator } from "../../../core/orchestrator.mjs";
 import { CoC7ResultFormatter } from "../coc7-result-formatter.mjs";
@@ -19,7 +19,7 @@ export class OpposedRollPromptApp extends BasePromptApp {
 
     static PARTS = {
         prompt: {
-            template: "modules/narrative-rolls-and-effects/templates/prompts/opposed-roll-prompt.hbs"
+            template: "modules/narrative-rolls-and-effects/templates/systems/coc7/prompts/opposed-roll-prompt.hbs"
         }
     };
 
@@ -132,3 +132,4 @@ export class OpposedRollPromptApp extends BasePromptApp {
         });
     }
 }
+
