@@ -42,19 +42,6 @@
                                                                             "PlayersTop":  "Bottom Left (above the players list)"
                                                                         }
                                                         },
-                                 "ResultDisplayMode":  {
-                                                           "Name":  "Roll Result Display Mode",
-                                                           "Hint":  "Determines whether prompts and chat cards show numeric values, success levels, or both.",
-                                                           "Both":  "Numbers and Success Level",
-                                                           "Numbers":  "Numbers Only (e.g., 35 vs. 60)",
-                                                           "Level":  "Success Level Only"
-                                                       },
-                                 "SuccessLevelFormat":  {
-                                                            "Name":  "Success Level Format",
-                                                            "Hint":  "Displays success levels either as full text or compact symbols (* to *** / - to ---).",
-                                                            "Text":  "Text (Regular, Hard, Extreme)",
-                                                            "Symbols":  "Symbols (* to *** / - to ---)"
-                                                        },
                                  "RollPromptTheme":  {
                                                          "Name":  "Roll Prompt Theme",
                                                          "Hint":  "Selects the visual theme for roll prompt windows.",

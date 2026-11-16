@@ -42,19 +42,6 @@
                                                                             "PlayersTop":  "Unten links (oberhalb der Spielerliste)"
                                                                         }
                                                         },
-                                 "ResultDisplayMode":  {
-                                                           "Name":  "Anzeige von Würfelergebnissen",
-                                                           "Hint":  "Legt fest, ob im Prompt und auf der Chatkarte Zahlenwerte, der Erfolgsgrad oder beides angezeigt werden.",
-                                                           "Both":  "Zahlenwerte und Erfolgsgrad",
-                                                           "Numbers":  "Nur Zahlenwerte (z. B. 35 vs. 60)",
-                                                           "Level":  "Nur Erfolgsgrad"
-                                                       },
-                                 "SuccessLevelFormat":  {
-                                                            "Name":  "Darstellung der Erfolgsgrade",
-                                                            "Hint":  "Zeigt Erfolgsgrade entweder als ausgeschriebenen Text oder als kompakte Symbole (* bis *** / - bis ---) an.",
-                                                            "Text":  "Text (Regulär, Schwierig, Extrem)",
-                                                            "Symbols":  "Symbole (* bis *** / - bis ---)"
-                                                        },
                                  "RollPromptTheme":  {
                                                          "Name":  "Thema für Wurf-Prompts",
                                                          "Hint":  "Wählt das visuelle Thema für die Wurf-Prompt-Fenster.",

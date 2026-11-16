@@ -77,33 +77,6 @@ export class CoreSettings {
             onChange: () => RollPromptStackManager.reflow()
         });
 
-        game.settings.register(MODULE_ID, "resultDisplayMode", {
-            name: "ROE.Settings.ResultDisplayMode.Name",
-            hint: "ROE.Settings.ResultDisplayMode.Hint",
-            scope: "world",
-            config: true,
-            type: String,
-            choices: {
-                both: "ROE.Settings.ResultDisplayMode.Both",
-                numbers: "ROE.Settings.ResultDisplayMode.Numbers",
-                level: "ROE.Settings.ResultDisplayMode.Level"
-            },
-            default: "both"
-        });
-
-        game.settings.register(MODULE_ID, "successLevelFormat", {
-            name: "ROE.Settings.SuccessLevelFormat.Name",
-            hint: "ROE.Settings.SuccessLevelFormat.Hint",
-            scope: "world",
-            config: true,
-            type: String,
-            choices: {
-                text: "ROE.Settings.SuccessLevelFormat.Text",
-                symbols: "ROE.Settings.SuccessLevelFormat.Symbols"
-            },
-            default: "text"
-        });
-
         game.settings.register(MODULE_ID, "autoApplyRollConsequences", {
             name: "ROE.Settings.AutoApplyConsequences.Name",
             hint: "ROE.Settings.AutoApplyConsequences.Hint",

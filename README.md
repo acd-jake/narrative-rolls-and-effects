@@ -21,7 +21,7 @@ System-specific rules, templates, and assets are provided by companion modules. 
 
 ## Configuration
 
-Configure audio cues, visual effects, prompt layout, result presentation, and system-specific automation under **Configure Settings -> Narrative Rolls and Effects**.
+Configure audio cues, visual effects, and prompt layout under **Configure Settings -> Narrative Rolls and Effects**. System-specific options are provided by companion modules.
 
 ## License
 
