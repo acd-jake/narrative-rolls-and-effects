@@ -13,7 +13,9 @@ An extensible Foundry VTT v14 module that provides synchronized, multi-phase rol
 - System-scoped prompt and chat-card styling through `data-nre-system`.
 
 System-specific rules, templates, and assets are provided by companion modules. The core module does not import system plugins directly.
+
 Adapters can extend the core dice visuals by implementing `extendDiceVisuals(dice, session, modifierDice)`.
+The core also manages the modifier-preparation prompt shell; adapters select system- and roll-specific header and detail partials with `getModifierPreparationPartials(session)`.
 
 ## Installation
 
