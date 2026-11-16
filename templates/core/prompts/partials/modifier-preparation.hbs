@@ -13,7 +13,7 @@
     </div>
     {{/each}}
     {{#if preparationTactics.length}}
-    <div class="section-header">{{localize "ROE.Combat.BonusDiceSection"}}</div>
+    <div class="section-header">{{localize "ROE.Roll.ModifierDice"}}</div>
     <div class="tactical-flags-grid">
         {{#each preparationTactics}}
         <button type="button" class="tab-btn tactical-toggle {{#if active}}active{{/if}}" data-action="togglePreparedTactical" data-flag="{{key}}" aria-pressed="{{#if active}}true{{else}}false{{/if}}">{{label}}</button>

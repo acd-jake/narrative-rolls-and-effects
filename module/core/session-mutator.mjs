@@ -17,7 +17,6 @@ export class SessionMutator {
     }
 
     async submitRoll(messageId, participantKey, rollData) {
-        if (rollData.isPushed) return;
         if (!game.user.isGM) {
             return SessionTransport.emitToGM("submitUniversalRoll", { messageId, participantKey, rollData });
         }
@@ -69,8 +68,9 @@ export class SessionMutator {
         const participant = session?.participants?.find((p) => p.key === participantKey);
         if (!participant || participant.hasRolled) return;
 
+        const modifierKeys = AdapterRegistry.active?.getModifierParticipantKeys?.(session, participantKey) ?? [participantKey];
         const participants = session.participants.map((p) =>
-            p.key === participantKey || session.rollType === "combined" ? { ...p, modifierDice: clamped } : p
+            modifierKeys.includes(p.key) ? { ...p, modifierDice: clamped } : p
         );
         await SessionStore.save(message, { ...session, participants });
     }
@@ -116,9 +116,11 @@ export class SessionMutator {
     async resolve(messageId) {
         const message = this.#getActiveSessionMessage(messageId, true);
         const session = SessionStore.getSession(message);
-        if (!session || session.pushFailurePending || !session.participants.length || !session.participants.every((p) => p.hasRolled)) return;
+        const adapter = AdapterRegistry.active;
+        if (!session || !session.participants.length || !session.participants.every((p) => p.hasRolled)) return;
+        if (adapter?.canResolveSession?.(session) === false) return;
 
-        const strategy = AdapterRegistry.active?.getStrategy(session.rollType);
+        const strategy = adapter?.getStrategy(session.rollType);
         const resolution = strategy ? strategy.evaluateResolution(session) : { winnerKey: "", outcomeHeadline: "" };
 
         await SessionStore.save(message, {
@@ -149,7 +151,8 @@ export class SessionMutator {
         await SessionStore.save(message, {
             ...workingState,
             participants: finalParticipants,
-            phase: workingState.pushFailurePending ? "pushConsequences" : allRolled ? "awaitingResolution" : "rolling",
+            phase: AdapterRegistry.active?.getSessionPhase?.(workingState, allRolled)
+                ?? (allRolled ? "awaitingResolution" : "rolling"),
             winnerKey: resolution.winnerKey,
             outcomeHeadline: resolution.outcomeHeadline,
             isResolved: false

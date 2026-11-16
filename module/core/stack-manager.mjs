@@ -53,19 +53,19 @@ export class RollPromptStackManager {
         this.unregister(app);
     }
 
-    static hasByCombatMessageId(messageId) {
-        return Array.from(this.#allActiveApps).some((app) => app.combatMessageId === messageId);
+    static hasByMessageId(messageId) {
+        return Array.from(this.#allActiveApps).some((app) => app.messageId === messageId);
     }
 
     /**
-     * Closes all open prompt windows linked to a deleted Combat Protocol ChatMessage.
+     * Closes all open prompt windows linked to a deleted session message.
      * @param {string} messageId
      */
-    static closeByCombatMessageId(messageId) {
+    static closeByMessageId(messageId) {
         if (!messageId) return;
 
         for (const app of Array.from(this.#allActiveApps)) {
-            if (app.combatMessageId === messageId) {
+            if (app.messageId === messageId) {
                 app.close();
             }
         }

@@ -21,7 +21,7 @@ export class SessionStore {
             try {
                 const doc = fromUuidSync(uuid);
                 if (doc) return doc.actor ?? doc;
-            } catch { /* Ignorieren bei nicht geladenen Szenen */ }
+            } catch { /* Ignore lookup failures for unloaded scenes. */ }
         }
         const actorId = typeof source === "object" ? source.actorId : null;
         return actorId ? game.actors?.get(actorId) ?? null : null;
@@ -51,8 +51,6 @@ export class SessionStore {
             successLevel: "",
             isSuccess: false,
             modifierDice: 0,
-            isPushed: false,
-            luckDecided: false,
             rollMode: "publicroll",
             rollerUserId: "",
             rollBreakdown: null
@@ -68,17 +66,14 @@ export class SessionStore {
         const sessionData = {
             systemId: game.system.id,
             rollType: sessionConfig.rollType,
-            rollTypeLabel: game.i18n.localize(`ROE.RollSession.Types.${sessionConfig.rollType}`),
+            rollTypeLabel: adapter?.getRollTypeLabel?.(sessionConfig.rollType) ?? game.i18n.localize(`ROE.RollSession.Types.${sessionConfig.rollType}`),
             phase: "rolling",
             initiatorUserId: game.user.id,
             rollMode,
             title: sessionConfig.title,
             difficulty: sessionConfig.difficulty ?? "regular",
             canChangeDifficulty: sessionConfig.canChangeDifficulty ?? true,
-            canPush: sessionConfig.canPush ?? true,
-            pushFailurePending: false,
             diceFormula: sessionConfig.diceFormula ?? "1d100",
-            combinedMode: sessionConfig.combinedMode ?? "and",
             hasPendingConsequences: false,
             consequencesApplied: false,
             participants: sessionConfig.participants,
@@ -91,10 +86,11 @@ export class SessionStore {
         };
 
         const templateData = adapter ? adapter.enrichSessionForTemplate(sessionData) : sessionData;
-        const content = await foundry.applications.handlebars.renderTemplate(this.TEMPLATE, templateData);
+        const template = adapter?.getChatCardTemplate?.() ?? this.TEMPLATE;
+        const content = await foundry.applications.handlebars.renderTemplate(template, templateData);
         const speakerActor = this.resolveActor(sessionData.participants?.at(0));
 
-        // Wenn SL noch Modifikatoren vorbereitet oder keine Spieler beteiligt sind: nur an GM flüstern
+        // Whisper only to the GM during modifier preparation or when there are no players.
         const whisper = isPreparing || !hasPlayers ? ChatMessage.getWhisperRecipients("GM").map((u) => u.id) : [];
 
         return ChatMessage.create({
@@ -119,7 +115,8 @@ export class SessionStore {
         };
 
         const templateData = adapter ? adapter.enrichSessionForTemplate(updatedSession) : updatedSession;
-        const content = await foundry.applications.handlebars.renderTemplate(this.TEMPLATE, templateData);
+        const template = adapter?.getChatCardTemplate?.() ?? this.TEMPLATE;
+        const content = await foundry.applications.handlebars.renderTemplate(template, templateData);
 
         const whisper = updatedSession.isPreparingModifiers || !updatedSession.hasPlayerParticipants
             ? ChatMessage.getWhisperRecipients("GM").map((u) => u.id)

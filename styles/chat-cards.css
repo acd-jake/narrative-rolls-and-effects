@@ -9,50 +9,10 @@
     gap: 0.4rem;
 }
 
-.roe-overlay .combat-card-title {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.4rem;
-    border-bottom: 1px solid var(--roe-gold-dim);
-    padding-bottom: 0.3rem;
-}
-
-.roe-overlay .weapon-headline {
-    font-family: var(--roe-font-display);
-    font-size: 0.88rem;
-    font-weight: bold;
-    color: var(--roe-gold-bright);
-}
-
 .roe-overlay .result-badge-row {
     display: flex;
     flex-wrap: wrap;
     gap: 0.25rem;
-}
-
-.roe-overlay .result-chip.is-compact {
-    gap: 0.2rem;
-    padding: 0.05rem 0.3rem;
-    font-size: 0.62rem;
-    white-space: nowrap;
-}
-
-.roe-overlay .combat-mode-tag {
-    font-size: 0.65rem;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: #dcd7cc;
-    background: rgba(0, 0, 0, 0.55);
-    border: 1px solid rgba(197, 160, 89, 0.4);
-    padding: 0.05rem 0.3rem;
-    white-space: nowrap;
-}
-
-.roe-overlay .combat-section {
-    background: var(--roe-bg-panel);
-    border: 1px solid var(--roe-border-dark);
-    padding: 0.35rem 0.45rem;
 }
 
 .roe-overlay .section-header {
@@ -61,32 +21,6 @@
     letter-spacing: 0.06em;
     color: var(--roe-gold);
     margin-bottom: 0.25rem;
-}
-
-.roe-overlay .combatant-row {
-    display: flex;
-    align-items: center;
-    gap: 0.45rem;
-}
-
-.roe-overlay .combatant-avatar {
-    width: 22px;
-    height: 22px;
-    min-width: 22px;
-    object-fit: cover;
-    border: 1px solid var(--roe-gold-dim);
-}
-
-.roe-overlay .combatant-details {
-    display: flex;
-    flex-direction: column;
-    gap: 0.1rem;
-    font-size: 0.76rem;
-}
-
-.roe-overlay .combatant-name {
-    font-weight: bold;
-    color: var(--roe-text-main);
 }
 
 .roe-overlay .roll-badge {
@@ -111,25 +45,6 @@
     font-size: 0.72rem;
     font-style: italic;
     color: var(--roe-text-muted);
-}
-
-.roe-overlay.sanity-protocol-card {
-    background: linear-gradient(180deg, #161024 0%, var(--roe-bg-deep) 100%);
-    border-color: #9d4edd;
-    outline-color: rgba(157, 78, 221, 0.35);
-}
-
-.roe-overlay.sanity-protocol-card .sanity-emblem {
-    color: #c77dff;
-    margin-right: 0.2rem;
-}
-
-.roe-overlay .sanity-stakes-inline {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font-size: 0.75rem;
-    color: #cbbbe0;
 }
 
 .roe-overlay .is-subtle {

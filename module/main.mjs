@@ -4,41 +4,44 @@ import { AdapterRegistry } from "./core/adapter-registry.mjs";
 import { UniversalRollOrchestrator } from "./core/orchestrator.mjs";
 import { EffectsEngine } from "./core/effects-engine.mjs";
 import { RollRequestComposerApp } from "./core/roll-request-composer-app.mjs";
-import { CoC7Adapter } from "./systems/coc7/coc7-adapter.mjs";
+import { PromptClassFactory } from "./core/prompt-factory.mjs";
+import { SessionStore } from "./core/session-store.mjs";
+import { RollVisibilityPolicy } from "./core/visibility-policy.mjs";
+import { ActorTargetSelectorApp } from "./core/actor-target-selector-app.mjs";
 
-Hooks.once("init", () => {
+Hooks.once("init", async () => {
     CoreSettings.register();
-
-    // System-Adapter registrieren (später hier einfach Pf2eAdapter ergänzen)
-    AdapterRegistry.register("CoC7", new CoC7Adapter());
-
     UniversalRollOrchestrator.registerHooks();
     EffectsEngine.registerHooks();
 
-    foundry.applications.handlebars.loadTemplates({
-        roeSkillDifficultyControls: `modules/${MODULE_ID}/templates/core/prompts/partials/skill-difficulty-controls.hbs`,
-        roeSanityLossControls: `modules/${MODULE_ID}/templates/core/prompts/partials/sanity-loss-controls.hbs`,
+    await foundry.applications.handlebars.loadTemplates({
         roeModifierSlider: `modules/${MODULE_ID}/templates/core/prompts/partials/modifier-slider.hbs`,
         roeResultDefault: `modules/${MODULE_ID}/templates/core/prompts/partials/result-default.hbs`,
-        roeResultSanity: `modules/${MODULE_ID}/templates/core/prompts/partials/result-sanity.hbs`,
-        roeResultCombat: `modules/${MODULE_ID}/templates/core/prompts/partials/result-combat.hbs`,
         roeRollResolvedResult: `modules/${MODULE_ID}/templates/core/prompts/partials/resolved-roll-result.hbs`,
         roeRollModifierPreparation: `modules/${MODULE_ID}/templates/core/prompts/partials/modifier-preparation.hbs`,
         roeDiceVisuals: `modules/${MODULE_ID}/templates/core/prompts/partials/dice-visuals.hbs`,
-        roeDiceDisplay: `modules/${MODULE_ID}/templates/core/prompts/partials/dice-display.hbs`,
         roePushFailurePhase: `modules/${MODULE_ID}/templates/core/prompts/partials/push-failure-phase.hbs`,
-        roePromptDescription: `modules/${MODULE_ID}/templates/core/prompts/partials/prompt-description.hbs`,
-        roePromptLayout: `modules/${MODULE_ID}/templates/core/prompts/partials/prompt-layout.hbs`
+        roePromptDescription: `modules/${MODULE_ID}/templates/core/prompts/partials/prompt-description.hbs`
+    });
+
+    Hooks.callAll("nre.registerAdapters", {
+        registerAdapter: (systemId, adapter) => AdapterRegistry.register(systemId, adapter),
+        createPromptClass: (definition) => PromptClassFactory.create(definition),
+        extendPromptClass: (baseClass, definition) => PromptClassFactory.extend(baseClass, definition),
+        session: SessionStore,
+        orchestrator: UniversalRollOrchestrator,
+        visibility: RollVisibilityPolicy,
+        effects: EffectsEngine,
+        actorSelector: ActorTargetSelectorApp
     });
 });
 
 Hooks.once("ready", async () => {
     const adapter = AdapterRegistry.activate(game.system.id);
     if (!adapter) {
-        console.warn(`${MODULE_ID} | Kein Adapter für System "${game.system.id}" registriert.`);
+        console.warn(`${MODULE_ID} | No adapter registered for system "${game.system.id}".`);
     }
 
-    // Toast-Benachrichtigungen für aktive Session-Karten unterdrücken
     const originalNotify = ui.chat.notify.bind(ui.chat);
     ui.chat.notify = function (message, options) {
         if (message.getFlag(MODULE_ID, "noToast")) return;

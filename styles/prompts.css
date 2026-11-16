@@ -62,19 +62,6 @@
     cursor: grabbing;
 }
 
-.roe-overlay .combat-header-avatars {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-}
-
-.roe-overlay .combat-header-titles {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
 .roe-overlay .prompt-actor-name {
     font-size: 0.68rem;
     letter-spacing: 0.08em;
@@ -89,8 +76,7 @@
     color: var(--roe-text-main);
 }
 
-.roe-overlay .prompt-roll-display,
-.roe-overlay .prompt-versus-row {
+.roe-overlay .prompt-roll-display{
     display: flex;
     align-items: baseline;
     justify-content: center;
@@ -124,12 +110,6 @@
     color: #f29b9b;
 }
 
-.roe-overlay .vs-label,
-.roe-overlay .versus-label {
-    font-size: 0.78rem;
-    color: var(--roe-text-muted);
-}
-
 .roe-overlay .target-number {
     font-family: var(--roe-font-display);
     font-size: 1.25rem;
@@ -156,41 +136,8 @@
     gap: 0.35rem;
 }
 
-.roe-overlay .combined-check-row,
-.roe-overlay .opposed-contestant-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.4rem;
-    font-size: 0.78rem;
-}
-
-.roe-overlay .opposed-contestant-block {
-    display: flex;
-    flex-direction: column;
-    gap: 0.3rem;
-    padding-bottom: 0.35rem;
-    border-bottom: 1px solid var(--roe-border-dark);
-}
-
-.roe-overlay .opposed-contestant-block:last-child {
-    border-bottom: none;
-    padding-bottom: 0;
-}
-
-.roe-overlay .contestant-info {
-    display: flex;
-    flex-direction: column;
-}
-
-.roe-overlay .contestant-info small {
-    color: var(--roe-text-muted);
-    font-size: 0.7rem;
-}
-
 /* Action Buttons & Delegated GM States */
 .roe-overlay .prompt-footer,
-.roe-overlay .luck-decision-row,
 .roe-overlay .prompt-player-controls {
     display: flex;
     flex-direction: column;
@@ -254,16 +201,6 @@
     color: var(--roe-text-muted);
 }
 
-.roe-overlay .prompt-action-btn.luck {
-    border-color: var(--roe-success);
-    color: #7ee2a8;
-}
-
-.roe-overlay .prompt-action-btn.push {
-    border-color: var(--roe-failure);
-    color: #f29b9b;
-}
-
 .roe-overlay .gm-delegated-region {
     padding-left: 0.4rem;
     border-left: 2px dashed rgba(197, 160, 89, 0.45);
@@ -315,32 +252,6 @@
     text-align: center;
 }
 
-/* Sanity Panel & Result Chips */
-.roe-overlay .sanity-immersion-panel {
-    background: radial-gradient(circle at center, #181126 0%, #0b0910 100%);
-    border: 1px solid rgba(157, 78, 221, 0.45);
-    padding: 0.45rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
-}
-
-.roe-overlay .sanity-narrative-quote {
-    font-style: italic;
-    font-size: 0.76rem;
-    color: #cbbbe0;
-    text-align: center;
-    border-bottom: 1px solid rgba(157, 78, 221, 0.25);
-    padding-bottom: 0.3rem;
-}
-
-.roe-overlay .sanity-stakes-grid,
-.roe-overlay .sanity-result-chips {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.35rem;
-}
-
 .roe-overlay .stake-pill {
     background: rgba(10, 11, 14, 0.8);
     border: 1px solid var(--roe-border-dark);
@@ -362,157 +273,6 @@
     font-weight: bold;
     color: var(--roe-text-main);
 }
-
-.roe-overlay .sanity-flavor-line {
-    font-style: italic;
-    font-size: 0.76rem;
-    color: #dcd0eb;
-    text-align: center;
-    padding: 0.2rem 0.3rem;
-}
-
-.roe-overlay .sanity-result-showcase {
-    display: flex;
-    flex-direction: column;
-    gap: 0.35rem;
-    margin-top: 0.15rem;
-}
-
-.roe-overlay .result-chip {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.35rem;
-    padding: 0.3rem 0.45rem;
-    font-family: var(--roe-font-display);
-    font-size: 0.78rem;
-    font-weight: bold;
-    border: 1px solid var(--roe-border-dark);
-    background: var(--roe-bg-panel);
-}
-
-.roe-overlay .result-chip.outcome.is-success {
-    border-color: #2ec4b6;
-    color: #80ffea;
-    background: rgba(46, 196, 182, 0.14);
-}
-
-.roe-overlay .result-chip.outcome.is-failure {
-    border-color: var(--roe-failure);
-    color: #f29b9b;
-    background: rgba(168, 50, 50, 0.18);
-}
-
-.roe-overlay .result-chip.loss.is-safe {
-    border-color: #2ec4b6;
-    color: #80ffea;
-    background: rgba(46, 196, 182, 0.08);
-}
-
-.roe-overlay .result-chip.loss.is-severe {
-    border-color: #c77dff;
-    color: #f8edff;
-    background: rgba(157, 78, 221, 0.25);
-}
-
-.roe-overlay .prompt-action-btn.sanity-int-btn {
-    border-color: #c77dff;
-    color: #f3d5ff;
-    background: linear-gradient(180deg, #28143b 0%, #160b24 100%);
-}
-
-.roe-overlay .sanity-madness-stamp {
-    padding: 0.32rem 0.45rem;
-    background: linear-gradient(90deg, rgba(114, 9, 183, 0.25) 0%, rgba(181, 23, 158, 0.35) 50%, rgba(114, 9, 183, 0.25) 100%);
-    border: 1px solid #c77dff;
-    color: #f8edff;
-    font-family: var(--roe-font-display);
-    font-size: 0.76rem;
-    font-weight: bold;
-    text-align: center;
-    animation: roeSanityPulse 2.4s infinite ease-in-out;
-}
-
-@keyframes roeSanityPulse {
-
-    0%,
-    100% {
-        box-shadow: 0 0 4px rgba(199, 125, 255, 0.25);
-    }
-
-    50% {
-        box-shadow: 0 0 12px rgba(199, 125, 255, 0.6);
-    }
-}
-
-/* 3-Phase Combat Sections, Tabs & Sliders */
-.roe-overlay .combat-phase-section {
-    background: var(--roe-bg-panel);
-    border: 1px solid var(--roe-border-dark);
-    padding: 0.45rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
-}
-
-.roe-overlay .combat-phase-section.is-active {
-    border-color: var(--roe-gold-dim);
-    box-shadow: inset 0 0 10px rgba(197, 160, 89, 0.08);
-}
-
-.roe-overlay .combat-phase-section.is-completed {
-    background: rgba(10, 11, 14, 0.65);
-    border-color: rgba(197, 160, 89, 0.2);
-}
-
-.roe-overlay .combat-phase-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.4rem;
-    padding-bottom: 0.25rem;
-    border-bottom: 1px solid rgba(197, 160, 89, 0.25);
-    font-family: var(--roe-font-display);
-    font-size: 0.72rem;
-    text-transform: uppercase;
-    color: var(--roe-gold);
-}
-
-.roe-overlay .combat-phase-section.is-completed .combat-phase-header {
-    color: var(--roe-text-muted);
-}
-
-.roe-overlay .combat-phase-header .phase-title {
-    display: flex;
-    align-items: center;
-    gap: 0.35rem;
-    font-weight: bold;
-}
-
-.roe-overlay .combat-phase-header .phase-actor-tag {
-    font-family: var(--roe-font-body);
-    font-size: 0.72rem;
-    text-transform: none;
-    color: var(--roe-text-main);
-}
-
-.roe-overlay .combat-phase-header .phase-reset-btn {
-    margin-left: auto;
-    width: 18px;
-    height: 18px;
-    padding: 0;
-    background: transparent;
-    border: none;
-    color: var(--roe-text-muted);
-    cursor: pointer;
-}
-
-.roe-overlay .combat-phase-header .phase-reset-btn:hover {
-    color: var(--roe-gold-bright);
-}
-
-.roe-overlay .roe-roll-prompt-frame.no-phase-headers .combat-phase-header,
-.roe-overlay .roe-roll-prompt-frame.is-compact .combat-phase-section.is-completed,
 .roe-overlay .roe-roll-prompt-frame.is-compact .is-compact-hidden {
     display: none;
 }
@@ -523,13 +283,6 @@
     background: var(--roe-bg-panel);
     font-size: 0.74rem;
     color: var(--roe-text-muted);
-}
-
-.roe-overlay .tactical-flags-grid,
-.roe-overlay .reaction-grid-2x2 {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.3rem;
 }
 
 .roe-overlay .tab-btn {

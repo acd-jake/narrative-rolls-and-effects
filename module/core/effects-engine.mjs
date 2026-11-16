@@ -5,14 +5,11 @@ import { AdapterRegistry } from "./adapter-registry.mjs";
 export class EffectsEngine {
     static #overlayElement = null;
     static #triggeredSessions = new Set();
+    static #presets = new Map();
 
-    static PRESETS = Object.freeze({
-        majorWound: { color: 0xb81414, secondaryColor: 0x5c0505, count: 28, durationMs: 1400, gravity: 0.14, spread: 2.6 },
-        temporaryInsanity: { color: 0x7b2cbf, secondaryColor: 0x240046, count: 36, durationMs: 2000, gravity: -0.06, spread: 3.2 },
-        indefiniteInsanity: { color: 0x4a0e4e, secondaryColor: 0x0d0221, count: 48, durationMs: 2600, gravity: -0.08, spread: 3.8 },
-        mythosSpell: { color: 0x10b981, secondaryColor: 0x064e3b, count: 44, durationMs: 2200, gravity: -0.1, spread: 3.5 },
-        dying: { color: 0x8a1c1c, secondaryColor: 0x1a0000, count: 20, durationMs: 1800, gravity: 0.18, spread: 1.8 }
-    });
+    static registerPreset(presetKey, preset) {
+        this.#presets.set(presetKey, preset);
+    }
 
     static registerHooks() {
         Hooks.once("ready", () => {
@@ -31,7 +28,7 @@ export class EffectsEngine {
         Hooks.on("controlToken", () => this.syncPlayerAtmosphere());
 
         Hooks.on("roeConditionTriggered", (actor, conditionKey) => {
-            if (actor && this.PRESETS[conditionKey]) {
+            if (actor && this.#presets.has(conditionKey)) {
                 this.playEffectOnActorTokens(actor, conditionKey, { broadcast: true });
             }
         });
@@ -116,7 +113,8 @@ export class EffectsEngine {
 
     static playEffectOnActorTokens(actor, presetKey, { broadcast = true } = {}) {
         if (!actor || !canvas?.ready) return;
-        const preset = this.PRESETS[presetKey] ?? this.PRESETS.mythosSpell;
+        const preset = this.#presets.get(presetKey);
+        if (!preset) throw new Error(`Unknown visual effect preset "${presetKey}".`);
         for (const token of actor.getActiveTokens(true)) {
             this.#spawnTokenParticleBurst(token, preset);
         }

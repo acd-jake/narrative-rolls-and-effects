@@ -16,6 +16,8 @@ export class SessionCardRenderer {
         const sys = SessionStore.getSession(message);
         const adapter = AdapterRegistry.active;
         if (!sys) return;
+        const card = html.matches?.(".roe-chat-card") ? html : html.querySelector(".roe-chat-card");
+        if (card) card.dataset.nreSystem = game.system.id;
 
         const participants = sys.participants ?? [];
         const allRolled = participants.length > 0 && participants.every((p) => p.hasRolled);
@@ -24,7 +26,7 @@ export class SessionCardRenderer {
             const actor = SessionStore.resolveActor(p);
             const isOwner = Boolean(actor?.isOwner);
             const opts = !isGM && isOwner && p.hasRolled ? adapter?.evaluateParticipantOptions(p, sys, false) : null;
-            return { ...p, actor, isOwner, hasPendingAction: Boolean(opts?.canSpendLuck) };
+            return { ...p, actor, isOwner, hasPendingAction: Boolean(opts?.hasPendingAction) };
         });
 
         const hasPendingOwnDecision = !isGM && enriched.some((p) => p.isOwner && p.hasPendingAction);
@@ -36,31 +38,12 @@ export class SessionCardRenderer {
             const badge = html.querySelector(`[data-participant-key="${p.key}"] .roll-badge`);
             if (!badge) continue;
 
-            if (p.total === null) {
-                badge.textContent = game.i18n.localize("ROE.Combat.DefenseTabs.none");
-                badge.className = "pending-badge";
-                continue;
-            }
-
             const canViewRoll = RollVisibilityPolicy.canViewParticipantRoll(p, sys);
             const showDetails = canViewRoll && (isGM || p.isOwner || canRevealResults);
-
-            if (!canViewRoll) {
-                badge.textContent = game.i18n.localize("ROE.RollSession.HiddenRoll");
-                badge.className = "pending-badge";
-            } else if (!showDetails) {
-                badge.textContent = game.i18n.localize("ROE.Combat.Card.HiddenUntilOwnRoll");
-                badge.className = "pending-badge";
-            } else if (p.key === "damage") {
-                badge.textContent = `${p.total} (${p.diceFormula})`;
-            } else if (sys.rollType === "other") {
-                badge.textContent = String(p.total);
-            } else {
-                const allowNumbers = isGM || Boolean(p.actor?.testUserPermission(game.user, "OBSERVER"));
-                badge.textContent = adapter
-                    ? adapter.formatRollOutcome({ total: p.total, targetValue: p.targetValue, successLevel: p.successLevel, allowNumbers })
-                    : String(p.total);
-            }
+            const permissions = { isGM, isOwner: p.isOwner, canRevealResults, canViewRoll, showDetails, actor: p.actor };
+            const formattedBadge = adapter?.formatParticipantBadge?.(p, sys, permissions);
+            badge.textContent = formattedBadge?.text ?? (canViewRoll && showDetails ? String(p.total ?? "") : game.i18n.localize("ROE.RollSession.HiddenRoll"));
+            if (formattedBadge?.className) badge.className = formattedBadge.className;
 
             if (showDetails && p.rollBreakdown) {
                 badge.classList.add("is-inspectable");
@@ -75,7 +58,7 @@ export class SessionCardRenderer {
 
         const resultBody = html.querySelector(".result-section .section-body");
         if (resultBody && sys.outcomeHeadline && !canRevealResults) {
-            resultBody.innerHTML = `<div class="pending-badge">${game.i18n.localize("ROE.Combat.Card.AwaitingResolution")}</div>`;
+            resultBody.innerHTML = `<div class="pending-badge">${game.i18n.localize("ROE.RollSession.AwaitingResolution")}</div>`;
             html.querySelector(".result-badge-row")?.remove();
         }
 
@@ -109,14 +92,8 @@ export class SessionCardRenderer {
             })
             .join(" ");
 
-        const levelText = bd.successLevel ? game.i18n.localize(`ROE.SuccessLevels.${bd.successLevel}`) : "";
-        const thresholdHtml = bd.targetValue > 0
-            ? `<div class="inspect-thresholds">
-           <span>${game.i18n.localize("ROE.Difficulty.Regular")}: <strong>${bd.targetValue}</strong></span>
-           <span>${game.i18n.localize("ROE.Difficulty.Hard")}: <strong>${bd.hardThreshold}</strong></span>
-           <span>${game.i18n.localize("ROE.Difficulty.Extreme")}: <strong>${bd.extremeThreshold}</strong></span>
-         </div>`
-            : "";
+        const levelText = AdapterRegistry.active?.formatSuccessLevel?.(bd.successLevel) ?? "";
+        const thresholdHtml = AdapterRegistry.active?.formatInspectionThresholds?.(bd) ?? "";
 
         const box = document.createElement("div");
         box.className = "roll-inspect-box";

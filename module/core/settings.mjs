@@ -6,7 +6,7 @@ export class CoreSettings {
         const soundSettings = [
             { key: "fumbleSound", name: "ROE.Settings.FumbleSound.Name", hint: "ROE.Settings.FumbleSound.Hint" },
             { key: "criticalSound", name: "ROE.Settings.CriticalSound.Name", hint: "ROE.Settings.CriticalSound.Hint" },
-            { key: "lowResourceSound", name: "ROE.Settings.LowSanitySound.Name", hint: "ROE.Settings.LowSanitySound.Hint" }
+            { key: "lowResourceSound", name: "ROE.Settings.LowResourceSound.Name", hint: "ROE.Settings.LowResourceSound.Hint" }
         ];
 
         for (const s of soundSettings) {

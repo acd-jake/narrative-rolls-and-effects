@@ -38,9 +38,8 @@ export class SessionHooks {
             } else {
                 this.#forgetResolvedPrompt(msg.id);
                 Hooks.callAll("roeRollSessionUpdated", msg, session);
-                const needsFollowUp = game.user.isGM && session.pushFailurePending;
-                if (!RollPromptStackManager.hasByCombatMessageId(msg.id)) {
-                    this.#openPromptIfParticipant(msg, needsFollowUp);
+                if (!RollPromptStackManager.hasByMessageId(msg.id)) {
+                    this.#openPromptIfParticipant(msg);
                 }
             }
         });
@@ -98,7 +97,7 @@ export class SessionHooks {
         }
 
         Hooks.callAll("roeRollSessionUpdated", message, session);
-        if (!RollPromptStackManager.hasByCombatMessageId(message.id)) {
+        if (!RollPromptStackManager.hasByMessageId(message.id)) {
             this.#openPromptIfParticipant(message, true);
         }
         const delay = Math.min(duration * 1000, 2147483647);
@@ -108,7 +107,7 @@ export class SessionHooks {
     static #closeResolvedPrompt(messageId) {
         clearTimeout(this.#resolvedTimers.get(messageId));
         this.#resolvedTimers.delete(messageId);
-        RollPromptStackManager.closeByCombatMessageId(messageId);
+        RollPromptStackManager.closeByMessageId(messageId);
     }
 
     static #forgetResolvedPrompt(messageId) {

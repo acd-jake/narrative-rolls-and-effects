@@ -14,16 +14,10 @@ export class UniversalRollOrchestrator {
         SessionHooks.register(this.#mutator);
     }
 
-    // Session-Erstellung (delegiert Payload-Bau an aktiven SystemAdapter)
-    static startBasicOrOtherRoll = (cfg) => SessionStore.create(AdapterRegistry.active.buildSessionPayload("basic", cfg));
-    static startSkillCheck = (cfg) => SessionStore.create(AdapterRegistry.active.buildSessionPayload("skill", cfg));
-    static startCombinedRoll = (cfg) => SessionStore.create(AdapterRegistry.active.buildSessionPayload("combined", cfg));
-    static startOpposedRoll = (cfg) => SessionStore.create(AdapterRegistry.active.buildSessionPayload("opposed", cfg));
-    static startSanityCheck = (cfg) => SessionStore.create(AdapterRegistry.active.buildSessionPayload("sanity", cfg));
-    static startCombatRoll = (cfg) => SessionStore.create(AdapterRegistry.active.buildSessionPayload("combat", cfg));
-    static startRangedRoll = (cfg) => SessionStore.create(AdapterRegistry.active.buildSessionPayload("ranged", cfg));
+    // Session creation delegates payload construction to the active system adapter.
+    static startSystemRoll = (type, cfg) => SessionStore.create(AdapterRegistry.active.buildSessionPayload(type, cfg));
 
-    // Mutationen
+    // Session mutations
     static submitParticipantRoll = (id, key, data) => this.#mutate(id, "submitRoll", key, data);
     static executePostRollAction = (id, key, actionId, payload) => this.#mutate(id, "executePostRollAction", key, actionId, payload);
     static setParticipantModifier = (id, key, mod) => this.#mutate(id, "setModifier", key, mod);

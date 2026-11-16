@@ -37,7 +37,7 @@ export class BasePromptApp extends HandlebarsApplicationMixin(ApplicationV2) {
         return SessionStore.getSession(this.message);
     }
 
-    get combatMessageId() {
+    get messageId() {
         return this._messageId;
     }
 
@@ -49,28 +49,26 @@ export class BasePromptApp extends HandlebarsApplicationMixin(ApplicationV2) {
         const sys = this.session;
         if (!sys || sys.isResolved) return false;
         const adapter = AdapterRegistry.active;
+        const adapterResult = adapter?.hasPendingPlayerAction?.(this, sys);
+        if (adapterResult !== undefined) return Boolean(adapterResult);
 
         return (sys.participants ?? []).some((p) => {
             const actor = SessionStore.resolveActor(p);
             if (!actor?.isOwner) return false;
             if (!p.hasRolled) return true;
             const opts = adapter?.evaluateParticipantOptions(p, sys, false);
-            return Boolean(opts?.canSpendLuck || opts?.canPush);
+            return Boolean(opts?.hasPendingAction);
         });
     }
 
     _getPhases(sys) {
-        if (sys?.pushFailurePending && ["basic", "skill", "combined"].includes(sys.rollType)) {
-            return [
-                { id: "roll", isActive: false, isCompleted: true },
-                { id: "pushConsequences", isActive: true, isCompleted: false }
-            ];
-        }
+        const phases = AdapterRegistry.active?.getPhases?.(sys);
+        if (phases) return phases;
         return [{ id: "roll", isActive: !sys?.isResolved, isCompleted: Boolean(sys?.isResolved) }];
     }
 
     _buildPhaseSummary() {
-        return "";
+        return AdapterRegistry.active?.buildPhaseSummary?.(this.session) ?? "";
     }
 
     async render(options, _options) {
@@ -84,21 +82,18 @@ export class BasePromptApp extends HandlebarsApplicationMixin(ApplicationV2) {
         window: { frame: false, positioned: true },
         actions: {
             setModifier: BasePromptApp._onSetModifier,
-            togglePreparedTactical: BasePromptApp._onTogglePreparedTactical,
             publishPreparedRoll: BasePromptApp._onPublishPreparedRoll,
-            spendLuck: BasePromptApp._onSpendLuck,
-            declineLuck: BasePromptApp._onDeclineLuck,
-            pushRoll: BasePromptApp._onPushRoll,
             resolveSession: BasePromptApp._onResolveSession,
             closePrompt: BasePromptApp._onClosePrompt,
             applyConsequences: BasePromptApp._onApplyConsequences,
-            acknowledgePushFailure: BasePromptApp._onAcknowledgePushFailure,
             toggleDescription: BasePromptApp._onToggleDescription
         }
     };
 
     _onRender(context, options) {
         super._onRender(context, options);
+        this.element.dataset.nreSystem = game.system.id;
+        this.#bindAdapterActions();
 
         if (!this._userDragged) RollPromptStackManager.register(this);
 
@@ -116,7 +111,7 @@ export class BasePromptApp extends HandlebarsApplicationMixin(ApplicationV2) {
                 const val = Math.clamp(Number(ev.target.value) || 0, -2, 2);
                 const effective = Math.clamp(Number(ev.target.dataset.flagBonus || 0) + val, -2, 2);
                 const header = ev.target.closest(".slider-control-block")?.previousElementSibling;
-                if (header) header.textContent = `${game.i18n.localize("ROE.Combat.AdditionalDice")} (${this._formatModifierLabel(effective)})`;
+                if (header) header.textContent = `${game.i18n.localize("ROE.Roll.ModifierDice")} (${this._formatModifierLabel(effective)})`;
             });
             slider.addEventListener("change", (ev) => {
                 const val = Math.clamp(Number(ev.target.value) || 0, -2, 2);
@@ -160,7 +155,7 @@ export class BasePromptApp extends HandlebarsApplicationMixin(ApplicationV2) {
         const phases = sys ? this._getPhases(sys) : [];
         const hasMultiplePhases = phases.length > 1;
         const resolvedParticipants = sys?.isResolved ? this._buildResolvedParticipants(sys) : [];
-        const pushedParticipants = (sys?.participants ?? []).filter((p) => p.isPushed);
+        const canResolve = Boolean(game.user.isGM && allRolled && !sys?.isResolved && adapter?.canResolveSession?.(sys) !== false);
         const theme = game.settings.get(MODULE_ID, "rollPromptTheme");
         const themeColors = {
             "western": "rgba(48, 30, 16, 0.9)",
@@ -174,15 +169,13 @@ export class BasePromptApp extends HandlebarsApplicationMixin(ApplicationV2) {
         };
         const bgColor = themeColors[theme] || themeColors["western"];
 
-        return {
+        const promptContext = {
             ...context,
             isGM: game.user.isGM,
             isResolved: Boolean(sys?.isResolved),
             isPreparingModifiers: Boolean(game.user.isGM && sys?.isPreparingModifiers),
-            showPushFailurePhase: Boolean(game.user.isGM && sys?.pushFailurePending),
-            canViewPushFailure: pushedParticipants.length > 0 && pushedParticipants.every((p) => RollVisibilityPolicy.canViewParticipantRoll(p, sys)),
-            preparationParticipants: this._buildPreparationParticipants(sys),
-            preparationTactics: this._buildPreparationTactics(sys),
+            preparationParticipants: adapter?.buildPreparationParticipants?.(sys) ?? this._buildPreparationParticipants(sys),
+            preparationTactics: adapter?.buildPreparationTactics?.(sys) ?? [],
             resolvedTitle: sys?.title ?? "",
             resolvedParticipants,
             resolvedHeadline: resolvedParticipants.every((p) => p.canView) ? sys?.outcomeHeadline ?? "" : "",
@@ -193,7 +186,7 @@ export class BasePromptApp extends HandlebarsApplicationMixin(ApplicationV2) {
             phaseSummaryText: compactView && sys ? this._buildPhaseSummary(sys) : "",
             allRolled,
             canApplyConsequences: Boolean(game.user.isGM && allRolled && sys?.hasPendingConsequences && !sys?.consequencesApplied && !sys?.isResolved),
-            canResolve: game.user.isGM && allRolled && !sys?.isResolved && !sys?.pushFailurePending,
+            canResolve,
             outcomeHeadline: sys?.outcomeHeadline ?? "",
             promptDescriptions: [],
             hasPromptDescription: false,
@@ -206,27 +199,15 @@ export class BasePromptApp extends HandlebarsApplicationMixin(ApplicationV2) {
             theme,
             themeBackgroundColor: bgColor
         };
+        return adapter?.preparePromptContext?.(this, sys, promptContext) ?? promptContext;
     }
 
     _buildPreparationParticipants(sys) {
         if (!sys?.isPreparingModifiers || sys.rollType === "other") return [];
-        let participants = sys.participants ?? [];
-        if (sys.rollType === "combined") participants = participants.slice(0, 1);
-        if (sys.rollType === "ranged") participants = participants.filter((p) => p.key === "attacker");
-        return participants.map((p) => ({
+        return (sys.participants ?? []).map((p) => ({
             ...p,
-            preparationLabel: sys.rollType === "combined" ? sys.title : p.label,
+            preparationLabel: p.label,
             modifierDisplay: this._formatModifierLabel(p.modifierDice ?? 0)
-        }));
-    }
-
-    _buildPreparationTactics(sys) {
-        if (!sys?.isPreparingModifiers || sys.rollType !== "combat") return [];
-        const map = { outnumbered: "Outnumbered", surprised: "Surprised", proneTarget: "ProneTarget" };
-        return Object.entries(map).map(([key, i18nKey]) => ({
-            key,
-            label: game.i18n.localize(`ROE.Combat.Tactical.${i18nKey}`),
-            active: Boolean(sys.tacticalFlags?.[key])
         }));
     }
 
@@ -235,14 +216,9 @@ export class BasePromptApp extends HandlebarsApplicationMixin(ApplicationV2) {
         return (sys.participants ?? []).map((p) => {
             const canView = RollVisibilityPolicy.canViewParticipantRoll(p, sys);
             let result = game.i18n.localize("ROE.RollSession.HiddenRoll");
-            if (canView && sys.rollType === "ranged" && p.key === "defender") {
-                result = game.i18n.localize(p.tookCover ? "ROE.Ranged.CoverTaken" : "ROE.Ranged.NoCover");
-            } else if (canView && p.total === null) {
-                result = game.i18n.localize("ROE.Combat.DefenseTabs.none");
-            } else if (canView && (sys.rollType === "other" || p.key === "damage")) {
-                result = String(p.total ?? "");
-            } else if (canView) {
-                result = adapter ? adapter.formatRollOutcome(p) : String(p.total ?? "");
+            const formatted = adapter?.formatResolvedParticipant?.(p, sys);
+            if (canView) {
+                result = formatted ?? adapter?.formatRollOutcome?.(p) ?? String(p.total ?? "");
             }
             return { key: p.key, actorName: p.actorName, label: p.label, canView, result };
         });
@@ -260,7 +236,7 @@ export class BasePromptApp extends HandlebarsApplicationMixin(ApplicationV2) {
     _evaluateParticipantOptions(participant, sys) {
         const isDelegated = this._isDelegatedToActivePlayer(participant);
         return AdapterRegistry.active?.evaluateParticipantOptions(participant, sys, isDelegated) ?? {
-            canSpendLuck: false, canPush: false, isDelegatedToPlayer: isDelegated
+            isDelegatedToPlayer: isDelegated
         };
     }
     _formatModifierLabel(mod) {
@@ -278,78 +254,11 @@ export class BasePromptApp extends HandlebarsApplicationMixin(ApplicationV2) {
 
     _formatDiceFormulaLabel(diceArray) {
         if (!Array.isArray(diceArray) || diceArray.length === 0) return "";
-        
-        // Gruppiere die Würfel nach Typ
-        let d10Units = 0;
-        let d10Tens = 0;
-        let bonusCount = 0;
-        let penaltyCount = 0;
-        let otherDice = [];
-
-        for (const die of diceArray) {
-            const label = die.label;
-            if (label === "ROE.Dice.D10Units") {
-                d10Units += die.count || 1;
-            } else if (label === "ROE.Dice.D10Tens") {
-                d10Tens += die.count || 1;
-            } else if (label === "ROE.Roll.BonusDie") {
-                bonusCount += die.count || 1;
-            } else if (label === "ROE.Roll.PenaltyDie") {
-                penaltyCount += die.count || 1;
-            } else {
-                otherDice.push(die);
-            }
-        }
-
-        const parts = [];
-        
-        // Format: "1d10, 2d10 Zehner (1 Bonuswürfel)"
-        if (d10Units > 0) {
-            parts.push(`${d10Units}d10`);
-        }
-
-        if (d10Tens > 0 || bonusCount > 0 || penaltyCount > 0) {
-            // Addiere Bonus/Penalty Würfel zu den Zehner-Würfeln
-            const totalTens = d10Tens + bonusCount + penaltyCount;
-            let tensPart = `${totalTens}d10 Zehner`;
-            
-            // Zeige Bonus/Penalty in Klammern an, falls vorhanden
-            if (bonusCount > 0 || penaltyCount > 0) {
-                const modifiers = [];
-                if (bonusCount > 0) {
-                    const bonusLabel = game.i18n.localize(bonusCount === 1 ? "ROE.Roll.BonusDie" : "ROE.Roll.BonusDice");
-                    modifiers.push(`${bonusCount} ${bonusLabel}`);
-                }
-                if (penaltyCount > 0) {
-                    const penaltyLabel = game.i18n.localize(penaltyCount === 1 ? "ROE.Roll.PenaltyDie" : "ROE.Roll.PenaltyDice");
-                    modifiers.push(`${penaltyCount} ${penaltyLabel}`);
-                }
-                
-                if (modifiers.length > 0) {
-                    tensPart += ` (${modifiers.join(", ")})`;
-                }
-            }
-            
-            parts.push(tensPart);
-        }
-
-        // Andere Würfel wie "3d6, 1d8"
-        for (const die of otherDice) {
-            const count = die.count || 1;
-            
-            if (count > 1) {
-                parts.push(`${count}d${this.#extractDiceSides(die.label)}`);
-            } else {
-                parts.push(`1d${this.#extractDiceSides(die.label)}`);
-            }
-        }
-
-        return parts.join(", ");
-    }
-
-    #extractDiceSides(label) {
-        const matches = label.match(/D(\d+)/i);
-        return matches ? matches[1] : "?";
+        const adapterLabel = AdapterRegistry.active?.formatDiceFormulaLabel?.(diceArray);
+        if (adapterLabel !== undefined) return adapterLabel;
+        return diceArray
+            .map((die) => `${die.count ?? 1} ${game.i18n.localize(die.label)}`)
+            .join(", ");
     }
     _isDelegatedToActivePlayer(participant) {
         if (!game.user.isGM || !participant) return false;
@@ -369,45 +278,8 @@ export class BasePromptApp extends HandlebarsApplicationMixin(ApplicationV2) {
         const next = !Number.isNaN(step) ? Math.clamp(current + step, -2, 2) : current >= 2 ? -2 : current + 1;
         await UniversalRollOrchestrator.setParticipantModifier(this._messageId, first.key, next);
     }
-    static async _onTogglePreparedTactical(event, target) {
-        const sys = this.session;
-        const key = target.dataset.flag;
-        if (!game.user.isGM || !sys?.isPreparingModifiers || !["outnumbered", "surprised", "proneTarget"].includes(key)) return;
-        const tacticalFlags = { ...sys.tacticalFlags, [key]: !sys.tacticalFlags?.[key] };
-        await UniversalRollOrchestrator.updateSessionPatch(this._messageId, { tacticalFlags });
-    }
     static async _onPublishPreparedRoll() {
         if (game.user.isGM) await UniversalRollOrchestrator.publishPreparedRoll(this._messageId);
-    }
-    static async _onSpendLuck(event, target) {
-        const key = target.dataset.key || this.session?.participants?.[0]?.key;
-        const cost = Number(target.dataset.cost);
-        const newLevel = target.dataset.level;
-        if (!key || !cost || !newLevel) return;
-        await UniversalRollOrchestrator.executePostRollAction(this._messageId, key, "spendLuck", { cost, newLevel });
-    }
-    static async _onDeclineLuck(event, target) {
-        const key = target.dataset.key || this.session?.participants?.[0]?.key;
-        if (!key) return;
-        await UniversalRollOrchestrator.executePostRollAction(this._messageId, key, "declineLuck");
-    }
-    static async _onPushRoll(event, target) {
-        const sys = this.session;
-        const key = target.dataset.key || sys?.participants?.[0]?.key;
-        const participant = sys?.participants?.find((e) => e.key === key);
-        if (!participant || !this._evaluateParticipantOptions(participant, sys).canPush) return;
-        const confirmed = await foundry.applications.api.DialogV2.confirm({
-            window: { title: game.i18n.localize("ROE.Roll.PushWarningTitle") },
-            content: `<p>${game.i18n.localize("ROE.Roll.PushWarning")}</p>`,
-            yes: { label: game.i18n.localize("ROE.Roll.PushRoll") },
-            no: { label: game.i18n.localize("ROE.Roll.PushCancel") },
-            rejectClose: false
-        });
-        if (!confirmed) return;
-        const rollData = await AdapterRegistry.active.executePushRoll(this.session, key);
-        if (rollData) {
-            await UniversalRollOrchestrator.executePostRollAction(this._messageId, key, "pushRoll", { rollData });
-        }
     }
     static async _onResolveSession() {
         if (game.user.isGM && this._messageId) await UniversalRollOrchestrator.resolveSession(this._messageId);
@@ -418,8 +290,15 @@ export class BasePromptApp extends HandlebarsApplicationMixin(ApplicationV2) {
     static async _onApplyConsequences() {
         if (game.user.isGM) await UniversalRollOrchestrator.applySessionConsequences(this._messageId);
     }
-    static async _onAcknowledgePushFailure() {
-        if (game.user.isGM) await UniversalRollOrchestrator.executePostRollAction(this._messageId, "p0", "acknowledgePushFailure");
+    #bindAdapterActions() {
+        this.element.addEventListener("click", this.#handleAdapterAction.bind(this));
+    }
+
+    #handleAdapterAction(event) {
+        const target = event.target.closest("[data-action]");
+        const actionName = target?.dataset.action;
+        if (!actionName || this.constructor.DEFAULT_OPTIONS.actions?.[actionName]) return;
+        AdapterRegistry.active?.handlePromptAction?.(this, actionName, event, target);
     }
     static _onToggleDescription(event) {
         event.stopPropagation();
