@@ -5,6 +5,7 @@ import { SessionCardRenderer } from "./card-renderer.mjs";
 import { UniversalRollOrchestrator } from "./orchestrator.mjs";
 import { SessionStore } from "./session-store.mjs";
 import { AdapterRegistry } from "./adapter-registry.mjs";
+import { DiceVisualizer } from "./dice-visualizer.mjs";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
@@ -195,7 +196,7 @@ export class BasePromptApp extends HandlebarsApplicationMixin(ApplicationV2) {
             resultPartial: "roeResultDefault",
             modifierDice: primaryMod,
             modifierDisplay: this._formatModifierLabel(primaryMod),
-            rollDice: adapter?.getDiceVisuals(sys, primaryMod) ?? [],
+            rollDice: DiceVisualizer.getDiceVisuals(sys, primaryMod, adapter),
             theme,
             themeBackgroundColor: bgColor
         };

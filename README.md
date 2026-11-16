@@ -6,12 +6,14 @@ An extensible Foundry VTT v14 module that provides synchronized, multi-phase rol
 
 - Docked `ApplicationV2` roll prompts with synchronized session state.
 - System adapters registered through the `nre.registerAdapters` hook.
+- Core dice visualization and dice-face assets, with adapter-provided extensions for system-specific dice.
 - Declarative prompt class creation and extension through `PromptClassFactory`.
 - GM roll requests, modifier preparation, actor selection, and configurable result presentation.
 - Client-side vignettes, result pulses, screen shake, token particles, and audio cues.
 - System-scoped prompt and chat-card styling through `data-nre-system`.
 
 System-specific rules, templates, and assets are provided by companion modules. The core module does not import system plugins directly.
+Adapters can extend the core dice visuals by implementing `extendDiceVisuals(dice, session, modifierDice)`.
 
 ## Installation
 

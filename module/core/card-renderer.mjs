@@ -1,6 +1,7 @@
 import { SessionStore } from "./session-store.mjs";
 import { RollVisibilityPolicy } from "./visibility-policy.mjs";
 import { AdapterRegistry } from "./adapter-registry.mjs";
+import { DiceVisualizer } from "./dice-visualizer.mjs";
 
 export class SessionCardRenderer {
     static registerHooks() {
@@ -117,9 +118,11 @@ export class SessionCardRenderer {
         if (!adapter) return null;
 
         const isPercentile = Number.isFinite(bd.modifierDice) || (Number(bd.targetValue) > 0 && participant.key !== "damage");
-        const dice = isPercentile
-            ? adapter.getDiceVisuals({ rollType: "skill" }, bd.modifierDice ?? participant.modifierDice ?? 0)
-            : adapter.getDiceVisuals({ rollType: "other", diceFormula: bd.formula }, 0);
+        const session = isPercentile
+            ? { rollType: "skill" }
+            : { rollType: "other", diceFormula: bd.formula };
+        const modifierDice = isPercentile ? bd.modifierDice ?? participant.modifierDice ?? 0 : 0;
+        const dice = DiceVisualizer.getDiceVisuals(session, modifierDice, adapter);
 
         if (!dice?.length) return null;
 

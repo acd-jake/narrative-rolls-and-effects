@@ -8,6 +8,7 @@ import { PromptClassFactory } from "./core/prompt-factory.mjs";
 import { SessionStore } from "./core/session-store.mjs";
 import { RollVisibilityPolicy } from "./core/visibility-policy.mjs";
 import { ActorTargetSelectorApp } from "./core/actor-target-selector-app.mjs";
+import { DiceVisualizer } from "./core/dice-visualizer.mjs";
 
 Hooks.once("init", async () => {
     CoreSettings.register();
@@ -20,6 +21,7 @@ Hooks.once("init", async () => {
         roeRollResolvedResult: `modules/${MODULE_ID}/templates/core/prompts/partials/resolved-roll-result.hbs`,
         roeRollModifierPreparation: `modules/${MODULE_ID}/templates/core/prompts/partials/modifier-preparation.hbs`,
         roeDiceVisuals: `modules/${MODULE_ID}/templates/core/prompts/partials/dice-visuals.hbs`,
+        roeDiceDisplay: `modules/${MODULE_ID}/templates/core/prompts/partials/dice-display.hbs`,
         roePushFailurePhase: `modules/${MODULE_ID}/templates/core/prompts/partials/push-failure-phase.hbs`,
         roePromptDescription: `modules/${MODULE_ID}/templates/core/prompts/partials/prompt-description.hbs`
     });
@@ -32,7 +34,8 @@ Hooks.once("init", async () => {
         orchestrator: UniversalRollOrchestrator,
         visibility: RollVisibilityPolicy,
         effects: EffectsEngine,
-        actorSelector: ActorTargetSelectorApp
+        actorSelector: ActorTargetSelectorApp,
+        diceVisualizer: DiceVisualizer
     });
 });
 
