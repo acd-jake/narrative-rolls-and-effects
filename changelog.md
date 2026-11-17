@@ -12,6 +12,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Adapter-selected modifier-preparation header and details within the core-managed prompt.
 - Formula-based dice visuals and system-registerable particle presets.
 - A shared modifier summary for system prompts.
+- Adapter-selected header and body partials for resolved roll prompts via `getResolvedResultPartials(session)`.
 
 ### Changed
 - The core module now provides system-neutral roll prompts, session handling, and visual effects.

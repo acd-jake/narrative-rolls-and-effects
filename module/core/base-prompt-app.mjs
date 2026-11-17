@@ -159,6 +159,7 @@ export class BasePromptApp extends HandlebarsApplicationMixin(ApplicationV2) {
         const phases = sys ? this._getPhases(sys) : [];
         const hasMultiplePhases = phases.length > 1;
         const modifierPreparationPartials = adapter?.getModifierPreparationPartials?.(sys) ?? {};
+        const resolvedResultPartials = adapter?.getResolvedResultPartials?.(sys) ?? {};
         const resolvedParticipants = sys?.isResolved ? this._buildResolvedParticipants(sys) : [];
         const canResolve = Boolean(game.user.isGM && allRolled && !sys?.isResolved && adapter?.canResolveSession?.(sys) !== false);
         const theme = game.settings.get(MODULE_ID, "rollPromptTheme");
@@ -184,6 +185,8 @@ export class BasePromptApp extends HandlebarsApplicationMixin(ApplicationV2) {
             preparationDifficulties: adapter?.buildPreparationDifficulties?.(sys) ?? [],
             modifierPreparationHeaderPartial: modifierPreparationPartials.header ?? null,
             modifierPreparationDetailsPartial: modifierPreparationPartials.details ?? null,
+            resolvedResultHeaderPartial: resolvedResultPartials.header ?? null,
+            resolvedResultBodyPartial: resolvedResultPartials.body ?? null,
             resolvedTitle: sys?.title ?? "",
             resolvedParticipants,
             resolvedHeadline: resolvedParticipants.every((p) => p.canView) ? sys?.outcomeHeadline ?? "" : "",

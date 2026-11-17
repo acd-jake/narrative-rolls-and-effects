@@ -1,19 +1,29 @@
-<div class="roe-roll-prompt-frame" style="background-color: {{themeBackgroundColor}}; --roe-frame-image: url('/modules/narrative-rolls-and-effects/assets/ui/{{theme}}/frame.svg');">
-    <button type="button" class="prompt-close-btn" data-action="closePrompt" title="{{localize 'ROE.RollSession.Close'}}">
+<div class="roe-roll-prompt-frame"
+    style="background-color: {{themeBackgroundColor}}; --roe-frame-image: url('/modules/narrative-rolls-and-effects/assets/ui/{{theme}}/frame.svg');">
+    <button type="button" class="prompt-close-btn" data-action="closePrompt"
+        title="{{localize 'ROE.RollSession.Close'}}">
         <i class="fa-solid fa-xmark"></i>
     </button>
     <header class="prompt-header prompt-drag-handle">
+        {{#if resolvedResultHeaderPartial}}
+        {{> (lookup . "resolvedResultHeaderPartial")}}
+        {{else}}
         <div class="prompt-skill-name">{{resolvedTitle}}</div>
+        {{/if}}
     </header>
+    {{#if resolvedResultBodyPartial}}
+    {{> (lookup . "resolvedResultBodyPartial")}}
+    {{else}}
     <div class="prompt-sub-box">
         {{#each resolvedParticipants}}
         <div class="combined-check-row">
             <span>{{actorName}}{{#if actorName}}: {{/if}}{{label}}</span>
-            <strong {{#if canView}}data-inspect-key="{{key}}"{{/if}}>{{result}}</strong>
+            <strong {{#if canView}}data-inspect-key="{{key}}" {{/if}}>{{result}}</strong>
         </div>
         {{/each}}
     </div>
     {{#if resolvedHeadline}}
     <div class="prompt-outcome-banner">{{resolvedHeadline}}</div>
+    {{/if}}
     {{/if}}
 </div>
