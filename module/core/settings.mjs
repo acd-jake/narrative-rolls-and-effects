@@ -1,7 +1,9 @@
 import { MODULE_ID } from "./constants.mjs";
 import { RollPromptStackManager } from "./stack-manager.mjs";
 
+/** Registers configuration settings shared by the core roll system. */
 export class CoreSettings {
+    /** Registers all core module settings with Foundry. */
     static register() {
         const soundSettings = [
             { key: "fumbleSound", name: "ROE.Settings.FumbleSound.Name", hint: "ROE.Settings.FumbleSound.Hint" },
@@ -84,6 +86,15 @@ export class CoreSettings {
             config: true,
             type: Boolean,
             default: true
+        });
+
+        game.settings.register(MODULE_ID, "autoResolveCompletedRolls", {
+            name: "ROE.Settings.AutoResolveCompletedRolls.Name",
+            hint: "ROE.Settings.AutoResolveCompletedRolls.Hint",
+            scope: "world",
+            config: true,
+            type: Boolean,
+            default: false
         });
 
         game.settings.register(MODULE_ID, "rollPromptTheme", {

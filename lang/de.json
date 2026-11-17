@@ -65,6 +65,10 @@
                                  "AutoApplyConsequences":  {
                                                                "Name":  "Wurfeffekte automatisch anwenden",
                                                                "Hint":  "Wendet systemabhängige Wurfeffekte automatisch an. Andernfalls kann der Spielleiter sie im Prompt anwenden."
+                                                           },
+                                 "AutoResolveCompletedRolls":  {
+                                                                   "Name":  "Abgeschlossene Proben automatisch auflösen",
+                                                                   "Hint":  "Löst eine Probe automatisch auf, sobald alle Würfe abgeschlossen sind und keine offenen Konsequenzen oder Entscheidungen mehr ausstehen."
                                                            }
                              },
                 "Roll":  {

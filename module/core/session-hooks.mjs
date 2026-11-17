@@ -5,15 +5,17 @@ import { RollPromptStackManager } from "./stack-manager.mjs";
 import { AdapterRegistry } from "./adapter-registry.mjs";
 import { SessionCardRenderer } from "./card-renderer.mjs";
 
+/** Connects session mutations and lifecycle hooks to Foundry events and sockets. */
 export class SessionHooks {
     static #resolvedTimers = new Map();
     static #resolvedSessions = new Set();
 
-    static register(mutator) {
+    /** Registers core hooks and an optional callback for completed GM-side mutations. */
+    static register(mutator, afterMutation = null) {
         SessionCardRenderer.registerHooks();
 
         const mutate = (payload, method, ...args) =>
-            mutator.runSerialized(payload.messageId, () => mutator[method](payload.messageId, ...args));
+            this.#runMutation(mutator, afterMutation, payload, method, args);
 
         SessionTransport.registerGMListener({
             submitUniversalRoll: (p) => mutate(p, "submitRoll", p.participantKey, p.rollData),
@@ -75,6 +77,17 @@ export class SessionHooks {
                 if (SessionStore.isSessionMessage(msg)) this.#openPromptIfParticipant(msg);
             });
         });
+    }
+
+    static async #runMutation(mutator, afterMutation, payload, method, args) {
+        const result = await mutator.runSerialized(
+            payload.messageId,
+            () => mutator[method](payload.messageId, ...args)
+        );
+        if (afterMutation && ["submitRoll", "executePostRollAction"].includes(method)) {
+            await afterMutation(payload.messageId);
+        }
+        return result;
     }
 
     static #showResolvedPrompt(message, session) {

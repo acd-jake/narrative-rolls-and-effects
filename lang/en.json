@@ -65,6 +65,10 @@
                                  "AutoApplyConsequences":  {
                                                                "Name":  "Auto-Apply Roll Effects",
                                                                "Hint":  "Automatically applies system-specific roll effects. When disabled, the GM can apply them from the prompt."
+                                                           },
+                                 "AutoResolveCompletedRolls":  {
+                                                                   "Name":  "Auto-Resolve Completed Rolls",
+                                                                   "Hint":  "Automatically resolves a roll session once all rolls are complete and no pending consequences or decisions remain."
                                                            }
                              },
                 "Roll":  {
