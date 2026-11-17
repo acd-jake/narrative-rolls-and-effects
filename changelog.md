@@ -15,6 +15,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - A shared modifier summary for system prompts.
 - Adapter-selected header and body partials for resolved roll prompts via `getResolvedResultPartials(session)`.
 - Added a bottom-right countdown badge on resolved roll prompts showing the remaining seconds until automatic closing.
+- Client setting (`rollPromptStackDirection`) to stack roll prompts either vertically (bottom to top) or horizontally (from the outer screen edge inward).
 
 ### Changed
 - The core module now provides system-neutral roll prompts, session handling, and visual effects.

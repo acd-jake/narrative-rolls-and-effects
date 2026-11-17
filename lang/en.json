@@ -1,121 +1,129 @@
 {
-    "ROE":  {
-                "Dice":  {
-                             "DiceUsed":  "Dice used",
-                             "Coin":  "D2, coin",
-                             "D4":  "D4",
-                             "D6":  "D6",
-                             "D8":  "D8",
-                             "D10Units":  "D10, units",
-                             "D10Tens":  "D10, tens",
-                             "D12":  "D12",
-                             "D20":  "D20"
-                         },
-                "Settings":  {
-                                 "FumbleSound":  {
-                                                     "Name":  "Fumble Sound",
-                                                     "Hint":  "Audio file played when rolling a Fumble (96–100)."
-                                                 },
-                                 "CriticalSound":  {
-                                                       "Name":  "Critical Success Sound",
-                                                       "Hint":  "Audio file played when rolling a Critical Success (01)."
-                                                   },
-                                 "PlayerPromptPhaseMode":  {
-                                                               "Name":  "Player Roll Prompts",
-                                                               "Hint":  "Controls whether players see all phases of multi-phase roll prompts or only the phase they have to roll for. The GM always sees all phases.",
-                                                               "All":  "Show all phases",
-                                                               "Active":  "Show only own phase"
-                                                           },
-                                 "RollPromptResultDuration":  {
-                                                                  "Name":  "Roll Result Display Duration",
-                                                                  "Hint":  "Number of seconds to display the result after resolution. Set to 0 to close the prompt immediately."
-                                                              },
-                                 "RollPromptWidth":  {
-                                                         "Name":  "Roll Prompt Width (%)",
-                                                         "Hint":  "Sets the width of roll prompt windows as a percentage of screen width."
-                                                     },
-                                 "RollPromptPosition":  {
-                                                            "Name":  "Roll Prompt Position",
-                                                            "Hint":  "Determines where new roll prompts appear on screen.",
-                                                            "Choices":  {
-                                                                            "SidebarLeft":  "Bottom Right (left of the sidebar)",
-                                                                            "PlayersTop":  "Bottom Left (above the players list)"
-                                                                        }
-                                                        },
-                                 "RollPromptTheme":  {
-                                                         "Name":  "Roll Prompt Theme",
-                                                         "Hint":  "Selects the visual theme for roll prompt windows.",
-                                                         "Western":  "Western",
-                                                         "Fantasy":  "Fantasy",
-                                                         "DarkFantasy":  "Dark Fantasy",
-                                                         "Noir":  "Noir",
-                                                         "SciFi":  "Science Fiction",
-                                                         "Cyberpunk":  "Cyberpunk",
-                                                         "CosmicHorror":  "Cosmic Horror",
-                                                         "ArtDeco":  "Art Deco"
-                                                     },
-                                 "LowResourceSound":  {
-                                                          "Name":  "Low Resource Sound",
-                                                          "Hint":  "Local audio cue when a configured actor resource reaches its low-resource threshold."
-                                                      },
-                                 "EnableVisualEffects":  {
-                                                             "Name":  "Enable Visual Effects",
-                                                             "Hint":  "Displays brief screen effects for configured roll outcomes."
-                                                         },
-                                 "AutoApplyConsequences":  {
-                                                               "Name":  "Auto-Apply Roll Effects",
-                                                               "Hint":  "Automatically applies system-specific roll effects. When disabled, the GM can apply them from the prompt."
-                                                           },
-                                 "AutoResolveCompletedRolls":  {
-                                                                   "Name":  "Auto-Resolve Completed Rolls",
-                                                                   "Hint":  "Automatically resolves a roll session once all rolls are complete and no pending consequences or decisions remain."
-                                                           }
-                             },
-                "Roll":  {
-                             "ToggleDescription":  "Show or hide description",
-                             "Execute":  "Roll",
-                             "ClickToInspect":  "Click to inspect roll details",
-                             "ModifierDice":  "Bonus / Penalty Dice",
-                             "BonusDie":  "Bonus Die",
-                             "BonusDice":  "Bonus Dice",
-                             "PenaltyDie":  "Penalty Die",
-                             "PenaltyDice":  "Penalty Dice",
-                             "BonusPenaltyLabel":  "No Modifier",
-                             "NormalRoll":  "Normal Roll",
-                             "DifficultyLabel":  "Difficulty",
-                             "BlindRollOutcome":  "Blind Roll (GM)"
-                         },
-                "RollSession":  {
-                                    "GmOnlyVisibleHint":  "Visible to the Game Master only",
-                                    "ResolveBtn":  "Resolve Session",
-                                    "Close":  "Close",
-                                    "PrepareModifiers":  "Prepare roll modifiers",
-                                    "SendPreparedRoll":  "Release roll",
-                                    "PendingRoll":  "Awaiting roll...",
-                                    "HiddenRoll":  "Hidden Roll",
-                                    "AwaitingResolution":  "Awaiting GM resolution...",
-                                    "Types":  {
-                                                  "basic":  "Check",
-                                                  "other":  "Roll"
-                                              }
-                                },
-                "RollRequest":  {
-                                    "OpenBtn":  "Create Roll Request",
-                                    "WindowTitle":  "Create Roll Request",
-                                    "FormulaLabel":  "Dice Formula",
-                                    "SendBtn":  "Send request"
-                                },
-                "Chat":  {
-                             "ReopenPrompt":  "Continue roll"
-                         },
-                "Warnings":  {
-                                 "NoActiveCharacter":  "No active character selected or assigned."
-                             },
-                "ActorSelector":  {
-                                      "WindowTitle":  "Select Actors for Check",
-                                      "ToggleAllPCs":  "All PCs",
-                                      "ToggleAllNPCs":  "All NPCs",
-                                      "Confirm":  "Start roll"
-                                  }
+    "ROE": {
+        "Dice": {
+            "DiceUsed": "Dice used",
+            "Coin": "D2, coin",
+            "D4": "D4",
+            "D6": "D6",
+            "D8": "D8",
+            "D10Units": "D10, units",
+            "D10Tens": "D10, tens",
+            "D12": "D12",
+            "D20": "D20"
+        },
+        "Settings": {
+            "FumbleSound": {
+                "Name": "Fumble Sound",
+                "Hint": "Audio file played when rolling a Fumble (96–100)."
+            },
+            "CriticalSound": {
+                "Name": "Critical Success Sound",
+                "Hint": "Audio file played when rolling a Critical Success (01)."
+            },
+            "PlayerPromptPhaseMode": {
+                "Name": "Player Roll Prompts",
+                "Hint": "Controls whether players see all phases of multi-phase roll prompts or only the phase they have to roll for. The GM always sees all phases.",
+                "All": "Show all phases",
+                "Active": "Show only own phase"
+            },
+            "RollPromptStackDirection": {
+                "Name": "Roll Prompt Stack Direction",
+                "Hint": "Determines whether multiple roll prompts stack vertically (bottom to top) or horizontally (from the outer edge inward).",
+                "Choices": {
+                    "Vertical": "Vertical (bottom to top)",
+                    "Horizontal": "Horizontal (outer edge inward)"
+                }
+            },
+            "RollPromptResultDuration": {
+                "Name": "Roll Result Display Duration",
+                "Hint": "Number of seconds to display the result after resolution. Set to 0 to close the prompt immediately."
+            },
+            "RollPromptWidth": {
+                "Name": "Roll Prompt Width (%)",
+                "Hint": "Sets the width of roll prompt windows as a percentage of screen width."
+            },
+            "RollPromptPosition": {
+                "Name": "Roll Prompt Position",
+                "Hint": "Determines where new roll prompts appear on screen.",
+                "Choices": {
+                    "SidebarLeft": "Bottom Right (left of the sidebar)",
+                    "PlayersTop": "Bottom Left (above the players list)"
+                }
+            },
+            "RollPromptTheme": {
+                "Name": "Roll Prompt Theme",
+                "Hint": "Selects the visual theme for roll prompt windows.",
+                "Western": "Western",
+                "Fantasy": "Fantasy",
+                "DarkFantasy": "Dark Fantasy",
+                "Noir": "Noir",
+                "SciFi": "Science Fiction",
+                "Cyberpunk": "Cyberpunk",
+                "CosmicHorror": "Cosmic Horror",
+                "ArtDeco": "Art Deco"
+            },
+            "LowResourceSound": {
+                "Name": "Low Resource Sound",
+                "Hint": "Local audio cue when a configured actor resource reaches its low-resource threshold."
+            },
+            "EnableVisualEffects": {
+                "Name": "Enable Visual Effects",
+                "Hint": "Displays brief screen effects for configured roll outcomes."
+            },
+            "AutoApplyConsequences": {
+                "Name": "Auto-Apply Roll Effects",
+                "Hint": "Automatically applies system-specific roll effects. When disabled, the GM can apply them from the prompt."
+            },
+            "AutoResolveCompletedRolls": {
+                "Name": "Auto-Resolve Completed Rolls",
+                "Hint": "Automatically resolves a roll session once all rolls are complete and no pending consequences or decisions remain."
             }
+        },
+        "Roll": {
+            "ToggleDescription": "Show or hide description",
+            "Execute": "Roll",
+            "ClickToInspect": "Click to inspect roll details",
+            "ModifierDice": "Bonus / Penalty Dice",
+            "BonusDie": "Bonus Die",
+            "BonusDice": "Bonus Dice",
+            "PenaltyDie": "Penalty Die",
+            "PenaltyDice": "Penalty Dice",
+            "BonusPenaltyLabel": "No Modifier",
+            "NormalRoll": "Normal Roll",
+            "DifficultyLabel": "Difficulty",
+            "BlindRollOutcome": "Blind Roll (GM)"
+        },
+        "RollSession": {
+            "GmOnlyVisibleHint": "Visible to the Game Master only",
+            "ResolveBtn": "Resolve Session",
+            "Close": "Close",
+            "PrepareModifiers": "Prepare roll modifiers",
+            "SendPreparedRoll": "Release roll",
+            "PendingRoll": "Awaiting roll...",
+            "HiddenRoll": "Hidden Roll",
+            "AwaitingResolution": "Awaiting GM resolution...",
+            "Types": {
+                "basic": "Check",
+                "other": "Roll"
+            }
+        },
+        "RollRequest": {
+            "OpenBtn": "Create Roll Request",
+            "WindowTitle": "Create Roll Request",
+            "FormulaLabel": "Dice Formula",
+            "SendBtn": "Send request"
+        },
+        "Chat": {
+            "ReopenPrompt": "Continue roll"
+        },
+        "Warnings": {
+            "NoActiveCharacter": "No active character selected or assigned."
+        },
+        "ActorSelector": {
+            "WindowTitle": "Select Actors for Check",
+            "ToggleAllPCs": "All PCs",
+            "ToggleAllNPCs": "All NPCs",
+            "Confirm": "Start roll"
+        }
+    }
 }

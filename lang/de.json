@@ -1,121 +1,129 @@
 {
-    "ROE":  {
-                "Dice":  {
-                             "DiceUsed":  "Verwendete Würfel",
-                             "Coin":  "D2, Münze",
-                             "D4":  "D4",
-                             "D6":  "D6",
-                             "D8":  "D8",
-                             "D10Units":  "D10, Einerstellen",
-                             "D10Tens":  "D10, Zehnerstellen",
-                             "D12":  "D12",
-                             "D20":  "D20"
-                         },
-                "Settings":  {
-                                 "FumbleSound":  {
-                                                     "Name":  "Sound bei Patzer",
-                                                     "Hint":  "Audiodatei, die bei einem Patzer (96-100) abgespielt wird."
-                                                 },
-                                 "CriticalSound":  {
-                                                       "Name":  "Sound bei Kritischem Erfolg",
-                                                       "Hint":  "Audiodatei, die bei einem Kritischen Erfolg (01) abgespielt wird."
-                                                   },
-                                 "PlayerPromptPhaseMode":  {
-                                                               "Name":  "Wurfprompts der Spieler",
-                                                               "Hint":  "Legt fest, ob Spieler in mehrphasigen Wurfprompts alle Phasen sehen oder nur die, für die sie würfeln müssen. Der GM sieht immer alle Phasen.",
-                                                               "All":  "Alle Phasen anzeigen",
-                                                               "Active":  "Nur die eigene Phase anzeigen"
-                                                           },
-                                 "RollPromptResultDuration":  {
-                                                                  "Name":  "Anzeigedauer für Probenergebnisse",
-                                                                  "Hint":  "Wie viele Sekunden das Ergebnis nach der Auflösung angezeigt wird. 0 schließt den Prompt sofort."
-                                                              },
-                                 "RollPromptWidth":  {
-                                                         "Name":  "Breite der Proben-Fenster (%)",
-                                                         "Hint":  "Legt die Breite der Proben-Aufforderungen als Prozentsatz der Bildschirmbreite fest."
-                                                     },
-                                 "RollPromptPosition":  {
-                                                            "Name":  "Position der Proben-Fenster",
-                                                            "Hint":  "Bestimmt, wo neue Proben-Aufforderungen auf dem Bildschirm erscheinen.",
-                                                            "Choices":  {
-                                                                            "SidebarLeft":  "Unten rechts (links neben der Seitenleiste)",
-                                                                            "PlayersTop":  "Unten links (oberhalb der Spielerliste)"
-                                                                        }
-                                                        },
-                                 "RollPromptTheme":  {
-                                                         "Name":  "Thema für Wurf-Prompts",
-                                                         "Hint":  "Wählt das visuelle Thema für die Wurf-Prompt-Fenster.",
-                                                         "Western":  "Western",
-                                                         "Fantasy":  "Fantasy",
-                                                         "DarkFantasy":  "Dark Fantasy",
-                                                         "Noir":  "Noir",
-                                                         "SciFi":  "Science Fiction",
-                                                         "Cyberpunk":  "Cyberpunk",
-                                                         "CosmicHorror":  "Cosmic Horror",
-                                                         "ArtDeco":  "Art Deco"
-                                                     },
-                                 "LowResourceSound":  {
-                                                          "Name":  "Sound bei niedrigem Ressourcenwert",
-                                                          "Hint":  "Lokaler Sound, wenn eine konfigurierte Akteursressource den niedrigen Schwellenwert erreicht."
-                                                      },
-                                 "EnableVisualEffects":  {
-                                                             "Name":  "Visuelle Effekte aktivieren",
-                                                             "Hint":  "Zeigt kurze Bildschirmeffekte für konfigurierte Würfelergebnisse."
-                                                         },
-                                 "AutoApplyConsequences":  {
-                                                               "Name":  "Wurfeffekte automatisch anwenden",
-                                                               "Hint":  "Wendet systemabhängige Wurfeffekte automatisch an. Andernfalls kann der Spielleiter sie im Prompt anwenden."
-                                                           },
-                                 "AutoResolveCompletedRolls":  {
-                                                                   "Name":  "Abgeschlossene Proben automatisch auflösen",
-                                                                   "Hint":  "Löst eine Probe automatisch auf, sobald alle Würfe abgeschlossen sind und keine offenen Konsequenzen oder Entscheidungen mehr ausstehen."
-                                                           }
-                             },
-                "Roll":  {
-                             "ToggleDescription":  "Beschreibung ein- oder ausblenden",
-                             "Execute":  "Würfeln",
-                             "ClickToInspect":  "Klicken, um Würfeldetails anzuzeigen",
-                             "ModifierDice":  "Bonus- / Strafwürfel",
-                             "BonusDie":  "Bonuswürfel",
-                             "BonusDice":  "Bonuswürfel",
-                             "PenaltyDie":  "Strafwürfel",
-                             "PenaltyDice":  "Strafwürfel",
-                             "BonusPenaltyLabel":  "Keine Modifikation",
-                             "NormalRoll":  "Normaler Wurf",
-                             "DifficultyLabel":  "Schwierigkeitsgrad",
-                             "BlindRollOutcome":  "Verdeckter Wurf (SL)"
-                         },
-                "RollSession":  {
-                                    "GmOnlyVisibleHint":  "Nur für den Spielleiter sichtbar",
-                                    "ResolveBtn":  "Probe auflösen",
-                                    "Close":  "Schließen",
-                                    "PrepareModifiers":  "Wurfmodifikatoren vorbereiten",
-                                    "SendPreparedRoll":  "Probe freigeben",
-                                    "PendingRoll":  "Wartet auf Wurf...",
-                                    "HiddenRoll":  "Verdeckter Wurf",
-                                    "AwaitingResolution":  "Wartet auf Auflösung durch SL...",
-                                    "Types":  {
-                                                  "basic":  "Probe",
-                                                  "other":  "Wurf"
-                                              }
-                                },
-                "RollRequest":  {
-                                    "OpenBtn":  "Wurfanforderung erstellen",
-                                    "WindowTitle":  "Wurfanforderung erstellen",
-                                    "FormulaLabel":  "Würfelformel",
-                                    "SendBtn":  "Anforderung senden"
-                                },
-                "Chat":  {
-                             "ReopenPrompt":  "Wurf fortsetzen"
-                         },
-                "Warnings":  {
-                                 "NoActiveCharacter":  "Kein aktiver Charakter ausgewählt oder zugewiesen."
-                             },
-                "ActorSelector":  {
-                                      "WindowTitle":  "Akteure für Probe auswählen",
-                                      "ToggleAllPCs":  "Alle SC",
-                                      "ToggleAllNPCs":  "Alle NSC",
-                                      "Confirm":  "Probe starten"
-                                  }
+    "ROE": {
+        "Dice": {
+            "DiceUsed": "Verwendete Würfel",
+            "Coin": "D2, Münze",
+            "D4": "D4",
+            "D6": "D6",
+            "D8": "D8",
+            "D10Units": "D10, Einerstellen",
+            "D10Tens": "D10, Zehnerstellen",
+            "D12": "D12",
+            "D20": "D20"
+        },
+        "Settings": {
+            "FumbleSound": {
+                "Name": "Sound bei Patzer",
+                "Hint": "Audiodatei, die bei einem Patzer (96-100) abgespielt wird."
+            },
+            "CriticalSound": {
+                "Name": "Sound bei Kritischem Erfolg",
+                "Hint": "Audiodatei, die bei einem Kritischen Erfolg (01) abgespielt wird."
+            },
+            "PlayerPromptPhaseMode": {
+                "Name": "Wurfprompts der Spieler",
+                "Hint": "Legt fest, ob Spieler in mehrphasigen Wurfprompts alle Phasen sehen oder nur die, für die sie würfeln müssen. Der GM sieht immer alle Phasen.",
+                "All": "Alle Phasen anzeigen",
+                "Active": "Nur die eigene Phase anzeigen"
+            },
+            "RollPromptResultDuration": {
+                "Name": "Anzeigedauer für Probenergebnisse",
+                "Hint": "Wie viele Sekunden das Ergebnis nach der Auflösung angezeigt wird. 0 schließt den Prompt sofort."
+            },
+            "RollPromptWidth": {
+                "Name": "Breite der Proben-Fenster (%)",
+                "Hint": "Legt die Breite der Proben-Aufforderungen als Prozentsatz der Bildschirmbreite fest."
+            },
+            "RollPromptPosition": {
+                "Name": "Position der Proben-Fenster",
+                "Hint": "Bestimmt, wo neue Proben-Aufforderungen auf dem Bildschirm erscheinen.",
+                "Choices": {
+                    "SidebarLeft": "Unten rechts (links neben der Seitenleiste)",
+                    "PlayersTop": "Unten links (oberhalb der Spielerliste)"
+                }
+            },
+            "RollPromptStackDirection": {
+                "Name": "Stapelrichtung der Proben-Fenster",
+                "Hint": "Legt fest, ob mehrere Proben-Fenster vertikal (von unten nach oben) oder horizontal (von außen zur Bildschirmmitte) gestapelt werden.",
+                "Choices": {
+                    "Vertical": "Vertikal (von unten nach oben)",
+                    "Horizontal": "Horizontal (von außen nach innen)"
+                }
+            },
+            "RollPromptTheme": {
+                "Name": "Thema für Wurf-Prompts",
+                "Hint": "Wählt das visuelle Thema für die Wurf-Prompt-Fenster.",
+                "Western": "Western",
+                "Fantasy": "Fantasy",
+                "DarkFantasy": "Dark Fantasy",
+                "Noir": "Noir",
+                "SciFi": "Science Fiction",
+                "Cyberpunk": "Cyberpunk",
+                "CosmicHorror": "Cosmic Horror",
+                "ArtDeco": "Art Deco"
+            },
+            "LowResourceSound": {
+                "Name": "Sound bei niedrigem Ressourcenwert",
+                "Hint": "Lokaler Sound, wenn eine konfigurierte Akteursressource den niedrigen Schwellenwert erreicht."
+            },
+            "EnableVisualEffects": {
+                "Name": "Visuelle Effekte aktivieren",
+                "Hint": "Zeigt kurze Bildschirmeffekte für konfigurierte Würfelergebnisse."
+            },
+            "AutoApplyConsequences": {
+                "Name": "Wurfeffekte automatisch anwenden",
+                "Hint": "Wendet systemabhängige Wurfeffekte automatisch an. Andernfalls kann der Spielleiter sie im Prompt anwenden."
+            },
+            "AutoResolveCompletedRolls": {
+                "Name": "Abgeschlossene Proben automatisch auflösen",
+                "Hint": "Löst eine Probe automatisch auf, sobald alle Würfe abgeschlossen sind und keine offenen Konsequenzen oder Entscheidungen mehr ausstehen."
             }
+        },
+        "Roll": {
+            "ToggleDescription": "Beschreibung ein- oder ausblenden",
+            "Execute": "Würfeln",
+            "ClickToInspect": "Klicken, um Würfeldetails anzuzeigen",
+            "ModifierDice": "Bonus- / Strafwürfel",
+            "BonusDie": "Bonuswürfel",
+            "BonusDice": "Bonuswürfel",
+            "PenaltyDie": "Strafwürfel",
+            "PenaltyDice": "Strafwürfel",
+            "BonusPenaltyLabel": "Keine Modifikation",
+            "NormalRoll": "Normaler Wurf",
+            "DifficultyLabel": "Schwierigkeitsgrad",
+            "BlindRollOutcome": "Verdeckter Wurf (SL)"
+        },
+        "RollSession": {
+            "GmOnlyVisibleHint": "Nur für den Spielleiter sichtbar",
+            "ResolveBtn": "Probe auflösen",
+            "Close": "Schließen",
+            "PrepareModifiers": "Wurfmodifikatoren vorbereiten",
+            "SendPreparedRoll": "Probe freigeben",
+            "PendingRoll": "Wartet auf Wurf...",
+            "HiddenRoll": "Verdeckter Wurf",
+            "AwaitingResolution": "Wartet auf Auflösung durch SL...",
+            "Types": {
+                "basic": "Probe",
+                "other": "Wurf"
+            }
+        },
+        "RollRequest": {
+            "OpenBtn": "Wurfanforderung erstellen",
+            "WindowTitle": "Wurfanforderung erstellen",
+            "FormulaLabel": "Würfelformel",
+            "SendBtn": "Anforderung senden"
+        },
+        "Chat": {
+            "ReopenPrompt": "Wurf fortsetzen"
+        },
+        "Warnings": {
+            "NoActiveCharacter": "Kein aktiver Charakter ausgewählt oder zugewiesen."
+        },
+        "ActorSelector": {
+            "WindowTitle": "Akteure für Probe auswählen",
+            "ToggleAllPCs": "Alle SC",
+            "ToggleAllNPCs": "Alle NSC",
+            "Confirm": "Probe starten"
+        }
+    }
 }

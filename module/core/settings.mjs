@@ -79,6 +79,20 @@ export class CoreSettings {
             onChange: () => RollPromptStackManager.reflow()
         });
 
+        game.settings.register(MODULE_ID, "rollPromptStackDirection", {
+            name: "ROE.Settings.RollPromptStackDirection.Name",
+            hint: "ROE.Settings.RollPromptStackDirection.Hint",
+            scope: "client",
+            config: true,
+            type: String,
+            choices: {
+                vertical: "ROE.Settings.RollPromptStackDirection.Choices.Vertical",
+                horizontal: "ROE.Settings.RollPromptStackDirection.Choices.Horizontal"
+            },
+            default: "vertical",
+            onChange: () => RollPromptStackManager.reflow()
+        });
+
         game.settings.register(MODULE_ID, "autoApplyRollConsequences", {
             name: "ROE.Settings.AutoApplyConsequences.Name",
             hint: "ROE.Settings.AutoApplyConsequences.Hint",

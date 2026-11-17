@@ -74,25 +74,78 @@ export class RollPromptStackManager {
      * Positions and sizes all currently docked prompts from bottom to top,
      * keeping the newest prompt at the very bottom.
      */
+    /**
+     * Positions and sizes all currently docked prompts according to the configured
+     * stack direction, keeping the newest prompt at the anchor corner.
+     */
     static reflow() {
         const apps = Array.from(this.#dockedApps).filter((app) => app.element);
         if (apps.length === 0) return;
 
         const width = this.#computeTargetWidth();
-        const { left, bottomStart } = this.#computeAnchorCoordinates(width);
+        const anchor = this.#computeAnchorCoordinates(width);
+        const direction = game.settings?.get(MODULE_ID, "rollPromptStackDirection") ?? "vertical";
+
+        if (direction === "horizontal") {
+            this.#reflowHorizontal(apps, width, anchor);
+            return;
+        }
+        this.#reflowVertical(apps, width, anchor);
+    }
+
+    static #reflowVertical(apps, width, { left, bottomStart }) {
         let currentBottom = bottomStart;
 
         for (let i = apps.length - 1; i >= 0; i--) {
             const app = apps[i];
-            // Apply width first so height calculation reflects text wrapping accurately
             app.setPosition({ width });
 
-            const rect = app.element.getBoundingClientRect();
-            const height = rect.height || 180;
+            const height = app.element.getBoundingClientRect().height || 180;
             const top = Math.max(12, Math.round(currentBottom - height));
 
             app.setPosition({ left, top, width });
             currentBottom = top - this.STACK_GAP;
+        }
+    }
+
+    static #reflowHorizontal(apps, width, { positionMode, left, rightEdge, bottomStart }) {
+        const goesRight = positionMode === "players-top";
+        const minX = this.MARGIN;
+        const maxX = rightEdge;
+        let currentX = goesRight ? left : rightEdge - width;
+        let currentBottom = bottomStart;
+        let rowMaxHeight = 0;
+
+        for (let i = apps.length - 1; i >= 0; i--) {
+            const app = apps[i];
+            app.setPosition({ width });
+
+            const rect = app.element.getBoundingClientRect();
+            const actualWidth = Math.max(width, Math.round(rect.width || width));
+            const height = rect.height || 180;
+
+            if (!goesRight && i === apps.length - 1) {
+                currentX = rightEdge - actualWidth;
+            }
+
+            const overflowsRow = goesRight
+                ? currentX + actualWidth > maxX && currentX > minX
+                : currentX < minX && currentX + actualWidth < maxX;
+
+            if (overflowsRow) {
+                currentBottom = Math.max(12, Math.round(currentBottom - rowMaxHeight - this.STACK_GAP));
+                rowMaxHeight = 0;
+                currentX = goesRight ? left : rightEdge - actualWidth;
+            }
+
+            const clampedLeft = Math.max(minX, Math.round(currentX));
+            const top = Math.max(12, Math.round(currentBottom - height));
+            app.setPosition({ left: clampedLeft, top, width });
+
+            rowMaxHeight = Math.max(rowMaxHeight, height);
+            currentX = goesRight
+                ? clampedLeft + actualWidth + this.STACK_GAP
+                : clampedLeft - actualWidth - this.STACK_GAP;
         }
     }
 
@@ -118,17 +171,20 @@ export class RollPromptStackManager {
         if (positionMode === "players-top") {
             const playersEl = document.getElementById("players");
             const rect = playersEl?.getBoundingClientRect();
-            const left = rect ? Math.round(rect.left) : this.MARGIN;
+            const left = Math.max(12, rect ? Math.round(rect.left) : this.MARGIN);
             const bottomStart = rect ? Math.round(rect.top - this.STACK_GAP) : window.innerHeight - 60;
-            return { left: Math.max(12, left), bottomStart };
+            const sidebar = document.getElementById("sidebar");
+            const rightEdge = Math.round((sidebar ? sidebar.getBoundingClientRect().left : window.innerWidth) - this.MARGIN);
+            return { positionMode, left, rightEdge, bottomStart };
         }
 
         // Default: "sidebar-left"
         const sidebar = document.getElementById("sidebar");
         const sidebarLeft = sidebar ? sidebar.getBoundingClientRect().left : window.innerWidth;
-        const left = Math.max(12, Math.round(sidebarLeft - width - this.MARGIN));
+        const rightEdge = Math.round(sidebarLeft - this.MARGIN);
+        const left = Math.max(12, Math.round(rightEdge - width));
         const bottomStart = window.innerHeight - this.MARGIN;
 
-        return { left, bottomStart };
+        return { positionMode, left, rightEdge, bottomStart };
     }
 }
