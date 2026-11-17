@@ -1,4 +1,4 @@
-<div class="roe-roll-prompt-frame"
+<div class="roe-roll-prompt-frame is-resolved"
     style="background-color: {{themeBackgroundColor}}; --roe-frame-image: url('/modules/narrative-rolls-and-effects/assets/ui/{{theme}}/frame.svg');">
     <button type="button" class="prompt-close-btn" data-action="closePrompt"
         title="{{localize 'ROE.RollSession.Close'}}">
@@ -25,5 +25,9 @@
     {{#if resolvedHeadline}}
     <div class="prompt-outcome-banner">{{resolvedHeadline}}</div>
     {{/if}}
+    {{/if}}
+
+    {{#if showAutoCloseCountdown}}
+    <span class="prompt-autoclose-badge" aria-live="off">{{autoCloseSecondsRemaining}}s</span>
     {{/if}}
 </div>

@@ -566,3 +566,20 @@
     padding: 0.3rem 0.4rem;
     font-size: 0.8rem;
 }
+
+.roe-overlay .roe-roll-prompt-frame > .prompt-autoclose-badge {
+    position: absolute;
+    bottom: 5px;
+    right: 6px;
+    z-index: 2;
+    padding: 0.08rem 0.34rem;
+    background: var(--roe-bg-deep);
+    border: 1px solid var(--roe-gold-dim);
+    color: var(--roe-text-muted);
+    font-family: var(--roe-font-display);
+    font-size: 0.66rem;
+    font-weight: bold;
+    line-height: 1.2;
+    letter-spacing: 0.03em;
+    pointer-events: none;
+}

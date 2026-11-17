@@ -6,6 +6,7 @@ import { UniversalRollOrchestrator } from "./orchestrator.mjs";
 import { SessionStore } from "./session-store.mjs";
 import { AdapterRegistry } from "./adapter-registry.mjs";
 import { DiceVisualizer } from "./dice-visualizer.mjs";
+import { SessionHooks } from "./session-hooks.mjs";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
@@ -16,6 +17,8 @@ export class BasePromptApp extends HandlebarsApplicationMixin(ApplicationV2) {
     #updateHookId;
     #adapterActionElement = null;
     #adapterActionHandler;
+    #countdownIntervalId = null;
+    #countdownDeadline = null;
 
     constructor({ messageId }, options = {}) {
         super(options);
@@ -92,14 +95,16 @@ export class BasePromptApp extends HandlebarsApplicationMixin(ApplicationV2) {
 
         if (!this._userDragged) RollPromptStackManager.register(this);
 
-        const handle = this.element.querySelector(".prompt-drag-handle");
-        if (handle && !handle.dataset.dragBound) {
-            handle.dataset.dragBound = "true";
-            handle.addEventListener("pointerdown", () => {
-                this._userDragged = true;
-                RollPromptStackManager.unregister(this);
-            });
-        }
+      const handle = this.element.querySelector(".prompt-drag-handle");
+      if (handle && !handle.dataset.dragBound) {
+          handle.dataset.dragBound = "true";
+          handle.addEventListener("pointerdown", () => {
+              this._userDragged = true;
+              RollPromptStackManager.unregister(this);
+              SessionHooks.cancelResolvedTimer(this._messageId);
+              this.#clearAutoCloseCountdown(true);
+          });
+      }
 
         this.element.querySelectorAll("input[name='modifierSlider']").forEach((slider) => {
             slider.addEventListener("input", (ev) => {
@@ -128,6 +133,8 @@ export class BasePromptApp extends HandlebarsApplicationMixin(ApplicationV2) {
                 SessionCardRenderer.toggleBreakdownForElement(el.parentElement, participant);
             });
         });
+
+        this.#syncAutoCloseCountdown();
     }
 
     async _onModifierSliderChange(val, participantKey) {
@@ -171,6 +178,16 @@ export class BasePromptApp extends HandlebarsApplicationMixin(ApplicationV2) {
             ? (adapter?.getPlayerWaitingHint?.(sys) || game.i18n.localize("ROE.RollSession.AwaitingResolution"))
             : "";
 
+      const configuredDuration = Number(game.settings.get(MODULE_ID, "rollPromptResultDuration"));
+      const durationSeconds = Number.isFinite(configuredDuration) ? Math.max(0, Math.round(configuredDuration)) : 10;
+      if (sys?.isResolved && durationSeconds > 0 && !this._userDragged && !this.#countdownDeadline) {
+          this.#countdownDeadline = Date.now() + durationSeconds * 1000;
+      }
+      const remainingSeconds = !this._userDragged && this.#countdownDeadline
+          ? Math.max(0, Math.ceil((this.#countdownDeadline - Date.now()) / 1000))
+          : 0;
+
+            
         const promptContext = {
             ...context,
             isGM: game.user.isGM,
@@ -205,6 +222,9 @@ export class BasePromptApp extends HandlebarsApplicationMixin(ApplicationV2) {
             modifierDice: primaryMod,
             modifierDisplay: this._formatModifierLabel(primaryMod),
             rollDice: DiceVisualizer.getDiceVisuals(sys, primaryMod),
+          showAutoCloseCountdown: Boolean(sys?.isResolved && !this._userDragged && durationSeconds > 0 && remainingSeconds > 0),
+          autoCloseSecondsRemaining: remainingSeconds,
+
             theme,
             themeBackgroundColor: bgColor
         };
@@ -241,6 +261,8 @@ export class BasePromptApp extends HandlebarsApplicationMixin(ApplicationV2) {
         Hooks.off("roeRollSessionUpdated", this.#updateHookId);
         this.#adapterActionElement?.removeEventListener("click", this.#adapterActionHandler);
         this.#adapterActionElement = null;
+        this.#clearAutoCloseCountdown();
+
         RollPromptStackManager.untrack(this);
         return super.close(options);
     }
@@ -324,4 +346,37 @@ export class BasePromptApp extends HandlebarsApplicationMixin(ApplicationV2) {
             window.setTimeout(() => RollPromptStackManager.reflow(), PROMPT_DESCRIPTION_TRANSITION_MS + 20);
         }
     }
+
+    #syncAutoCloseCountdown() {
+        const badge = this.element?.querySelector(".prompt-autoclose-badge");
+        if (!badge || !this.#countdownDeadline) {
+            this.#clearAutoCloseCountdown();
+            return;
+        }
+        if (this.#countdownIntervalId) return;
+        this.#countdownIntervalId = window.setInterval(() => this.#tickAutoCloseCountdown(), 250);
+    }
+
+    #tickAutoCloseCountdown() {
+        const badge = this.element?.querySelector(".prompt-autoclose-badge");
+        if (!badge || !this.#countdownDeadline) {
+            this.#clearAutoCloseCountdown();
+            return;
+        }
+        const remaining = Math.max(0, Math.ceil((this.#countdownDeadline - Date.now()) / 1000));
+        badge.textContent = `${remaining}s`;
+        if (remaining <= 0) this.#clearAutoCloseCountdown();
+    }
+
+  #clearAutoCloseCountdown(removeBadge = false) {
+      if (this.#countdownIntervalId) {
+          window.clearInterval(this.#countdownIntervalId);
+          this.#countdownIntervalId = null;
+      }
+      this.#countdownDeadline = null;
+      if (removeBadge) {
+          this.element?.querySelector(".prompt-autoclose-badge")?.remove();
+      }
+  }
+
 }

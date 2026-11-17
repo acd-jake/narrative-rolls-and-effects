@@ -79,6 +79,13 @@ export class SessionHooks {
         });
     }
 
+    /** Stops the scheduled auto-close timer for a resolved prompt without closing it. */
+    static cancelResolvedTimer(messageId) {
+        clearTimeout(this.#resolvedTimers.get(messageId));
+        this.#resolvedTimers.delete(messageId);
+    }
+
+
     static async #runMutation(mutator, afterMutation, payload, method, args) {
         const result = await mutator.runSerialized(
             payload.messageId,

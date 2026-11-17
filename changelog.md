@@ -14,6 +14,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Formula-based dice visuals and system-registerable particle presets.
 - A shared modifier summary for system prompts.
 - Adapter-selected header and body partials for resolved roll prompts via `getResolvedResultPartials(session)`.
+- Added a bottom-right countdown badge on resolved roll prompts showing the remaining seconds until automatic closing.
 
 ### Changed
 - The core module now provides system-neutral roll prompts, session handling, and visual effects.

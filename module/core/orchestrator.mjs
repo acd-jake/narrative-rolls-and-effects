@@ -40,7 +40,7 @@ export class UniversalRollOrchestrator {
     }
 
     static registerHooks() {
-        SessionHooks.register(this.#mutator);
+        SessionHooks.register(this.#mutator, (messageId) => this.#resolveWhenReady(messageId));
     }
 
     // Session creation delegates payload construction to the active system adapter.
@@ -54,6 +54,7 @@ export class UniversalRollOrchestrator {
     static setParticipantModifier = (id, key, mod) => this.#mutate(id, "setModifier", key, mod);
     static updateSessionPatch = (id, patch) => this.#mutate(id, "updateSessionPatch", patch);
     static publishPreparedRoll = (id) => this.#mutate(id, "publishPreparedRoll");
-    static applySessionConsequences = (id) => this.#mutate(id, "applyConsequences");
+    /** Applies pending consequences and resolves the session when no further actions remain. */
+    static applySessionConsequences = (id) => this.#mutateAndMaybeResolve(id, "applyConsequences");
     static resolveSession = (id) => this.#mutate(id, "resolve");
 }
