@@ -1,0 +1,8 @@
+<header class="prompt-header">
+    {{#if resolvedResultHeaderPartial}}
+    {{> (lookup . "resolvedResultHeaderPartial")}}
+    {{else}}
+    <div class="prompt-skill-name">{{resolvedTitle}}</div>
+    {{/if}}
+</header>
+{{> (lookup . "resolvedResultBodyPartial")}}

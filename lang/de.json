@@ -108,6 +108,8 @@
             "PendingRoll": "Wartet auf Wurf...",
             "HiddenRoll": "Verdeckter Wurf",
             "AwaitingResolution": "Wartet auf Auflösung durch SL...",
+            "LoadingResult": "Ergebnis wird geladen...",
+            "ResultRenderError": "Das Probenergebnis kann nicht angezeigt werden. Details stehen in der Konsole.",
             "Types": {
                 "basic": "Probe",
                 "other": "Wurf"

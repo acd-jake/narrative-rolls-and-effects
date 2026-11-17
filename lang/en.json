@@ -108,6 +108,8 @@
             "PendingRoll": "Awaiting roll...",
             "HiddenRoll": "Hidden Roll",
             "AwaitingResolution": "Awaiting GM resolution...",
+            "LoadingResult": "Loading result...",
+            "ResultRenderError": "Unable to display the roll result. See the console for details.",
             "Types": {
                 "basic": "Check",
                 "other": "Roll"
