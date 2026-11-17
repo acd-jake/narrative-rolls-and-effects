@@ -39,9 +39,8 @@ export class UniversalRollOrchestrator {
         );
     }
 
-    /** Registers the session hooks and their post-mutation auto-resolution check. */
     static registerHooks() {
-        SessionHooks.register(this.#mutator, (messageId) => this.#resolveWhenReady(messageId));
+        SessionHooks.register(this.#mutator);
     }
 
     // Session creation delegates payload construction to the active system adapter.
