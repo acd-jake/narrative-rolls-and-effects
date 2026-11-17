@@ -14,10 +14,13 @@ export class BasePromptApp extends HandlebarsApplicationMixin(ApplicationV2) {
     _userDragged = false;
     _isDescriptionExpanded = false;
     #updateHookId;
+    #adapterActionElement = null;
+    #adapterActionHandler;
 
     constructor({ messageId }, options = {}) {
         super(options);
         this._messageId = messageId;
+        this.#adapterActionHandler = this.#handleAdapterAction.bind(this);
         RollPromptStackManager.track(this);
 
         this.#updateHookId = Hooks.on("roeRollSessionUpdated", (message, session) => {
@@ -235,6 +238,8 @@ export class BasePromptApp extends HandlebarsApplicationMixin(ApplicationV2) {
             return this;
         }
         Hooks.off("roeRollSessionUpdated", this.#updateHookId);
+        this.#adapterActionElement?.removeEventListener("click", this.#adapterActionHandler);
+        this.#adapterActionElement = null;
         RollPromptStackManager.untrack(this);
         return super.close(options);
     }
@@ -296,7 +301,10 @@ export class BasePromptApp extends HandlebarsApplicationMixin(ApplicationV2) {
         if (game.user.isGM) await UniversalRollOrchestrator.applySessionConsequences(this._messageId);
     }
     #bindAdapterActions() {
-        this.element.addEventListener("click", this.#handleAdapterAction.bind(this));
+        if (this.#adapterActionElement === this.element) return;
+        this.#adapterActionElement?.removeEventListener("click", this.#adapterActionHandler);
+        this.#adapterActionElement = this.element;
+        this.#adapterActionElement.addEventListener("click", this.#adapterActionHandler);
     }
 
     #handleAdapterAction(event) {
