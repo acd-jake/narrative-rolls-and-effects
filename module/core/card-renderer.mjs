@@ -40,13 +40,13 @@ export class SessionCardRenderer {
             if (!badge) continue;
 
             const canViewRoll = RollVisibilityPolicy.canViewParticipantRoll(p, sys);
-            const showDetails = canViewRoll && (isGM || p.isOwner || canRevealResults);
+            const showDetails = isGM || p.isOwner || canRevealResults;
             const permissions = { isGM, isOwner: p.isOwner, canRevealResults, canViewRoll, showDetails, actor: p.actor };
             const formattedBadge = adapter?.formatParticipantBadge?.(p, sys, permissions);
             badge.textContent = formattedBadge?.text ?? (canViewRoll && showDetails ? String(p.total ?? "") : game.i18n.localize("ROE.RollSession.HiddenRoll"));
             if (formattedBadge?.className) badge.className = formattedBadge.className;
 
-            if (showDetails && p.rollBreakdown) {
+            if (canViewRoll && showDetails && p.rollBreakdown) {
                 badge.classList.add("is-inspectable");
                 badge.title = game.i18n.localize("ROE.Roll.ClickToInspect");
                 badge.addEventListener("click", (ev) => {
