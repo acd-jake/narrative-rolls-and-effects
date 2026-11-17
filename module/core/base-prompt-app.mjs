@@ -203,7 +203,7 @@ export class BasePromptApp extends HandlebarsApplicationMixin(ApplicationV2) {
             resultPartial: "roeResultDefault",
             modifierDice: primaryMod,
             modifierDisplay: this._formatModifierLabel(primaryMod),
-            rollDice: DiceVisualizer.getDiceVisuals(sys, primaryMod, adapter),
+            rollDice: DiceVisualizer.getDiceVisuals(sys, primaryMod),
             theme,
             themeBackgroundColor: bgColor
         };

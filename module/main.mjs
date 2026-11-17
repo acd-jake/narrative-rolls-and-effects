@@ -20,9 +20,9 @@ Hooks.once("init", async () => {
         roeResultDefault: `modules/${MODULE_ID}/templates/core/prompts/partials/result-default.hbs`,
         roeRollResolvedResult: `modules/${MODULE_ID}/templates/core/prompts/partials/resolved-roll-result.hbs`,
         roeRollModifierPreparation: `modules/${MODULE_ID}/templates/core/prompts/partials/modifier-preparation.hbs`,
+        roeModifierSummary: `modules/${MODULE_ID}/templates/core/prompts/partials/modifier-summary.hbs`,
         roeDiceVisuals: `modules/${MODULE_ID}/templates/core/prompts/partials/dice-visuals.hbs`,
-        roeDiceDisplay: `modules/${MODULE_ID}/templates/core/prompts/partials/dice-display.hbs`,
-        roePushFailurePhase: `modules/${MODULE_ID}/templates/core/prompts/partials/push-failure-phase.hbs`,
+        roeDiceDisplay: `modules/${MODULE_ID}/templates/prompts/partials/dice-display.hbs`,
         roePromptDescription: `modules/${MODULE_ID}/templates/core/prompts/partials/prompt-description.hbs`
     });
 

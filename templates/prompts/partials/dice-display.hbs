@@ -1,0 +1,7 @@
+{{#if dice.length}}
+<div class="prompt-dice-display"
+    data-tooltip="{{diceFormulaLabel}}{{rollDiceLabel}}{{diceLabel}}{{attackerDiceLabel}}{{defenderDiceLabel}}{{damageDiceLabel}}{{intDiceLabel}}"
+    aria-label="{{localize 'ROE.Dice.DiceUsed'}}">
+    {{> roeDiceVisuals dice=dice}}
+</div>
+{{/if}}

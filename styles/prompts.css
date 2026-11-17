@@ -191,6 +191,12 @@
     font-weight: bold;
 }
 
+.roe-overlay .modifier-summary {
+    color: var(--roe-text-muted);
+    font-size: 0.7rem;
+    text-align: center;
+}
+
 .roe-overlay .prompt-action-btn {
     width: 100%;
     padding: 0.35rem 0.5rem;

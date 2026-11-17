@@ -14,37 +14,43 @@ const DIE_TYPES = Object.freeze({
 });
 
 export class DiceVisualizer {
-    static getDiceVisuals(session, modifierDice = 0, adapter = AdapterRegistry.active) {
-        const dice = session?.rollType === "other"
-            ? this.fromFormula(session.diceFormula)
-            : this.percentile();
-        return adapter?.extendDiceVisuals?.(dice, session, modifierDice) ?? dice;
+    static getDiceVisuals(session, modifierDice = 0) {
+        let dice = this.percentile();
+        if (session?.rollType === "other") {
+            dice = this.fromFormula(session.diceFormula);
+        } else if (session?.diceFormula) {
+            const formulaDice = new foundry.dice.Roll(session.diceFormula).dice;
+            if (!formulaDice.some((die) => die.faces === 100)) {
+                dice = this.fromDice(formulaDice);
+            }
+        }
+        return AdapterRegistry.active?.extendDiceVisuals?.(dice, session, modifierDice) ?? dice;
     }
 
-    static percentile() {
+    static percentile(count = 1) {
         return [
-            { src: `${DICE_ASSET_PATH}/d10-units.svg`, label: "ROE.Dice.D10Units", count: 1, multiple: false },
-            { src: `${DICE_ASSET_PATH}/d10-tens.svg`, label: "ROE.Dice.D10Tens", count: 1, multiple: false }
+            { src: `${DICE_ASSET_PATH}/d10-units.svg`, label: "ROE.Dice.D10Units", count, multiple: count > 1 },
+            { src: `${DICE_ASSET_PATH}/d10-tens.svg`, label: "ROE.Dice.D10Tens", count, multiple: count > 1 }
         ];
     }
 
     static fromFormula(formula) {
         if (!formula || typeof formula !== "string") return [];
-        try {
-            return new foundry.dice.Roll(formula).dice.flatMap((die) => {
-                const count = Number(die.number);
-                if (!Number.isFinite(count) || count <= 0) return [];
-                if (die.faces === 100) return this.percentile();
-                const type = DIE_TYPES[die.faces];
-                return type ? [{
-                    src: `${DICE_ASSET_PATH}/${type.file}.svg`,
-                    label: type.label,
-                    count,
-                    multiple: count > 1
-                }] : [];
-            });
-        } catch {
-            return [];
-        }
+        return this.fromDice(new foundry.dice.Roll(formula).dice);
+    }
+
+    static fromDice(dice) {
+        return dice.flatMap((die) => {
+            const count = Number(die.number);
+            if (!Number.isFinite(count) || count <= 0) return [];
+            if (die.faces === 100) return this.percentile(count);
+            const type = DIE_TYPES[die.faces];
+            return type ? [{
+                src: `${DICE_ASSET_PATH}/${type.file}.svg`,
+                label: type.label,
+                count,
+                multiple: count > 1
+            }] : [];
+        });
     }
 }

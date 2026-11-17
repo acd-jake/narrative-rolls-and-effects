@@ -117,12 +117,12 @@ export class SessionCardRenderer {
         const bd = participant.rollBreakdown;
         if (!adapter) return null;
 
-        const isPercentile = Number.isFinite(bd.modifierDice) || (Number(bd.targetValue) > 0 && participant.key !== "damage");
+        const isPercentile = Number(bd.targetValue) > 0 && participant.key !== "damage";
         const session = isPercentile
             ? { rollType: "skill" }
             : { rollType: "other", diceFormula: bd.formula };
         const modifierDice = isPercentile ? bd.modifierDice ?? participant.modifierDice ?? 0 : 0;
-        const dice = DiceVisualizer.getDiceVisuals(session, modifierDice, adapter);
+        const dice = DiceVisualizer.getDiceVisuals(session, modifierDice);
 
         if (!dice?.length) return null;
 

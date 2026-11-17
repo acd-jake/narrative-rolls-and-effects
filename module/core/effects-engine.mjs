@@ -5,10 +5,19 @@ import { AdapterRegistry } from "./adapter-registry.mjs";
 export class EffectsEngine {
     static #overlayElement = null;
     static #triggeredSessions = new Set();
-    static #presets = new Map();
+    static PRESETS = new Map([
+        ["neutral", {
+            color: 0xc5a059,
+            secondaryColor: 0x8c6b33,
+            count: 16,
+            durationMs: 1200,
+            gravity: 0.1,
+            spread: 2
+        }]
+    ]);
 
     static registerPreset(presetKey, preset) {
-        this.#presets.set(presetKey, preset);
+        this.PRESETS.set(presetKey, preset);
     }
 
     static registerHooks() {
@@ -28,7 +37,7 @@ export class EffectsEngine {
         Hooks.on("controlToken", () => this.syncPlayerAtmosphere());
 
         Hooks.on("roeConditionTriggered", (actor, conditionKey) => {
-            if (actor && this.#presets.has(conditionKey)) {
+            if (actor && this.PRESETS.has(conditionKey)) {
                 this.playEffectOnActorTokens(actor, conditionKey, { broadcast: true });
             }
         });
@@ -113,7 +122,7 @@ export class EffectsEngine {
 
     static playEffectOnActorTokens(actor, presetKey, { broadcast = true } = {}) {
         if (!actor || !canvas?.ready) return;
-        const preset = this.#presets.get(presetKey);
+        const preset = this.PRESETS.get(presetKey);
         if (!preset) throw new Error(`Unknown visual effect preset "${presetKey}".`);
         for (const token of actor.getActiveTokens(true)) {
             this.#spawnTokenParticleBurst(token, preset);
