@@ -1,5 +1,6 @@
 import { MODULE_ID } from "./core/constants.mjs";
 import { CoreSettings } from "./core/settings.mjs";
+import { CoreSettingsLayout } from "./core/settings-layout.mjs";
 import { AdapterRegistry } from "./core/adapter-registry.mjs";
 import { UniversalRollOrchestrator } from "./core/orchestrator.mjs";
 import { EffectsEngine } from "./core/effects-engine.mjs";
@@ -82,3 +83,5 @@ Hooks.on("getSceneControlButtons", (controls) => {
         tokenLayer.tools.roeRollRequest = toolConfig;
     }
 });
+
+Hooks.on("renderSettingsConfig", (_app, html) => CoreSettingsLayout.apply(html));

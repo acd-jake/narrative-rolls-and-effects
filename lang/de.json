@@ -12,6 +12,12 @@
             "D20": "D20"
         },
         "Settings": {
+            "Sections": {
+                "RollBehavior": "Wurfverhalten",
+                "PromptPresentation": "Darstellung der Proben",
+                "PromptLayout": "Anordnung der Proben",
+                "Feedback": "Rückmeldungen"
+            },
             "FumbleSound": {
                 "Name": "Sound bei Patzer",
                 "Hint": "Audiodatei, die bei einem Patzer (96-100) abgespielt wird."

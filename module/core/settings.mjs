@@ -5,33 +5,13 @@ import { RollPromptStackManager } from "./stack-manager.mjs";
 export class CoreSettings {
     /** Registers all core module settings with Foundry. */
     static register() {
-        const soundSettings = [
-            { key: "fumbleSound", name: "ROE.Settings.FumbleSound.Name", hint: "ROE.Settings.FumbleSound.Hint" },
-            { key: "criticalSound", name: "ROE.Settings.CriticalSound.Name", hint: "ROE.Settings.CriticalSound.Hint" },
-            { key: "lowResourceSound", name: "ROE.Settings.LowResourceSound.Name", hint: "ROE.Settings.LowResourceSound.Hint" }
-        ];
+        this.#registerRollBehaviorSettings();
+        this.#registerPromptPresentationSettings();
+        this.#registerPromptLayoutSettings();
+        this.#registerFeedbackSettings();
+    }
 
-        for (const s of soundSettings) {
-            game.settings.register(MODULE_ID, s.key, {
-                name: s.name,
-                hint: s.hint,
-                scope: "world",
-                config: true,
-                type: String,
-                default: "",
-                filePicker: "audio"
-            });
-        }
-
-        game.settings.register(MODULE_ID, "enableVisualEffects", {
-            name: "ROE.Settings.EnableVisualEffects.Name",
-            hint: "ROE.Settings.EnableVisualEffects.Hint",
-            scope: "client",
-            config: true,
-            type: Boolean,
-            default: true
-        });
-
+    static #registerRollBehaviorSettings() {
         game.settings.register(MODULE_ID, "playerPromptPhaseMode", {
             name: "ROE.Settings.PlayerPromptPhaseMode.Name",
             hint: "ROE.Settings.PlayerPromptPhaseMode.Hint",
@@ -45,6 +25,26 @@ export class CoreSettings {
             }
         });
 
+        game.settings.register(MODULE_ID, "autoApplyRollConsequences", {
+            name: "ROE.Settings.AutoApplyConsequences.Name",
+            hint: "ROE.Settings.AutoApplyConsequences.Hint",
+            scope: "world",
+            config: true,
+            type: Boolean,
+            default: true
+        });
+
+        game.settings.register(MODULE_ID, "autoResolveCompletedRolls", {
+            name: "ROE.Settings.AutoResolveCompletedRolls.Name",
+            hint: "ROE.Settings.AutoResolveCompletedRolls.Hint",
+            scope: "world",
+            config: true,
+            type: Boolean,
+            default: false
+        });
+    }
+
+    static #registerPromptPresentationSettings() {
         game.settings.register(MODULE_ID, "rollPromptResultDuration", {
             name: "ROE.Settings.RollPromptResultDuration.Name",
             hint: "ROE.Settings.RollPromptResultDuration.Hint",
@@ -54,6 +54,27 @@ export class CoreSettings {
             default: 10
         });
 
+        game.settings.register(MODULE_ID, "rollPromptTheme", {
+            name: "ROE.Settings.RollPromptTheme.Name",
+            hint: "ROE.Settings.RollPromptTheme.Hint",
+            scope: "world",
+            config: true,
+            type: String,
+            choices: {
+                "western": "ROE.Settings.RollPromptTheme.Western",
+                "fantasy": "ROE.Settings.RollPromptTheme.Fantasy",
+                "dark-fantasy": "ROE.Settings.RollPromptTheme.DarkFantasy",
+                "noir": "ROE.Settings.RollPromptTheme.Noir",
+                "science-fiction": "ROE.Settings.RollPromptTheme.SciFi",
+                "cyberpunk": "ROE.Settings.RollPromptTheme.Cyberpunk",
+                "cosmic-horror": "ROE.Settings.RollPromptTheme.CosmicHorror",
+                "art-deco": "ROE.Settings.RollPromptTheme.ArtDeco"
+            },
+            default: "western"
+        });
+    }
+
+    static #registerPromptLayoutSettings() {
         game.settings.register(MODULE_ID, "rollPromptWidthPercent", {
             name: "ROE.Settings.RollPromptWidth.Name",
             hint: "ROE.Settings.RollPromptWidth.Hint",
@@ -92,42 +113,34 @@ export class CoreSettings {
             default: "vertical",
             onChange: () => RollPromptStackManager.reflow()
         });
+    }
 
-        game.settings.register(MODULE_ID, "autoApplyRollConsequences", {
-            name: "ROE.Settings.AutoApplyConsequences.Name",
-            hint: "ROE.Settings.AutoApplyConsequences.Hint",
-            scope: "world",
+    static #registerFeedbackSettings() {
+        const soundSettings = [
+            { key: "fumbleSound", name: "ROE.Settings.FumbleSound.Name", hint: "ROE.Settings.FumbleSound.Hint" },
+            { key: "criticalSound", name: "ROE.Settings.CriticalSound.Name", hint: "ROE.Settings.CriticalSound.Hint" },
+            { key: "lowResourceSound", name: "ROE.Settings.LowResourceSound.Name", hint: "ROE.Settings.LowResourceSound.Hint" }
+        ];
+
+        for (const setting of soundSettings) {
+            game.settings.register(MODULE_ID, setting.key, {
+                name: setting.name,
+                hint: setting.hint,
+                scope: "world",
+                config: true,
+                type: String,
+                default: "",
+                filePicker: "audio"
+            });
+        }
+
+        game.settings.register(MODULE_ID, "enableVisualEffects", {
+            name: "ROE.Settings.EnableVisualEffects.Name",
+            hint: "ROE.Settings.EnableVisualEffects.Hint",
+            scope: "client",
             config: true,
             type: Boolean,
             default: true
-        });
-
-        game.settings.register(MODULE_ID, "autoResolveCompletedRolls", {
-            name: "ROE.Settings.AutoResolveCompletedRolls.Name",
-            hint: "ROE.Settings.AutoResolveCompletedRolls.Hint",
-            scope: "world",
-            config: true,
-            type: Boolean,
-            default: false
-        });
-
-        game.settings.register(MODULE_ID, "rollPromptTheme", {
-            name: "ROE.Settings.RollPromptTheme.Name",
-            hint: "ROE.Settings.RollPromptTheme.Hint",
-            scope: "world",
-            config: true,
-            type: String,
-            choices: {
-                "western": "ROE.Settings.RollPromptTheme.Western",
-                "fantasy": "ROE.Settings.RollPromptTheme.Fantasy",
-                "dark-fantasy": "ROE.Settings.RollPromptTheme.DarkFantasy",
-                "noir": "ROE.Settings.RollPromptTheme.Noir",
-                "science-fiction": "ROE.Settings.RollPromptTheme.SciFi",
-                "cyberpunk": "ROE.Settings.RollPromptTheme.Cyberpunk",
-                "cosmic-horror": "ROE.Settings.RollPromptTheme.CosmicHorror",
-                "art-deco": "ROE.Settings.RollPromptTheme.ArtDeco"
-            },
-            default: "western"
         });
     }
 }

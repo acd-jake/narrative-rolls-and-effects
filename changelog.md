@@ -18,6 +18,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Client setting (`rollPromptStackDirection`) to stack roll prompts either vertically (bottom to top) or horizontally (from the outer screen edge inward).
 
 ### Changed
+- Organized the module settings into logical sections in Foundry's settings window.
 - The core module now provides system-neutral roll prompts, session handling, and visual effects.
 - System-specific integrations are loaded through companion modules.
 - System-specific result-display settings are owned by companion modules.

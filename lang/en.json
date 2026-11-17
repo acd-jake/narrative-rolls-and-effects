@@ -12,6 +12,12 @@
             "D20": "D20"
         },
         "Settings": {
+            "Sections": {
+                "RollBehavior": "Roll Behavior",
+                "PromptPresentation": "Prompt Presentation",
+                "PromptLayout": "Prompt Layout",
+                "Feedback": "Feedback"
+            },
             "FumbleSound": {
                 "Name": "Fumble Sound",
                 "Hint": "Audio file played when rolling a Fumble (96–100)."
