@@ -25,10 +25,6 @@ export class BasePromptApp extends HandlebarsApplicationMixin(ApplicationV2) {
 
         this.#updateHookId = Hooks.on("roeRollSessionUpdated", (message, session) => {
             if (message.id !== this._messageId) return;
-            if (!session.isResolved && this._isCompactView() && !this._hasPendingPlayerAction()) {
-                if (this.rendered) this.close({ suspend: true });
-                return;
-            }
             this.render(this.rendered ? {} : { force: true });
         });
     }
@@ -73,11 +69,6 @@ export class BasePromptApp extends HandlebarsApplicationMixin(ApplicationV2) {
 
     _buildPhaseSummary() {
         return AdapterRegistry.active?.buildPhaseSummary?.(this.session) ?? "";
-    }
-
-    async render(options, _options) {
-        if (!this.rendered && !this.session?.isResolved && this._isCompactView() && !this._hasPendingPlayerAction()) return this;
-        return super.render(options, _options);
     }
 
     static DEFAULT_OPTIONS = {
@@ -175,6 +166,11 @@ export class BasePromptApp extends HandlebarsApplicationMixin(ApplicationV2) {
         };
         const bgColor = themeColors[theme] || themeColors["western"];
 
+        const showPlayerWaitingHint = Boolean(!game.user.isGM && !sys?.isResolved && !this._hasPendingPlayerAction());
+        const playerWaitingHint = showPlayerWaitingHint
+            ? (adapter?.getPlayerWaitingHint?.(sys) || game.i18n.localize("ROE.RollSession.AwaitingResolution"))
+            : "";
+
         const promptContext = {
             ...context,
             isGM: game.user.isGM,
@@ -196,6 +192,8 @@ export class BasePromptApp extends HandlebarsApplicationMixin(ApplicationV2) {
             showPhaseHeaders: hasMultiplePhases && !compactView,
             phaseSummaryText: compactView && sys ? this._buildPhaseSummary(sys) : "",
             allRolled,
+            showPlayerWaitingHint,
+            playerWaitingHint,
             canApplyConsequences: Boolean(game.user.isGM && allRolled && sys?.hasPendingConsequences && !sys?.consequencesApplied && !sys?.isResolved),
             canResolve,
             outcomeHeadline: sys?.outcomeHeadline ?? "",

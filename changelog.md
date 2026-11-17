@@ -18,6 +18,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - The core module now provides system-neutral roll prompts, session handling, and visual effects.
 - System-specific integrations are loaded through companion modules.
 - System-specific result-display settings are owned by companion modules.
+- Kept player roll prompts open until session resolution and provided `getPlayerWaitingHint(session)` with a core fallback message.
 
 ### Removed
 - Moved system-specific rules, prompt templates, and bonus/penalty dice assets out of the core module.
