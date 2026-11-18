@@ -56,5 +56,7 @@ export class UniversalRollOrchestrator {
     static publishPreparedRoll = (id) => this.#mutate(id, "publishPreparedRoll");
     /** Applies pending consequences and resolves the session when no further actions remain. */
     static applySessionConsequences = (id) => this.#mutateAndMaybeResolve(id, "applyConsequences");
+    /** Submits a GM-only adapter consequence decision and checks automatic resolution. */
+    static submitConsequenceDecision = (id, decision) => this.#mutateAndMaybeResolve(id, "applyConsequences", decision);
     static resolveSession = (id) => this.#mutate(id, "resolve");
 }

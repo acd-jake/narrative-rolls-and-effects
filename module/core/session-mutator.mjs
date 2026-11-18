@@ -98,12 +98,23 @@ export class SessionMutator {
         await SessionStore.save(message, { ...session, isPreparingModifiers: false });
     }
 
-    async applyConsequences(messageId) {
+    /** Applies consequences or delegates a GM-only consequence decision to the active adapter. */
+    async applyConsequences(messageId, decision) {
         const message = this.#getActiveSessionMessage(messageId, true);
         const session = SessionStore.getSession(message);
         if (!session || session.consequencesApplied) return;
 
-        const strategy = AdapterRegistry.active?.getStrategy(session.rollType);
+        const adapter = AdapterRegistry.active;
+        if (decision !== undefined) {
+            if (!adapter?.handleConsequenceDecision) throw new Error("The system adapter does not support consequence decisions.");
+            const nextSession = await adapter.handleConsequenceDecision(session, decision);
+            if (!nextSession || typeof nextSession !== "object") throw new Error("The system adapter returned an invalid consequence decision session.");
+            await SessionStore.save(message, nextSession);
+            return;
+        }
+
+        if (adapter?.canApplySessionConsequences?.(session) === false) return;
+        const strategy = adapter?.getStrategy(session.rollType);
         if (strategy) await strategy.applyConsequences(session);
 
         await SessionStore.save(message, {

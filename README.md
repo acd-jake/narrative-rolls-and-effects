@@ -22,6 +22,13 @@ The core also manages the modifier-preparation prompt shell; adapters select sys
 Adapters can opt into matching resolved chat cards by implementing `prepareResolvedChatContext(session)`. The core renders the partials returned by `getResolvedResultPartials(session)` on each client using that visibility-aware context and enables authorized roll inspection.
 Adapters can also provide system-specific chat-card templates, roll-request composer tabs and forms, session phases, prompt context, and roll actions.
 
+For GM-only consequence choices, an adapter can implement
+`handleConsequenceDecision(session, decision)` and return the updated session.
+Use `orchestrator.submitConsequenceDecision(messageId, decision)` to submit a
+choice through the serialized GM-only mutation path. An adapter may implement
+`canApplySessionConsequences(session)` to block generic application while a
+specific decision is pending.
+
 System rules, prompt templates, chat cards, and system-specific dice assets belong in companion modules. The core supplies the shared session lifecycle, prompt infrastructure, neutral dice visuals, and effects engine.
 
 ## Plugin Architecture & Communication
