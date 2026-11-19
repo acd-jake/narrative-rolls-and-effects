@@ -22,6 +22,12 @@ export class SessionCardRenderer {
         const adapter = AdapterRegistry.active;
         if (!sys) return;
         const card = html.matches?.(".roe-chat-card") ? html : html.querySelector(".roe-chat-card");
+
+        if (card && !sys.isResolved) {
+            const drawer = card.querySelector(".push-consequence-drawer");
+            if (drawer && !isGM) drawer.remove();
+        }
+
         if (card) card.dataset.nreSystem = game.system.id;
         if (card) this.#resolvedRenderTokens.delete(card);
         const partials = sys.isResolved && adapter?.prepareResolvedChatContext
@@ -97,10 +103,11 @@ export class SessionCardRenderer {
 
     static async #finishResolvedCard(card, session, adapter, partials, token) {
         const context = {
-            ...adapter.prepareResolvedChatContext(session),
+            ...(await adapter.prepareResolvedChatContext(session)),
             resolvedResultHeaderPartial: partials.header ?? null,
             resolvedResultBodyPartial: partials.body
         };
+
         const content = await foundry.applications.handlebars.renderTemplate(
             `modules/${MODULE_ID}/templates/chat/resolved-session-result.hbs`, context
         );
