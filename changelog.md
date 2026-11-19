@@ -26,6 +26,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - System-specific result-display settings are owned by companion modules.
 - Kept player roll prompts open until session resolution and provided `getPlayerWaitingHint(session)` with a core fallback message.
 - Allowed adapters to format participant chat badges for revealed roll phases independently of roll-detail visibility, while restricting roll-breakdown inspection to authorized viewers.
+- Displayed rolled face values directly on the dice icons inside the roll-inspection drawer, highlighting kept versus dropped modifier dice.
 
 ### Removed
 - Moved system-specific rules, prompt templates, and bonus/penalty dice assets out of the core module.

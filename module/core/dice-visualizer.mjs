@@ -29,8 +29,8 @@ export class DiceVisualizer {
 
     static percentile(count = 1) {
         return [
-            { src: `${DICE_ASSET_PATH}/d10-units.svg`, label: "ROE.Dice.D10Units", count, multiple: count > 1 },
-            { src: `${DICE_ASSET_PATH}/d10-tens.svg`, label: "ROE.Dice.D10Tens", count, multiple: count > 1 }
+            { src: `${DICE_ASSET_PATH}/d10-tens.svg`, label: "ROE.Dice.D10Tens", count, multiple: count > 1 },
+            { src: `${DICE_ASSET_PATH}/d10-units.svg`, label: "ROE.Dice.D10Units", count, multiple: count > 1 }
         ];
     }
 

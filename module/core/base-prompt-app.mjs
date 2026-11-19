@@ -130,7 +130,7 @@ export class BasePromptApp extends HandlebarsApplicationMixin(ApplicationV2) {
             el.title = game.i18n.localize("ROE.Roll.ClickToInspect");
             el.addEventListener("click", (ev) => {
                 ev.preventDefault();
-                SessionCardRenderer.toggleBreakdownForElement(el.parentElement, participant);
+                SessionCardRenderer.toggleBreakdownForElement(el, participant);
             });
         });
 

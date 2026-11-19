@@ -9,7 +9,8 @@
             "D10Units": "D10, units",
             "D10Tens": "D10, tens",
             "D12": "D12",
-            "D20": "D20"
+            "D20": "D20",
+            "Dropped": "dropped"
         },
         "Settings": {
             "Sections": {

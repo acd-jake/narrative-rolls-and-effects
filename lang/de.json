@@ -9,7 +9,8 @@
             "D10Units": "D10, Einerstellen",
             "D10Tens": "D10, Zehnerstellen",
             "D12": "D12",
-            "D20": "D20"
+            "D20": "D20",
+            "Dropped": "verworfen"
         },
         "Settings": {
             "Sections": {

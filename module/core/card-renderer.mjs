@@ -130,28 +130,24 @@ export class SessionCardRenderer {
     static #inspectResolvedResult(event, element, participant) {
         event.preventDefault();
         event.stopPropagation();
-        this.toggleBreakdownForElement(element.parentElement, participant);
+        this.toggleBreakdownForElement(element, participant);
     }
 
-    static toggleBreakdownForElement(container, participant) {
-        if (!container || !participant?.rollBreakdown) return;
+    static toggleBreakdownForElement(anchor, participant) {
+        if (!anchor || !participant?.rollBreakdown) return;
 
-        const existing = container.querySelector(".roll-inspect-box");
+        const rowWrapper = anchor.closest?.(".combined-check-row, .opposed-contestant-row, .resolved-combat-chips");
+        const insertionTarget = anchor.matches?.("[data-participant-key]") ? anchor : (rowWrapper ?? anchor);
+        const isContainer = insertionTarget.matches?.("[data-participant-key]");
+        const searchRoot = isContainer ? insertionTarget : insertionTarget.parentElement;
+
+        const existing = searchRoot?.querySelector(".roll-inspect-box");
         if (existing) {
             existing.remove();
             return;
         }
 
         const bd = participant.rollBreakdown;
-        const diceHtml = (bd.diceTerms ?? [])
-            .map((term) => {
-                const faces = term.results
-                    .map((r) => `<span class="die-face ${r.active ? "is-kept" : "is-dropped"}">${r.value}</span>`)
-                    .join("");
-                return `<span class="die-group"><small>${term.expression}:</small> ${faces}</span>`;
-            })
-            .join(" ");
-
         const levelText = AdapterRegistry.active?.formatSuccessLevel?.(bd.successLevel) ?? "";
         const thresholdHtml = AdapterRegistry.active?.formatInspectionThresholds?.(bd) ?? "";
 
@@ -162,13 +158,29 @@ export class SessionCardRenderer {
         <span><i class="fa-solid fa-dice-d20"></i> ${bd.formula}</span>
         <strong>${bd.total}${bd.targetValue > 0 ? ` / ${bd.targetValue}` : ""}${levelText ? ` (${levelText})` : ""}</strong>
       </div>
-      <div class="inspect-dice">${diceHtml}</div>
       ${thresholdHtml}
     `;
 
         const visuals = this.#buildDiceVisuals(participant);
-        if (visuals) box.querySelector(".inspect-dice")?.before(visuals);
-        container.appendChild(box);
+        if (visuals) {
+            box.querySelector(".inspect-header")?.after(visuals);
+        } else {
+            const diceHtml = (bd.diceTerms ?? [])
+                .map((term) => {
+                    const faces = term.results
+                        .map((r) => `<span class="die-face ${r.active ? "is-kept" : "is-dropped"}">${r.value}</span>`)
+                        .join("");
+                    return `<span class="die-group"><small>${term.expression}:</small> ${faces}</span>`;
+                })
+                .join(" ");
+            box.querySelector(".inspect-header")?.insertAdjacentHTML("afterend", `<div class="inspect-dice">${diceHtml}</div>`);
+        }
+
+        if (isContainer) {
+            insertionTarget.appendChild(box);
+        } else {
+            insertionTarget.after(box);
+        }
     }
 
     static #buildDiceVisuals(participant) {
@@ -185,23 +197,78 @@ export class SessionCardRenderer {
 
         if (!dice?.length) return null;
 
+        const rolledEntries = this.#extractRolledIconEntries(bd, isPercentile);
+        const expandedDice = dice.flatMap((die) =>
+            Array.from({ length: Math.max(1, Number(die.count) || 1) }, () => ({ ...die, count: 1, multiple: false }))
+        );
+
         const visuals = document.createElement("div");
-        visuals.className = "prompt-dice-visuals";
-        for (const die of dice) {
+        visuals.className = "prompt-dice-visuals inspect-dice-visuals";
+
+        expandedDice.forEach((die, index) => {
+            const rolled = rolledEntries[index] ?? null;
             const wrapper = document.createElement("span");
             wrapper.className = "prompt-die";
-            const adapter = AdapterRegistry.active;
-            if (adapter && adapter.formatDiceVisualTooltip) {
-                wrapper.dataset.tooltip = adapter.formatDiceVisualTooltip(die);
-            } else {
-                wrapper.dataset.tooltip = game.i18n.localize(die.label);
+            if (rolled) {
+                wrapper.classList.add(rolled.active ? "is-kept" : "is-dropped");
             }
+
+            const dieTypeLabel = adapter.formatDiceVisualTooltip
+                ? adapter.formatDiceVisualTooltip(die)
+                : game.i18n.localize(die.label);
+            if (rolled?.displayValue !== undefined) {
+                const droppedNote = rolled.active ? "" : ` (${game.i18n.localize("ROE.Dice.Dropped")})`;
+                wrapper.dataset.tooltip = `${dieTypeLabel}: ${rolled.displayValue}${droppedNote}`;
+            } else {
+                wrapper.dataset.tooltip = dieTypeLabel;
+            }
+
             const image = document.createElement("img");
             image.src = die.src;
             image.alt = game.i18n.localize(die.label);
             wrapper.appendChild(image);
+
+            if (rolled?.displayValue !== undefined) {
+                const valueBadge = document.createElement("span");
+                valueBadge.className = "prompt-die-rolled-value";
+                valueBadge.textContent = String(rolled.displayValue);
+                wrapper.appendChild(valueBadge);
+            }
+
             visuals.appendChild(wrapper);
-        }
+        });
         return visuals;
+    }
+
+    static #extractRolledIconEntries(bd, isPercentile) {
+        const terms = bd.diceTerms ?? [];
+        if (isPercentile && terms.length >= 2) {
+            const tensResults = terms[0]?.results ?? [];
+            const unitsResult = terms[1]?.results?.[0] ?? null;
+            const entries = [];
+            for (const res of tensResults) {
+                const tensDigit = Math.max(0, Number(res.value) - 1) * 10;
+                entries.push({
+                    displayValue: tensDigit === 0 ? "00" : String(tensDigit),
+                    active: res.active !== false
+                });
+            }
+            if (unitsResult) {
+                entries.push({ displayValue: Math.max(0, Number(unitsResult.value) - 1), active: unitsResult.active !== false });
+            }
+            return entries;
+        }
+        if (isPercentile && terms.length === 1 && terms[0]?.results?.[0]) {
+            const total = Number(terms[0].results[0].value) % 100;
+            const units = total % 10;
+            const tens = Math.floor(total / 10) * 10;
+            return [
+                { displayValue: tens === 0 ? "00" : String(tens), active: true },
+                { displayValue: String(units), active: true }
+            ];
+        }
+        return terms.flatMap((term) =>
+            (term.results ?? []).map((r) => ({ displayValue: r.value, active: r.active !== false }))
+        );
     }
 }
