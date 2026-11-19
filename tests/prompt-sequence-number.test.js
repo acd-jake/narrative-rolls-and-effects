@@ -4,6 +4,8 @@ import { RollPromptStackManager } from "../module/core/stack-manager.mjs";
 
 describe("RollPromptStackManager sequence numbering", () => {
     it("assigns chronological numbers, shows them when needed, and resets to 1 when empty", () => {
+        globalThis.game = { settings: { get: () => 0 } };
+
         const createMockPrompt = (id) => {
             let badgeText = "";
             return {

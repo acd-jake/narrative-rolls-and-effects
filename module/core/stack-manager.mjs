@@ -52,7 +52,7 @@ export class RollPromptStackManager {
      * Closes the oldest open prompts when the client's maximum simultaneous prompt count is exceeded.
      */
     static enforceMaxOpenLimit() {
-        const maxOpen = Math.max(0, Math.round(Number(game.settings?.get(MODULE_ID, "maxOpenPrompts")) || 0));
+        const maxOpen = Math.max(0, Math.round(Number(globalThis.game?.settings?.get(MODULE_ID, "maxOpenPrompts")) || 0));
         if (maxOpen <= 0) return;
 
         const active = Array.from(this.#allActiveApps);
