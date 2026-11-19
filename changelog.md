@@ -17,6 +17,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Adapter-selected header and body partials for resolved roll prompts via `getResolvedResultPartials(session)`.
 - Added a bottom-right countdown badge on resolved roll prompts showing the remaining seconds until automatic closing.
 - Client setting (`rollPromptStackDirection`) to stack roll prompts either vertically (bottom to top) or horizontally (from the outer screen edge inward).
+- Client setting (`maxOpenPrompts`) to cap the total number of simultaneously open roll prompts, automatically closing the oldest prompt window when exceeded even if unresolved.
+- Client setting (`maxOpenResolvedPrompts`) to keep a configurable number of resolved prompts open without starting their auto-close timer until newer resolved prompts exceed the limit, plus click-to-pin on resolved prompts.
+- Chronological sequence numbers in parentheses after prompt titles whenever multiple prompts are open or a prompt's number exceeds 1, resetting to 1 once all prompts are closed.
+- Automatic multi-column wrapping when vertically stacked roll prompts reach the top edge of the viewport.
 
 ### Changed
 - Resolved chat cards can display the same results as their system's prompts.
@@ -27,6 +31,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Kept player roll prompts open until session resolution and provided `getPlayerWaitingHint(session)` with a core fallback message.
 - Allowed adapters to format participant chat badges for revealed roll phases independently of roll-detail visibility, while restricting roll-breakdown inspection to authorized viewers.
 - Displayed rolled face values directly on the dice icons inside the roll-inspection drawer, highlighting kept versus dropped modifier dice.
+- Made the prompt close button (`×`) opaque, higher-contrast, and clickable across its entire hit area.
 
 ### Removed
 - Moved system-specific rules, prompt templates, and bonus/penalty dice assets out of the core module.

@@ -126,6 +126,18 @@ export class CoreSettings {
             onChange: () => SessionHooks.syncResolvedTimers()
         });
 
+        game.settings.register(MODULE_ID, "maxOpenPrompts", {
+            name: "ROE.Settings.MaxOpenPrompts.Name",
+            hint: "ROE.Settings.MaxOpenPrompts.Hint",
+            scope: "client",
+            config: true,
+            type: Number,
+            range: { min: 0, max: 15, step: 1 },
+            default: 0,
+            onChange: () => RollPromptStackManager.enforceMaxOpenLimit()
+        });
+
+
     }
 
     static #registerFeedbackSettings() {

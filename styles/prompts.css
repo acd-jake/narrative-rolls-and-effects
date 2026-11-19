@@ -102,6 +102,11 @@
     text-transform: uppercase;
 }
 
+.roe-overlay .prompt-sequence-number {
+    color: var(--roe-gold);
+    font-weight: normal;
+}
+
 .roe-overlay .prompt-skill-name {
     font-family: var(--roe-font-display);
     font-size: 0.95rem;

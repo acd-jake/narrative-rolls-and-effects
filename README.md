@@ -5,6 +5,7 @@ An extensible Foundry VTT v14 module that provides synchronized, multi-phase rol
 ## Features
 
 - Docked `ApplicationV2` roll prompts with synchronized session state.
+- Configurable prompt stacking (vertical with automatic column wrapping, or horizontal), per-client open prompt limits (`maxOpenPrompts` and `maxOpenResolvedPrompts`), click-to-pin on resolved prompts, and chronological prompt numbering.
 - System adapters registered through the `nre.registerAdapters` hook.
 - Core dice visualization and dice-face assets, with adapter-provided extensions for system-specific dice.
 - Declarative prompt class creation and extension through `PromptClassFactory`.
@@ -193,7 +194,7 @@ export function createCheckPromptApp(core) {
 
 ## Configuration
 
-Configure audio cues, visual effects, and prompt layout under **Configure Settings -> Narrative Rolls and Effects**. System-specific options are provided by companion modules.
+Configure audio cues, visual effects, prompt stacking direction, per-client open prompt limits, and prompt theme under **Configure Settings -> Narrative Rolls and Effects**. System-specific options are provided by companion modules.
 
 ## License
 

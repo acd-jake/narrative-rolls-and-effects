@@ -11,7 +11,7 @@ const SETTINGS_SECTIONS = [
     },
     {
         label: "ROE.Settings.Sections.PromptLayout",
-        keys: ["rollPromptWidthPercent", "rollPromptPosition", "rollPromptStackDirection", "maxOpenResolvedPrompts"]
+        keys: ["rollPromptWidthPercent", "rollPromptPosition", "rollPromptStackDirection", "maxOpenPrompts", "maxOpenResolvedPrompts"]
     },
     {
         label: "ROE.Settings.Sections.Feedback",

@@ -149,6 +149,7 @@ export class BasePromptApp extends HandlebarsApplicationMixin(ApplicationV2) {
         });
 
         this.#syncAutoCloseCountdown();
+        this.syncSequenceNumberBadge();
     }
 
     async _onModifierSliderChange(val, participantKey) {
@@ -397,6 +398,27 @@ export class BasePromptApp extends HandlebarsApplicationMixin(ApplicationV2) {
         if (removeBadge) {
             this.element?.querySelector(".prompt-autoclose-badge")?.remove();
         }
+    }
+
+    /** Updates the chronological sequence number suffix after the prompt's check title. */
+    syncSequenceNumberBadge() {
+        const titleEl = this.element?.querySelector(".prompt-skill-name");
+        if (!titleEl) return;
+
+        const number = RollPromptStackManager.getDisplaySequenceNumber(this);
+        let badge = titleEl.querySelector(".prompt-sequence-number");
+
+        if (!number) {
+            badge?.remove();
+            return;
+        }
+
+        if (!badge) {
+            badge = document.createElement("span");
+            badge.className = "prompt-sequence-number";
+            titleEl.appendChild(badge);
+        }
+        badge.textContent = ` (${number})`;
     }
 
 }

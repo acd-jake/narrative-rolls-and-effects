@@ -88,6 +88,10 @@
             "MaxOpenResolvedPrompts": {
                 "Name": "Maximum Open Resolved Prompts",
                 "Hint": "Number of resolved roll prompts allowed to stay open without starting a close timer. When exceeded, the oldest resolved prompts start their close timer. Set to 0 to always start timers immediately."
+            },
+            "MaxOpenPrompts": {
+                "Name": "Maximum Simultaneous Prompts",
+                "Hint": "Sets for this client how many roll prompt windows may be open at the same time. When exceeded, the oldest open prompt is closed automatically even if unresolved. Set to 0 for unlimited."
             }
         },
         "Roll": {

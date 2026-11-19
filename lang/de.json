@@ -88,6 +88,10 @@
             "MaxOpenResolvedPrompts": {
                 "Name": "Maximale offene Probenergebnisse",
                 "Hint": "Anzahl aufgelöster Proben, die ohne Schließtimer offen bleiben dürfen. Wird dieser Wert überschritten, startet bei den ältesten Ergebnissen der Schließtimer. 0 startet den Timer immer sofort."
+            },
+            "MaxOpenPrompts": {
+                "Name": "Maximale gleichzeitige Prompts",
+                "Hint": "Legt für diesen Client fest, wie viele Proben-Fenster gleichzeitig geöffnet sein dürfen. Wird der Wert überschritten, wird das älteste geöffnete Fenster automatisch geschlossen, auch wenn die Probe noch nicht aufgelöst wurde. 0 bedeutet unbegrenzt."
             }
         },
         "Roll": {
