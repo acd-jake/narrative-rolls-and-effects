@@ -84,6 +84,10 @@
             "AutoResolveCompletedRolls": {
                 "Name": "Abgeschlossene Proben automatisch auflösen",
                 "Hint": "Löst eine Probe automatisch auf, sobald alle Würfe abgeschlossen sind und keine offenen Konsequenzen oder Entscheidungen mehr ausstehen."
+            },
+            "MaxOpenResolvedPrompts": {
+                "Name": "Maximale offene Probenergebnisse",
+                "Hint": "Anzahl aufgelöster Proben, die ohne Schließtimer offen bleiben dürfen. Wird dieser Wert überschritten, startet bei den ältesten Ergebnissen der Schließtimer. 0 startet den Timer immer sofort."
             }
         },
         "Roll": {

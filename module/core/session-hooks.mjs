@@ -8,6 +8,8 @@ import { SessionCardRenderer } from "./card-renderer.mjs";
 /** Connects session mutations and lifecycle hooks to Foundry events and sockets. */
 export class SessionHooks {
     static #resolvedTimers = new Map();
+    static #resolvedDeadlines = new Map();
+    static #resolvedQueue = [];
     static #resolvedSessions = new Set();
 
     /** Registers core hooks and an optional callback for completed GM-side mutations. */
@@ -30,7 +32,7 @@ export class SessionHooks {
             }
         });
 
-        Hooks.on("updateChatMessage", (msg, changes = {}) => {
+        Hooks.on("updateChatMessage", (msg) => {
             const session = SessionStore.getSession(msg);
             if (!session) return;
             if (!game.user.isGM && session.isPreparingModifiers) return;
@@ -78,13 +80,65 @@ export class SessionHooks {
             });
         });
     }
+    /** Returns the active auto-close deadline timestamp for a resolved prompt, or null if untimed. */
+    static getResolvedDeadline(messageId) {
+        return this.#resolvedDeadlines.get(messageId) ?? null;
+    }
+
+    /** Pins a resolved prompt when clicked by the user, removing it from the auto-close queue. */
+    static pinResolvedPrompt(messageId) {
+        if (!messageId) return;
+        this.#removeFromQueue(messageId);
+        this.cancelResolvedTimer(messageId);
+        this.syncResolvedTimers();
+    }
+
+    /** Removes a closed prompt from the auto-close queue and updates remaining timers. */
+    static notifyPromptClosed(messageId) {
+        if (!messageId) return;
+        this.#removeFromQueue(messageId);
+        this.cancelResolvedTimer(messageId);
+        this.syncResolvedTimers();
+    }
 
     /** Stops the scheduled auto-close timer for a resolved prompt without closing it. */
     static cancelResolvedTimer(messageId) {
         clearTimeout(this.#resolvedTimers.get(messageId));
         this.#resolvedTimers.delete(messageId);
+        this.#resolvedDeadlines.delete(messageId);
     }
 
+    /** Starts auto-close timers for the oldest resolved prompts exceeding the configured open limit. */
+    static syncResolvedTimers() {
+        const duration = this.#getResultDurationSeconds();
+        if (duration <= 0) return;
+
+        const maxOpen = Math.max(0, Math.round(Number(game.settings?.get(MODULE_ID, "maxOpenResolvedPrompts")) || 0));
+        this.#resolvedQueue = this.#resolvedQueue.filter((id) => RollPromptStackManager.hasByMessageId(id));
+
+        const excessCount = Math.max(0, this.#resolvedQueue.length - maxOpen);
+        const delay = Math.min(duration * 1000, 2147483647);
+
+        for (let i = 0; i < excessCount; i++) {
+            const messageId = this.#resolvedQueue[i];
+            if (this.#resolvedTimers.has(messageId)) continue;
+
+            const deadline = Date.now() + delay;
+            this.#resolvedDeadlines.set(messageId, deadline);
+            this.#resolvedTimers.set(messageId, setTimeout(() => this.#closeResolvedPrompt(messageId), delay));
+            Hooks.callAll("roeResolvedTimerStarted", messageId, deadline);
+        }
+    }
+
+    static #getResultDurationSeconds() {
+        const configured = Number(game.settings?.get(MODULE_ID, "rollPromptResultDuration"));
+        return Number.isFinite(configured) ? Math.max(0, Math.round(configured)) : 10;
+    }
+
+    static #removeFromQueue(messageId) {
+        const index = this.#resolvedQueue.indexOf(messageId);
+        if (index !== -1) this.#resolvedQueue.splice(index, 1);
+    }
 
     static async #runMutation(mutator, afterMutation, payload, method, args) {
         const result = await mutator.runSerialized(
@@ -109,8 +163,7 @@ export class SessionHooks {
             return;
         }
 
-        const configuredDuration = Number(game.settings.get(MODULE_ID, "rollPromptResultDuration"));
-        const duration = Number.isFinite(configuredDuration) ? Math.max(0, configuredDuration) : 10;
+        const duration = this.#getResultDurationSeconds();
         if (duration === 0) {
             this.#closeResolvedPrompt(message.id);
             return;
@@ -120,20 +173,24 @@ export class SessionHooks {
         if (!RollPromptStackManager.hasByMessageId(message.id)) {
             this.#openPromptIfParticipant(message, true);
         }
-        const delay = Math.min(duration * 1000, 2147483647);
-        this.#resolvedTimers.set(message.id, setTimeout(() => this.#closeResolvedPrompt(message.id), delay));
+        if (!this.#resolvedQueue.includes(message.id)) {
+            this.#resolvedQueue.push(message.id);
+        }
+        this.syncResolvedTimers();
     }
 
     static #closeResolvedPrompt(messageId) {
-        clearTimeout(this.#resolvedTimers.get(messageId));
-        this.#resolvedTimers.delete(messageId);
+        this.#removeFromQueue(messageId);
+        this.cancelResolvedTimer(messageId);
         RollPromptStackManager.closeByMessageId(messageId);
+        this.syncResolvedTimers();
     }
 
     static #forgetResolvedPrompt(messageId) {
         if (!this.#resolvedSessions.delete(messageId)) return;
-        clearTimeout(this.#resolvedTimers.get(messageId));
-        this.#resolvedTimers.delete(messageId);
+        this.#removeFromQueue(messageId);
+        this.cancelResolvedTimer(messageId);
+        this.syncResolvedTimers();
     }
 
     static #openPromptIfParticipant(message, force = false) {

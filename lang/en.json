@@ -84,6 +84,10 @@
             "AutoResolveCompletedRolls": {
                 "Name": "Auto-Resolve Completed Rolls",
                 "Hint": "Automatically resolves a roll session once all rolls are complete and no pending consequences or decisions remain."
+            },
+            "MaxOpenResolvedPrompts": {
+                "Name": "Maximum Open Resolved Prompts",
+                "Hint": "Number of resolved roll prompts allowed to stay open without starting a close timer. When exceeded, the oldest resolved prompts start their close timer. Set to 0 to always start timers immediately."
             }
         },
         "Roll": {

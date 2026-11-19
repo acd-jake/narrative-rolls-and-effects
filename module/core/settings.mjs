@@ -1,5 +1,6 @@
 import { MODULE_ID } from "./constants.mjs";
 import { RollPromptStackManager } from "./stack-manager.mjs";
+import { SessionHooks } from "./session-hooks.mjs";
 
 /** Registers configuration settings shared by the core roll system. */
 export class CoreSettings {
@@ -113,6 +114,18 @@ export class CoreSettings {
             default: "vertical",
             onChange: () => RollPromptStackManager.reflow()
         });
+
+        game.settings.register(MODULE_ID, "maxOpenResolvedPrompts", {
+            name: "ROE.Settings.MaxOpenResolvedPrompts.Name",
+            hint: "ROE.Settings.MaxOpenResolvedPrompts.Hint",
+            scope: "client",
+            config: true,
+            type: Number,
+            range: { min: 0, max: 10, step: 1 },
+            default: 0,
+            onChange: () => SessionHooks.syncResolvedTimers()
+        });
+
     }
 
     static #registerFeedbackSettings() {
