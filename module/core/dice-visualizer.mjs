@@ -19,8 +19,8 @@ export class DiceVisualizer {
         if (session?.rollType === "other") {
             dice = this.fromFormula(session.diceFormula);
         } else if (session?.diceFormula) {
-            const formulaDice = new foundry.dice.Roll(session.diceFormula).dice;
-            if (!formulaDice.some((die) => die.faces === 100)) {
+            const formulaDice = this.#parseDiceTerms(session.diceFormula);
+            if (formulaDice.length && !formulaDice.some((die) => die.faces === 100)) {
                 dice = this.fromDice(formulaDice);
             }
         }
@@ -36,21 +36,51 @@ export class DiceVisualizer {
 
     static fromFormula(formula) {
         if (!formula || typeof formula !== "string") return [];
-        return this.fromDice(new foundry.dice.Roll(formula).dice);
+        return this.fromDice(this.#parseDiceTerms(formula));
+    }
+
+    static #parseDiceTerms(formula) {
+        const normalized = this.#expandMultiplierFormula(formula);
+        try {
+            return new foundry.dice.Roll(normalized).dice;
+        } catch {
+            return [];
+        }
+    }
+
+    static #expandMultiplierFormula(formula) {
+        const match = formula.trim().match(/^(\d+)\s*[×x*]\s*\((.+)\)$/i);
+        if (!match) return formula;
+        const factor = Math.max(1, Number(match[1]) || 1);
+        const inner = match[2];
+        return Array.from({ length: factor }, () => `(${inner})`).join(" + ");
     }
 
     static fromDice(dice) {
-        return dice.flatMap((die) => {
+        const grouped = new Map();
+        for (const die of dice) {
             const count = Number(die.number);
-            if (!Number.isFinite(count) || count <= 0) return [];
-            if (die.faces === 100) return this.percentile(count);
-            const type = DIE_TYPES[die.faces];
-            return type ? [{
-                src: `${DICE_ASSET_PATH}/${type.file}.svg`,
-                label: type.label,
-                count,
-                multiple: count > 1
-            }] : [];
-        });
+            const faces = Number(die.faces);
+            if (!Number.isFinite(count) || count <= 0 || !Number.isFinite(faces)) continue;
+            grouped.set(faces, (grouped.get(faces) ?? 0) + count);
+        }
+
+        const visuals = [];
+        for (const [faces, count] of grouped.entries()) {
+            if (faces === 100) {
+                visuals.push(...this.percentile(count));
+                continue;
+            }
+            const type = DIE_TYPES[faces];
+            if (type) {
+                visuals.push({
+                    src: `${DICE_ASSET_PATH}/${type.file}.svg`,
+                    label: type.label,
+                    count,
+                    multiple: count > 1
+                });
+            }
+        }
+        return visuals;
     }
 }
