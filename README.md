@@ -10,6 +10,7 @@ An extensible Foundry VTT v14 module that provides synchronized, multi-phase rol
 - Core dice visualization and dice-face assets, with adapter-provided extensions for system-specific dice.
 - Declarative prompt class creation and extension through `PromptClassFactory`.
 - GM roll requests, modifier preparation, actor selection, and configurable result presentation.
+- Optional automatic session resolution when no decisions or consequences remain, plus adapter-managed GM-only consequence decisions.
 - Client-side vignettes, result pulses, screen shake, token particles, and audio cues.
 - System-scoped prompt and chat-card styling through `data-nre-system`.
 
@@ -195,6 +196,10 @@ export function createCheckPromptApp(core) {
 ## Configuration
 
 Configure audio cues, visual effects, prompt stacking direction, per-client open prompt limits, and prompt theme under **Configure Settings -> Narrative Rolls and Effects**. System-specific options are provided by companion modules.
+
+## Changelog
+
+See [changelog.md](changelog.md) for release history.
 
 ## License
 
