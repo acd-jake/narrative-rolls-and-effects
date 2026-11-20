@@ -6,6 +6,7 @@ An extensible Foundry VTT v14 module that provides synchronized, multi-phase rol
 
 - Docked `ApplicationV2` roll prompts with synchronized session state.
 - Draggable prompts that can be returned to the dock, with viewport-aware positioning as prompts resize or expand.
+- Visual focus highlighting brings the active prompt to the front.
 - Configurable prompt stacking (vertical with automatic column wrapping, or horizontal), per-client open prompt limits (`maxOpenPrompts` and `maxOpenResolvedPrompts`), click-to-pin on resolved prompts, and chronological prompt numbering.
 - System adapters registered through the `nre.registerAdapters` hook.
 - Core dice visualization and dice-face assets, with adapter-provided extensions for system-specific dice.
