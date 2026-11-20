@@ -1,8 +1,8 @@
 import { MODULE_ID } from "./constants.mjs";
 
 /**
- * Manages docking, dynamic viewport-based sizing, vertical stacking,
- * and lifecycle cleanup of active RollPromptApp instances.
+ * Manages docking and stacking of active roll prompts so multiple prompts
+ * appear neatly ordered without overlapping.
  */
 export class RollPromptStackManager {
     /** @type {Set<ApplicationV2>} */
@@ -17,21 +17,16 @@ export class RollPromptStackManager {
     static MARGIN = 16;
     static STACK_GAP = 10;
     static MIN_WIDTH = 200;
+    static DOCK_SNAP_PADDING = 48;
 
-    /**
-     * Registers a prompt in the dock stack and tracks it globally for lifecycle cleanup.
-     * @param {ApplicationV2} app
-     */
+    /** Registers a prompt in the dock stack and tracks it globally for lifecycle cleanup. */
     static register(app) {
         this.track(app);
         this.#dockedApps.add(app);
         requestAnimationFrame(() => this.reflow());
     }
 
-    /**
-     * Tracks an app for lifecycle cleanup and enforces the client's open prompt limit.
-     * @param {ApplicationV2} app
-     */
+    /** Tracks an app for lifecycle cleanup and assigns a stable chronological sequence number. */
     static track(app) {
         const isNew = !this.#allActiveApps.has(app);
         if (isNew && !this.#sequenceNumbers.has(app)) {
@@ -48,9 +43,7 @@ export class RollPromptStackManager {
         }
     }
 
-    /**
-     * Closes the oldest open prompts when the client's maximum simultaneous prompt count is exceeded.
-     */
+    /** Closes the oldest open prompts when the client's maximum simultaneous prompt count is exceeded. */
     static enforceMaxOpenLimit() {
         const maxOpen = Math.max(0, Math.round(Number(globalThis.game?.settings?.get(MODULE_ID, "maxOpenPrompts")) || 0));
         if (maxOpen <= 0) return;
@@ -66,32 +59,21 @@ export class RollPromptStackManager {
         }
     }
 
-    /**
-     * Removes an app from the dock stack (e.g., when manually dragged)
-     * without removing it from global lifecycle tracking until closed.
-     * @param {ApplicationV2} app
-     */
+    /** Removes an app from the dock stack (e.g., when manually dragged) without removing lifecycle tracking. */
     static unregister(app) {
         if (this.#dockedApps.delete(app)) {
             requestAnimationFrame(() => this.reflow());
         }
     }
 
-    /**
-     * Completely removes a closed app from both tracking sets.
-     * @param {ApplicationV2} app
-     */
+    /** Completely removes a closed app from both tracking sets. */
     static untrack(app) {
         this.#allActiveApps.delete(app);
         this.unregister(app);
         this.refreshSequenceBadges();
     }
 
-    /**
-     * Returns the visible sequence number for a prompt, or null when it should be hidden.
-     * @param {ApplicationV2} app
-     * @returns {number|null}
-     */
+    /** Returns the visible sequence number for a prompt, or null when it should be hidden. */
     static getDisplaySequenceNumber(app) {
         const number = this.#sequenceNumbers.get(app) ?? null;
         if (!number) return null;
@@ -106,31 +88,74 @@ export class RollPromptStackManager {
         }
     }
 
-    static hasByMessageId(messageId) {
-        return Array.from(this.#allActiveApps).some((app) => app.messageId === messageId);
+    /** Returns whether an app is currently tracked as active. */
+    static isTracked(app) {
+        return this.#allActiveApps.has(app);
     }
 
-    /**
-     * Closes all open prompt windows linked to a deleted session message.
-     * @param {string} messageId
-     */
+    /** Returns whether a prompt for the given chat message ID is currently open. */
+    static hasByMessageId(messageId) {
+        for (const app of this.#allActiveApps) {
+            if (app.messageId === messageId) return true;
+        }
+        return false;
+    }
+    /** Closes all open prompt windows associated with the given chat message ID. */
     static closeByMessageId(messageId) {
-        if (!messageId) return;
-
         for (const app of Array.from(this.#allActiveApps)) {
-            if (app.messageId === messageId) {
-                app.close();
-            }
+            if (app.messageId === messageId) app.close();
         }
     }
-    /**
-     * Positions and sizes all currently docked prompts from bottom to top,
-     * keeping the newest prompt at the very bottom.
-     */
-    /**
-     * Positions and sizes all currently docked prompts according to the configured
-     * stack direction, keeping the newest prompt at the anchor corner.
-     */
+
+    /** Shifts a prompt window inside the viewport whenever expanding details push it past an edge. */
+    static clampToViewport(app) {
+        const el = app?.element;
+        if (!el) return;
+
+        const rect = el.getBoundingClientRect();
+        const width = Math.round(rect.width || app.position?.width || 340);
+        const height = Math.round(rect.height || 180);
+        const currentLeft = Number.isFinite(app.position?.left) ? app.position.left : rect.left;
+        const currentTop = Number.isFinite(app.position?.top) ? app.position.top : rect.top;
+
+        const maxLeft = Math.max(this.MARGIN, window.innerWidth - width - this.MARGIN);
+        const maxTop = Math.max(this.MARGIN, window.innerHeight - height - this.MARGIN);
+        const nextLeft = Math.round(Math.min(Math.max(this.MARGIN, currentLeft), maxLeft));
+        const nextTop = Math.round(Math.min(Math.max(this.MARGIN, currentTop), maxTop));
+
+        if (nextLeft !== Math.round(currentLeft) || nextTop !== Math.round(currentTop)) {
+            app.setPosition({ left: nextLeft, top: nextTop });
+        }
+    }
+
+    /** Returns true when a dragged prompt was released inside the stack manager's dock area. */
+    static isInsideDockZone(app) {
+        const el = app?.element;
+        if (!el) return false;
+
+        const width = this.#computeTargetWidth();
+        const anchor = this.#computeAnchorCoordinates(width);
+        const direction = game.settings?.get(MODULE_ID, "rollPromptStackDirection") ?? "vertical";
+        const rect = el.getBoundingClientRect();
+        const pad = this.DOCK_SNAP_PADDING;
+
+        const zoneLeft = direction === "horizontal"
+            ? this.MARGIN
+            : Math.max(this.MARGIN, anchor.left - pad);
+        const zoneRight = direction === "horizontal"
+            ? anchor.rightEdge + pad
+            : Math.min(window.innerWidth - this.MARGIN, anchor.left + width + pad);
+        const zoneTop = direction === "vertical"
+            ? this.MARGIN
+            : Math.max(this.MARGIN, anchor.bottomStart - rect.height - pad);
+        const zoneBottom = Math.min(window.innerHeight, anchor.bottomStart + pad);
+
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        return centerX >= zoneLeft && centerX <= zoneRight && centerY >= zoneTop && centerY <= zoneBottom;
+    }
+
+    /** Re-computes positions for all currently docked prompts. */
     static reflow() {
         const apps = Array.from(this.#dockedApps).filter((app) => app.element);
         if (apps.length === 0) return;
@@ -141,11 +166,36 @@ export class RollPromptStackManager {
 
         if (direction === "horizontal") {
             this.#reflowHorizontal(apps, width, anchor);
-            return;
+        } else {
+            this.#reflowVertical(apps, width, anchor);
         }
-        this.#reflowVertical(apps, width, anchor);
+
+        for (const app of apps) this.clampToViewport(app);
     }
 
+    static #computeTargetWidth() {
+        const pct = Math.clamp(Number(game.settings?.get(MODULE_ID, "rollPromptWidthPercent")) || 22, 10, 50);
+        return Math.max(this.MIN_WIDTH, Math.round(window.innerWidth * (pct / 100)));
+    }
+
+    static #computeAnchorCoordinates(width) {
+        const positionMode = game.settings?.get(MODULE_ID, "rollPromptPosition") ?? "sidebar-left";
+        const sidebarRect = document.getElementById("sidebar")?.getBoundingClientRect();
+        const hotbarRect = document.getElementById("hotbar")?.getBoundingClientRect();
+        const playersRect = document.getElementById("players")?.getBoundingClientRect();
+
+        const rightEdge = (sidebarRect && sidebarRect.width > 0 ? sidebarRect.left : window.innerWidth) - this.MARGIN;
+        const bottomStart = (hotbarRect && hotbarRect.height > 0 ? hotbarRect.top : window.innerHeight) - this.MARGIN;
+
+        if (positionMode === "players-top") {
+            const left = Math.max(this.MARGIN, Math.round(playersRect?.left ?? this.MARGIN));
+            const topAnchor = playersRect && playersRect.height > 0 ? playersRect.top - this.MARGIN : bottomStart;
+            return { positionMode, left, rightEdge, bottomStart: topAnchor };
+        }
+
+        const left = Math.max(this.MARGIN, Math.round(rightEdge - width));
+        return { positionMode, left, rightEdge, bottomStart };
+    }
     static #reflowVertical(apps, width, { positionMode, left, rightEdge, bottomStart }) {
         const topMargin = 12;
         const goesRight = positionMode === "players-top";
@@ -187,11 +237,7 @@ export class RollPromptStackManager {
 
     static #reflowHorizontal(apps, width, { positionMode, left, rightEdge, bottomStart }) {
         const goesRight = positionMode === "players-top";
-        const minX = this.MARGIN;
-        const maxX = rightEdge;
-        let currentX = goesRight ? left : rightEdge - width;
-        let currentBottom = bottomStart;
-        let rowMaxHeight = 0;
+        let currentX = goesRight ? left : rightEdge;
 
         for (let i = apps.length - 1; i >= 0; i--) {
             const app = apps[i];
@@ -200,68 +246,18 @@ export class RollPromptStackManager {
             const rect = app.element.getBoundingClientRect();
             const actualWidth = Math.max(width, Math.round(rect.width || width));
             const height = rect.height || 180;
+            const top = Math.max(12, Math.round(bottomStart - height));
 
-            if (!goesRight && i === apps.length - 1) {
-                currentX = rightEdge - actualWidth;
+            if (goesRight) {
+                if (currentX + actualWidth > rightEdge) break;
+                app.setPosition({ left: Math.round(currentX), top, width });
+                currentX += actualWidth + this.STACK_GAP;
+            } else {
+                const targetLeft = Math.round(currentX - actualWidth);
+                if (targetLeft < this.MARGIN) break;
+                app.setPosition({ left: targetLeft, top, width });
+                currentX = targetLeft - this.STACK_GAP;
             }
-
-            const overflowsRow = goesRight
-                ? currentX + actualWidth > maxX && currentX > minX
-                : currentX < minX && currentX + actualWidth < maxX;
-
-            if (overflowsRow) {
-                currentBottom = Math.max(12, Math.round(currentBottom - rowMaxHeight - this.STACK_GAP));
-                rowMaxHeight = 0;
-                currentX = goesRight ? left : rightEdge - actualWidth;
-            }
-
-            const clampedLeft = Math.max(minX, Math.round(currentX));
-            const top = Math.max(12, Math.round(currentBottom - height));
-            app.setPosition({ left: clampedLeft, top, width });
-
-            rowMaxHeight = Math.max(rowMaxHeight, height);
-            currentX = goesRight
-                ? clampedLeft + actualWidth + this.STACK_GAP
-                : clampedLeft - actualWidth - this.STACK_GAP;
         }
-    }
-
-    /**
-     * Calculates pixel width based on the configured viewport percentage.
-     * @returns {number}
-     */
-    static #computeTargetWidth() {
-        const percent = game.settings?.get(MODULE_ID, "rollPromptWidthPercent") ?? 15;
-        const rawWidth = Math.round((window.innerWidth * percent) / 100);
-        return Math.max(this.MIN_WIDTH, rawWidth);
-    }
-
-    /**
-     * Determines horizontal `left` and vertical `bottomStart` coordinates
-     * based on the chosen dock position setting.
-     * @param {number} width
-     * @returns {{ left: number, bottomStart: number }}
-     */
-    static #computeAnchorCoordinates(width) {
-        const positionMode = game.settings?.get(MODULE_ID, "rollPromptPosition") ?? "sidebar-left";
-
-        if (positionMode === "players-top") {
-            const playersEl = document.getElementById("players");
-            const rect = playersEl?.getBoundingClientRect();
-            const left = Math.max(12, rect ? Math.round(rect.left) : this.MARGIN);
-            const bottomStart = rect ? Math.round(rect.top - this.STACK_GAP) : window.innerHeight - 60;
-            const sidebar = document.getElementById("sidebar");
-            const rightEdge = Math.round((sidebar ? sidebar.getBoundingClientRect().left : window.innerWidth) - this.MARGIN);
-            return { positionMode, left, rightEdge, bottomStart };
-        }
-
-        // Default: "sidebar-left"
-        const sidebar = document.getElementById("sidebar");
-        const sidebarLeft = sidebar ? sidebar.getBoundingClientRect().left : window.innerWidth;
-        const rightEdge = Math.round(sidebarLeft - this.MARGIN);
-        const left = Math.max(12, Math.round(rightEdge - width));
-        const bottomStart = window.innerHeight - this.MARGIN;
-
-        return { positionMode, left, rightEdge, bottomStart };
     }
 }

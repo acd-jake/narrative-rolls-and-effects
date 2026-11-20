@@ -20,6 +20,7 @@ export class BasePromptApp extends HandlebarsApplicationMixin(ApplicationV2) {
     #countdownIntervalId = null;
     #countdownDeadline = null;
     #timerHookId;
+    #resizeObserver = null;
 
     constructor({ messageId }, options = {}) {
         super(options);
@@ -101,14 +102,8 @@ export class BasePromptApp extends HandlebarsApplicationMixin(ApplicationV2) {
 
         if (!this._userDragged) RollPromptStackManager.register(this);
 
-        const handle = this.element.querySelector(".prompt-drag-handle");
-        if (handle && !handle.dataset.dragBound) {
-            handle.dataset.dragBound = "true";
-            handle.addEventListener("pointerdown", () => {
-                this._userDragged = true;
-                RollPromptStackManager.unregister(this);
-            });
-        }
+        this.#bindCanvasDrag();
+        this.#bindViewportResize();
 
         if (!this.element.dataset.pinClickBound) {
             this.element.dataset.pinClickBound = "true";
@@ -271,6 +266,9 @@ export class BasePromptApp extends HandlebarsApplicationMixin(ApplicationV2) {
         });
     }
     async close(options = {}) {
+        this.#resizeObserver?.disconnect();
+        this.#resizeObserver = null;
+
         if (options.suspend) {
             await super.close(options);
             RollPromptStackManager.track(this);
@@ -357,6 +355,69 @@ export class BasePromptApp extends HandlebarsApplicationMixin(ApplicationV2) {
         if (!actionName || this.constructor.DEFAULT_OPTIONS.actions?.[actionName]) return;
         AdapterRegistry.active?.handlePromptAction?.(this, actionName, event, target);
     }
+
+    #bindCanvasDrag() {
+        const handle = this.element?.querySelector(".prompt-drag-handle");
+        if (!handle || handle.dataset.canvasDragBound) return;
+        handle.dataset.canvasDragBound = "true";
+
+        handle.addEventListener("pointerdown", (startEvent) => {
+            if (startEvent.button !== 0 || startEvent.target.closest("button, input, select, a")) return;
+            startEvent.preventDefault();
+
+            const rect = this.element.getBoundingClientRect();
+            const offsetX = startEvent.clientX - rect.left;
+            const offsetY = startEvent.clientY - rect.top;
+            let moved = false;
+
+            const onMove = (moveEvent) => {
+                if (!moved && Math.hypot(moveEvent.clientX - startEvent.clientX, moveEvent.clientY - startEvent.clientY) < 4) return;
+                if (!moved) {
+                    moved = true;
+                    this._userDragged = true;
+                    RollPromptStackManager.unregister(this);
+                }
+                const margin = RollPromptStackManager.MARGIN;
+                const width = Math.round(rect.width || this.position?.width || 340);
+                const height = Math.round(this.element.getBoundingClientRect().height || rect.height || 180);
+                const left = Math.round(Math.min(Math.max(margin, moveEvent.clientX - offsetX), Math.max(margin, window.innerWidth - width - margin)));
+                const top = Math.round(Math.min(Math.max(margin, moveEvent.clientY - offsetY), Math.max(margin, window.innerHeight - height - margin)));
+                this.setPosition({ left, top });
+            };
+
+            const onUp = () => {
+                window.removeEventListener("pointermove", onMove);
+                window.removeEventListener("pointerup", onUp);
+                if (!moved) return;
+                if (RollPromptStackManager.isInsideDockZone(this)) {
+                    this._userDragged = false;
+                    RollPromptStackManager.register(this);
+                }
+            };
+
+            window.addEventListener("pointermove", onMove);
+            window.addEventListener("pointerup", onUp);
+        });
+    }
+
+    #bindViewportResize() {
+        if (!this.element || this.element.dataset.viewportResizeBound) return;
+        this.element.dataset.viewportResizeBound = "true";
+
+        const adjustPosition = () => {
+            if (!this.element?.isConnected) return;
+            if (this._userDragged) RollPromptStackManager.clampToViewport(this);
+            else RollPromptStackManager.reflow();
+        };
+
+        this.element.addEventListener("toggle", () => requestAnimationFrame(adjustPosition), { capture: true });
+        if (typeof ResizeObserver === "function") {
+            this.#resizeObserver?.disconnect();
+            this.#resizeObserver = new ResizeObserver(() => requestAnimationFrame(adjustPosition));
+            this.#resizeObserver.observe(this.element);
+        }
+    }
+
     static _onToggleDescription(event) {
         event.stopPropagation();
         this._isDescriptionExpanded = !this._isDescriptionExpanded;
