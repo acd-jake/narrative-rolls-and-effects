@@ -105,6 +105,13 @@ export class BasePromptApp extends HandlebarsApplicationMixin(ApplicationV2) {
         this.#bindCanvasDrag();
         this.#bindViewportResize();
 
+        if (!this.element.dataset.focusHighlightBound) {
+            this.element.dataset.focusHighlightBound = "true";
+            this.element.addEventListener("pointerdown", () => RollPromptStackManager.setFocused(this), { capture: true });
+            this.element.addEventListener("focusin", () => RollPromptStackManager.setFocused(this));
+        }
+        RollPromptStackManager.syncFocusClass(this);
+
         if (!this.element.dataset.pinClickBound) {
             this.element.dataset.pinClickBound = "true";
             this.element.addEventListener("pointerdown", (ev) => {

@@ -14,6 +14,9 @@ export class RollPromptStackManager {
     /** @type {WeakMap<ApplicationV2, number>} */
     static #sequenceNumbers = new WeakMap();
 
+    /** @type {ApplicationV2|null} */
+    static #focusedApp = null;
+
     static MARGIN = 16;
     static STACK_GAP = 10;
     static MIN_WIDTH = 200;
@@ -24,6 +27,22 @@ export class RollPromptStackManager {
         this.track(app);
         this.#dockedApps.add(app);
         requestAnimationFrame(() => this.reflow());
+    }
+
+    /** Marks the given prompt as focused and brings it visually to the front. */
+    static setFocused(app) {
+        if (!app || this.#focusedApp === app) return;
+        if (this.#focusedApp?.element) {
+            this.#focusedApp.element.classList.remove("is-focused");
+        }
+        this.#focusedApp = app;
+        if (app.element) {
+            app.element.classList.add("is-focused");
+        }
+    }
+
+    static syncFocusClass(app) {
+        app?.element?.classList.toggle("is-focused", this.#focusedApp === app);
     }
 
     /** Tracks an app for lifecycle cleanup and assigns a stable chronological sequence number. */
